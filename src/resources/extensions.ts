@@ -69,54 +69,42 @@ export class Extensions extends APIResource {
 }
 
 export interface ExtensionRetrieveResponse {
-  data?: ExtensionRetrieveResponse.Data;
+  /**
+   * Unique identifier for the extension
+   */
+  id?: string;
+
+  /**
+   * Timestamp when the extension was created
+   */
+  createdAt?: string;
+
+  manifest?: ExtensionRetrieveResponse.Manifest;
+
+  /**
+   * Extension name
+   */
+  name?: string;
+
+  /**
+   * Timestamp when the extension was last updated
+   */
+  updatedAt?: string;
 }
 
 export namespace ExtensionRetrieveResponse {
-  export interface Data {
-    /**
-     * Unique identifier for the extension
-     */
-    id?: string;
+  export interface Manifest {
+    description?: string;
 
-    /**
-     * Timestamp when the extension was created
-     */
-    createdAt?: string;
+    manifest_version?: number;
 
-    /**
-     * Complete extension manifest data
-     */
-    manifest?: Data.Manifest;
-
-    /**
-     * Extension name
-     */
     name?: string;
 
-    /**
-     * Timestamp when the extension was last updated
-     */
-    updatedAt?: string;
-  }
+    permissions?: Array<string>;
 
-  export namespace Data {
-    /**
-     * Complete extension manifest data
-     */
-    export interface Manifest {
-      description?: string;
+    version?: string;
 
-      manifest_version?: number;
-
-      name?: string;
-
-      permissions?: Array<string>;
-
-      version?: string;
-
-      [k: string]: unknown;
-    }
+    [k: string]: unknown;
   }
 }
 
@@ -136,9 +124,6 @@ export namespace ExtensionListResponse {
      */
     createdAt?: string;
 
-    /**
-     * Extension manifest data
-     */
     manifest?: Data.Manifest;
 
     /**
@@ -153,13 +138,14 @@ export namespace ExtensionListResponse {
   }
 
   export namespace Data {
-    /**
-     * Extension manifest data
-     */
     export interface Manifest {
+      description?: string;
+
       manifest_version?: number;
 
       name?: string;
+
+      permissions?: Array<string>;
 
       version?: string;
 
@@ -174,7 +160,13 @@ export interface ExtensionDeleteResponse {
 
 export namespace ExtensionDeleteResponse {
   export interface Data {
-    status?: string;
+    data?: Data.Data;
+  }
+
+  export namespace Data {
+    export interface Data {
+      status?: string;
+    }
   }
 }
 
@@ -194,9 +186,6 @@ export namespace ExtensionUploadResponse {
      */
     createdAt?: string;
 
-    /**
-     * Parsed manifest.json content
-     */
     manifest?: Data.Manifest;
 
     /**
@@ -211,13 +200,14 @@ export namespace ExtensionUploadResponse {
   }
 
   export namespace Data {
-    /**
-     * Parsed manifest.json content
-     */
     export interface Manifest {
+      description?: string;
+
       manifest_version?: number;
 
       name?: string;
+
+      permissions?: Array<string>;
 
       version?: string;
 

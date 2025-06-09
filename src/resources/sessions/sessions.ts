@@ -197,7 +197,7 @@ export class Sessions extends APIResource {
    * ```ts
    * const response = await client.sessions.scroll(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { deltaY: 100, x: 350, y: 250 },
+   *   { deltaY: 100, x: 0, y: 0 },
    * );
    * ```
    */
@@ -651,12 +651,12 @@ export interface SessionScrollParams {
   deltaY: number;
 
   /**
-   * X coordinate for the scroll
+   * X coordinate
    */
   x: number;
 
   /**
-   * Y coordinate for the scroll
+   * Y coordinate
    */
   y: number;
 

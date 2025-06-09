@@ -60,50 +60,56 @@ export interface RecordingListResponse {
 
 export namespace RecordingListResponse {
   export interface Data {
-    /**
-     * Total number of video recordings
-     */
-    count?: number;
-
-    items?: Array<Data.Item>;
+    data?: Data.Data;
   }
 
   export namespace Data {
-    export interface Item {
+    export interface Data {
       /**
-       * Unique identifier for the recording
+       * Total number of video recordings
        */
-      id?: string;
+      count?: number;
 
-      /**
-       * Timestamp when the recording was created
-       */
-      created_at?: string;
+      items?: Array<Data.Item>;
+    }
 
-      /**
-       * Duration of the recording
-       */
-      duration?: string;
+    export namespace Data {
+      export interface Item {
+        /**
+         * Unique identifier for the recording
+         */
+        id?: string;
 
-      /**
-       * URL to access the recording file
-       */
-      file_link?: string;
+        /**
+         * Timestamp when the recording was created
+         */
+        created_at?: string;
 
-      /**
-       * Indicates if this is the primary recording
-       */
-      is_primary?: boolean;
+        /**
+         * Duration of the recording
+         */
+        duration?: string;
 
-      /**
-       * Size of the recording file in bytes
-       */
-      size?: number;
+        /**
+         * URL to access the recording file
+         */
+        file_link?: string;
 
-      /**
-       * Suggested filename for the recording
-       */
-      suggested_file_name?: string;
+        /**
+         * Indicates if this is the primary recording
+         */
+        is_primary?: boolean;
+
+        /**
+         * Size of the recording file in bytes
+         */
+        size?: number;
+
+        /**
+         * Suggested filename for the recording
+         */
+        suggested_file_name?: string;
+      }
     }
   }
 }
@@ -114,7 +120,13 @@ export interface RecordingPauseResponse {
 
 export namespace RecordingPauseResponse {
   export interface Data {
-    status?: string;
+    data?: Data.Data;
+  }
+
+  export namespace Data {
+    export interface Data {
+      status?: string;
+    }
   }
 }
 
@@ -124,7 +136,13 @@ export interface RecordingResumeResponse {
 
 export namespace RecordingResumeResponse {
   export interface Data {
-    status?: string;
+    data?: Data.Data;
+  }
+
+  export namespace Data {
+    export interface Data {
+      status?: string;
+    }
   }
 }
 
