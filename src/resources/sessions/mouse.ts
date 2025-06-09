@@ -13,7 +13,7 @@ export class Mouse extends APIResource {
    * ```ts
    * const response = await client.sessions.mouse.click(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 200, y: 150 },
+   *   { x: 0, y: 0 },
    * );
    * ```
    */
@@ -28,7 +28,7 @@ export class Mouse extends APIResource {
    * ```ts
    * const response = await client.sessions.mouse.doubleClick(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 250, y: 150 },
+   *   { x: 0, y: 0 },
    * );
    * ```
    */
@@ -47,7 +47,7 @@ export class Mouse extends APIResource {
    * ```ts
    * const response = await client.sessions.mouse.down(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 300, y: 200 },
+   *   { x: 0, y: 0 },
    * );
    * ```
    */
@@ -62,7 +62,7 @@ export class Mouse extends APIResource {
    * ```ts
    * const response = await client.sessions.mouse.move(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 350, y: 250 },
+   *   { x: 0, y: 0 },
    * );
    * ```
    */
@@ -77,7 +77,7 @@ export class Mouse extends APIResource {
    * ```ts
    * const response = await client.sessions.mouse.up(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 350, y: 250 },
+   *   { x: 0, y: 0 },
    * );
    * ```
    */
@@ -108,12 +108,12 @@ export interface MouseUpResponse {
 
 export interface MouseClickParams {
   /**
-   * X coordinate for the click
+   * X coordinate
    */
   x: number;
 
   /**
-   * Y coordinate for the click
+   * Y coordinate
    */
   y: number;
 
@@ -125,12 +125,12 @@ export interface MouseClickParams {
 
 export interface MouseDoubleClickParams {
   /**
-   * X coordinate for the double click
+   * X coordinate
    */
   x: number;
 
   /**
-   * Y coordinate for the double click
+   * Y coordinate
    */
   y: number;
 
@@ -142,12 +142,12 @@ export interface MouseDoubleClickParams {
 
 export interface MouseDownParams {
   /**
-   * X coordinate for the mouse down
+   * X coordinate
    */
   x: number;
 
   /**
-   * Y coordinate for the mouse down
+   * Y coordinate
    */
   y: number;
 
@@ -159,24 +159,24 @@ export interface MouseDownParams {
 
 export interface MouseMoveParams {
   /**
-   * X coordinate to move to
+   * X coordinate
    */
   x: number;
 
   /**
-   * Y coordinate to move to
+   * Y coordinate
    */
   y: number;
 }
 
 export interface MouseUpParams {
   /**
-   * X coordinate for the mouse up
+   * X coordinate
    */
   x: number;
 
   /**
-   * Y coordinate for the mouse up
+   * Y coordinate
    */
   y: number;
 

@@ -77,16 +77,10 @@ export class Profiles extends APIResource {
 }
 
 export interface ProfileCreateResponse {
-  /**
-   * Details of the created profile.
-   */
   data?: ProfileCreateResponse.Data;
 }
 
 export namespace ProfileCreateResponse {
-  /**
-   * Details of the created profile.
-   */
   export interface Data {
     status?: string;
   }
@@ -167,7 +161,7 @@ export namespace ProfileListResponse {
       created_at?: string;
 
       /**
-       * A brief description of the profile.
+       * A description of the profile.
        */
       description?: string;
 
@@ -177,9 +171,19 @@ export namespace ProfileListResponse {
       name?: string;
 
       /**
+       * The browser session ID used to create this profile, if applicable.
+       */
+      session_id?: string;
+
+      /**
        * The source of the profile data.
        */
       source?: 'session';
+
+      /**
+       * The current status of the profile.
+       */
+      status?: string;
 
       /**
        * Whether the profile stores browser cache.

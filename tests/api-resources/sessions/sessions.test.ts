@@ -157,8 +157,8 @@ describe('resource sessions', () => {
   test.skip('scroll: only required params', async () => {
     const responsePromise = client.sessions.scroll('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       deltaY: 100,
-      x: 350,
-      y: 250,
+      x: 0,
+      y: 0,
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -173,8 +173,8 @@ describe('resource sessions', () => {
   test.skip('scroll: required and optional params', async () => {
     const response = await client.sessions.scroll('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       deltaY: 100,
-      x: 350,
-      y: 250,
+      x: 0,
+      y: 0,
       deltaX: 0,
       steps: 10,
     });
