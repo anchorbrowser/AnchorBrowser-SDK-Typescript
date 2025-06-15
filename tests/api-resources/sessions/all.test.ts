@@ -9,8 +9,8 @@ const client = new Anchorbrowser({
 
 describe('resource all', () => {
   // skipped: tests are disabled for the time being
-  test.skip('deleteAll', async () => {
-    const responsePromise = client.sessions.all.deleteAll();
+  test.skip('delete', async () => {
+    const responsePromise = client.sessions.all.delete();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,8 +21,8 @@ describe('resource all', () => {
   });
 
   // skipped: tests are disabled for the time being
-  test.skip('retrieveStatus', async () => {
-    const responsePromise = client.sessions.all.retrieveStatus();
+  test.skip('status', async () => {
+    const responsePromise = client.sessions.all.status();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

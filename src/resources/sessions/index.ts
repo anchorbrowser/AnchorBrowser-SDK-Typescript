@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { All, type AllRetrieveStatusResponse } from './all';
+export { All, type AllStatusResponse } from './all';
 export {
   Clipboard,
   type ClipboardGetResponse,
