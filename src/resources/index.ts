@@ -1,7 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+export * from './shared';
 export {
   Extensions,
+  type ExtensionManifest,
   type ExtensionRetrieveResponse,
   type ExtensionListResponse,
   type ExtensionDeleteResponse,
@@ -10,18 +12,14 @@ export {
 } from './extensions';
 export {
   Profiles,
-  type ProfileCreateResponse,
   type ProfileRetrieveResponse,
-  type ProfileUpdateResponse,
   type ProfileListResponse,
-  type ProfileDeleteResponse,
   type ProfileCreateParams,
   type ProfileUpdateParams,
 } from './profiles';
 export {
   Sessions,
   type SessionCreateResponse,
-  type SessionDeleteResponse,
   type SessionCopyResponse,
   type SessionDragAndDropResponse,
   type SessionGotoResponse,

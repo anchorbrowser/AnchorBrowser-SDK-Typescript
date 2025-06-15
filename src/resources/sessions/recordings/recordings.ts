@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../core/resource';
+import * as Shared from '../../shared';
 import * as PrimaryAPI from './primary';
 import { Primary } from './primary';
 import { APIPromise } from '../../../core/api-promise';
@@ -115,35 +116,11 @@ export namespace RecordingListResponse {
 }
 
 export interface RecordingPauseResponse {
-  data?: RecordingPauseResponse.Data;
-}
-
-export namespace RecordingPauseResponse {
-  export interface Data {
-    data?: Data.Data;
-  }
-
-  export namespace Data {
-    export interface Data {
-      status?: string;
-    }
-  }
+  data?: Shared.SuccessResponse;
 }
 
 export interface RecordingResumeResponse {
-  data?: RecordingResumeResponse.Data;
-}
-
-export namespace RecordingResumeResponse {
-  export interface Data {
-    data?: Data.Data;
-  }
-
-  export namespace Data {
-    export interface Data {
-      status?: string;
-    }
-  }
+  data?: Shared.SuccessResponse;
 }
 
 Recordings.Primary = Primary;

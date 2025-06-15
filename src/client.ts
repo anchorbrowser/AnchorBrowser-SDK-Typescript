@@ -23,6 +23,7 @@ import { FinalRequestOptions, RequestOptions } from './internal/request-options'
 import {
   ExtensionDeleteResponse,
   ExtensionListResponse,
+  ExtensionManifest,
   ExtensionRetrieveResponse,
   ExtensionUploadParams,
   ExtensionUploadResponse,
@@ -30,12 +31,9 @@ import {
 } from './resources/extensions';
 import {
   ProfileCreateParams,
-  ProfileCreateResponse,
-  ProfileDeleteResponse,
   ProfileListResponse,
   ProfileRetrieveResponse,
   ProfileUpdateParams,
-  ProfileUpdateResponse,
   Profiles,
 } from './resources/profiles';
 import {
@@ -53,7 +51,6 @@ import {
   SessionCopyResponse,
   SessionCreateParams,
   SessionCreateResponse,
-  SessionDeleteResponse,
   SessionDragAndDropParams,
   SessionDragAndDropResponse,
   SessionGotoParams,
@@ -746,11 +743,8 @@ export declare namespace Anchorbrowser {
 
   export {
     Profiles as Profiles,
-    type ProfileCreateResponse as ProfileCreateResponse,
     type ProfileRetrieveResponse as ProfileRetrieveResponse,
-    type ProfileUpdateResponse as ProfileUpdateResponse,
     type ProfileListResponse as ProfileListResponse,
-    type ProfileDeleteResponse as ProfileDeleteResponse,
     type ProfileCreateParams as ProfileCreateParams,
     type ProfileUpdateParams as ProfileUpdateParams,
   };
@@ -758,7 +752,6 @@ export declare namespace Anchorbrowser {
   export {
     Sessions as Sessions,
     type SessionCreateResponse as SessionCreateResponse,
-    type SessionDeleteResponse as SessionDeleteResponse,
     type SessionCopyResponse as SessionCopyResponse,
     type SessionDragAndDropResponse as SessionDragAndDropResponse,
     type SessionGotoResponse as SessionGotoResponse,
@@ -783,10 +776,13 @@ export declare namespace Anchorbrowser {
 
   export {
     Extensions as Extensions,
+    type ExtensionManifest as ExtensionManifest,
     type ExtensionRetrieveResponse as ExtensionRetrieveResponse,
     type ExtensionListResponse as ExtensionListResponse,
     type ExtensionDeleteResponse as ExtensionDeleteResponse,
     type ExtensionUploadResponse as ExtensionUploadResponse,
     type ExtensionUploadParams as ExtensionUploadParams,
   };
+
+  export type SuccessResponse = API.SuccessResponse;
 }

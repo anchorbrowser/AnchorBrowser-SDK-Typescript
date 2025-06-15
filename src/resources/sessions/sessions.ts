@@ -1,8 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as Shared from '../shared';
 import * as AllAPI from './all';
-import { All, AllDeleteAllResponse, AllRetrieveStatusResponse } from './all';
+import { All, AllRetrieveStatusResponse } from './all';
 import * as ClipboardAPI from './clipboard';
 import {
   Clipboard,
@@ -73,10 +74,12 @@ export class Sessions extends APIResource {
    *
    * @example
    * ```ts
-   * const session = await client.sessions.delete('session_id');
+   * const successResponse = await client.sessions.delete(
+   *   'session_id',
+   * );
    * ```
    */
-  delete(sessionID: string, options?: RequestOptions): APIPromise<SessionDeleteResponse> {
+  delete(sessionID: string, options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.delete(path`/v1/sessions/${sessionID}`, options);
   }
 
@@ -230,16 +233,6 @@ export namespace SessionCreateResponse {
      * The browser session live view url
      */
     live_view_url?: string;
-  }
-}
-
-export interface SessionDeleteResponse {
-  data?: SessionDeleteResponse.Data;
-}
-
-export namespace SessionDeleteResponse {
-  export interface Data {
-    status?: string;
   }
 }
 
@@ -680,7 +673,6 @@ Sessions.Clipboard = Clipboard;
 export declare namespace Sessions {
   export {
     type SessionCreateResponse as SessionCreateResponse,
-    type SessionDeleteResponse as SessionDeleteResponse,
     type SessionCopyResponse as SessionCopyResponse,
     type SessionDragAndDropResponse as SessionDragAndDropResponse,
     type SessionGotoResponse as SessionGotoResponse,
@@ -694,11 +686,7 @@ export declare namespace Sessions {
     type SessionScrollParams as SessionScrollParams,
   };
 
-  export {
-    All as All,
-    type AllDeleteAllResponse as AllDeleteAllResponse,
-    type AllRetrieveStatusResponse as AllRetrieveStatusResponse,
-  };
+  export { All as All, type AllRetrieveStatusResponse as AllRetrieveStatusResponse };
 
   export {
     Recordings as Recordings,

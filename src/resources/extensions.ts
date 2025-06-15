@@ -1,6 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as ExtensionsAPI from './extensions';
+import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { type Uploadable } from '../core/uploads';
 import { RequestOptions } from '../internal/request-options';
@@ -68,6 +70,20 @@ export class Extensions extends APIResource {
   }
 }
 
+export interface ExtensionManifest {
+  description?: string;
+
+  manifest_version?: number;
+
+  name?: string;
+
+  permissions?: Array<string>;
+
+  version?: string;
+
+  [k: string]: unknown;
+}
+
 export interface ExtensionRetrieveResponse {
   /**
    * Unique identifier for the extension
@@ -79,7 +95,7 @@ export interface ExtensionRetrieveResponse {
    */
   createdAt?: string;
 
-  manifest?: ExtensionRetrieveResponse.Manifest;
+  manifest?: ExtensionManifest;
 
   /**
    * Extension name
@@ -90,22 +106,6 @@ export interface ExtensionRetrieveResponse {
    * Timestamp when the extension was last updated
    */
   updatedAt?: string;
-}
-
-export namespace ExtensionRetrieveResponse {
-  export interface Manifest {
-    description?: string;
-
-    manifest_version?: number;
-
-    name?: string;
-
-    permissions?: Array<string>;
-
-    version?: string;
-
-    [k: string]: unknown;
-  }
 }
 
 export interface ExtensionListResponse {
@@ -124,7 +124,7 @@ export namespace ExtensionListResponse {
      */
     createdAt?: string;
 
-    manifest?: Data.Manifest;
+    manifest?: ExtensionsAPI.ExtensionManifest;
 
     /**
      * Extension name
@@ -136,38 +136,10 @@ export namespace ExtensionListResponse {
      */
     updatedAt?: string;
   }
-
-  export namespace Data {
-    export interface Manifest {
-      description?: string;
-
-      manifest_version?: number;
-
-      name?: string;
-
-      permissions?: Array<string>;
-
-      version?: string;
-
-      [k: string]: unknown;
-    }
-  }
 }
 
 export interface ExtensionDeleteResponse {
-  data?: ExtensionDeleteResponse.Data;
-}
-
-export namespace ExtensionDeleteResponse {
-  export interface Data {
-    data?: Data.Data;
-  }
-
-  export namespace Data {
-    export interface Data {
-      status?: string;
-    }
-  }
+  data?: Shared.SuccessResponse;
 }
 
 export interface ExtensionUploadResponse {
@@ -186,7 +158,7 @@ export namespace ExtensionUploadResponse {
      */
     createdAt?: string;
 
-    manifest?: Data.Manifest;
+    manifest?: ExtensionsAPI.ExtensionManifest;
 
     /**
      * Extension name
@@ -197,22 +169,6 @@ export namespace ExtensionUploadResponse {
      * Timestamp when the extension was last updated
      */
     updatedAt?: string;
-  }
-
-  export namespace Data {
-    export interface Manifest {
-      description?: string;
-
-      manifest_version?: number;
-
-      name?: string;
-
-      permissions?: Array<string>;
-
-      version?: string;
-
-      [k: string]: unknown;
-    }
   }
 }
 
@@ -230,6 +186,7 @@ export interface ExtensionUploadParams {
 
 export declare namespace Extensions {
   export {
+    type ExtensionManifest as ExtensionManifest,
     type ExtensionRetrieveResponse as ExtensionRetrieveResponse,
     type ExtensionListResponse as ExtensionListResponse,
     type ExtensionDeleteResponse as ExtensionDeleteResponse,
