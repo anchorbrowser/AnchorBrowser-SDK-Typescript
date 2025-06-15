@@ -47,12 +47,12 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/sessions/all.ts">AllRetrieveStatusResponse</a></code>
+- <code><a href="./src/resources/sessions/all.ts">AllStatusResponse</a></code>
 
 Methods:
 
-- <code title="delete /v1/sessions/all">client.sessions.all.<a href="./src/resources/sessions/all.ts">deleteAll</a>() -> SuccessResponse</code>
-- <code title="get /v1/sessions/all/status">client.sessions.all.<a href="./src/resources/sessions/all.ts">retrieveStatus</a>() -> AllRetrieveStatusResponse</code>
+- <code title="delete /v1/sessions/all">client.sessions.all.<a href="./src/resources/sessions/all.ts">delete</a>() -> SuccessResponse</code>
+- <code title="get /v1/sessions/all/status">client.sessions.all.<a href="./src/resources/sessions/all.ts">status</a>() -> AllStatusResponse</code>
 
 ## Recordings
 
@@ -72,7 +72,7 @@ Methods:
 
 Methods:
 
-- <code title="get /v1/sessions/{session_id}/recordings/primary/fetch">client.sessions.recordings.primary.<a href="./src/resources/sessions/recordings/primary.ts">retrieveFetch</a>(sessionID) -> Response</code>
+- <code title="get /v1/sessions/{session_id}/recordings/primary/fetch">client.sessions.recordings.primary.<a href="./src/resources/sessions/recordings/primary.ts">get</a>(sessionID) -> Response</code>
 
 ## Mouse
 

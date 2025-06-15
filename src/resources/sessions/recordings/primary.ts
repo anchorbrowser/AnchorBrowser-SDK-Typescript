@@ -13,16 +13,16 @@ export class Primary extends APIResource {
    *
    * @example
    * ```ts
-   * const response =
-   *   await client.sessions.recordings.primary.retrieveFetch(
+   * const primary =
+   *   await client.sessions.recordings.primary.get(
    *     'session_id',
    *   );
    *
-   * const content = await response.blob();
+   * const content = await primary.blob();
    * console.log(content);
    * ```
    */
-  retrieveFetch(sessionID: string, options?: RequestOptions): APIPromise<Response> {
+  get(sessionID: string, options?: RequestOptions): APIPromise<Response> {
     return this._client.get(path`/v1/sessions/${sessionID}/recordings/primary/fetch`, {
       ...options,
       headers: buildHeaders([{ Accept: 'video/mp4' }, options?.headers]),

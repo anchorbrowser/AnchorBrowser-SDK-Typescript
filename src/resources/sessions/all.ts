@@ -11,11 +11,10 @@ export class All extends APIResource {
    *
    * @example
    * ```ts
-   * const successResponse =
-   *   await client.sessions.all.deleteAll();
+   * const successResponse = await client.sessions.all.delete();
    * ```
    */
-  deleteAll(options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
+  delete(options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.delete('/v1/sessions/all', options);
   }
 
@@ -25,19 +24,19 @@ export class All extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.sessions.all.retrieveStatus();
+   * const response = await client.sessions.all.status();
    * ```
    */
-  retrieveStatus(options?: RequestOptions): APIPromise<AllRetrieveStatusResponse> {
+  status(options?: RequestOptions): APIPromise<AllStatusResponse> {
     return this._client.get('/v1/sessions/all/status', options);
   }
 }
 
-export interface AllRetrieveStatusResponse {
-  data?: AllRetrieveStatusResponse.Data;
+export interface AllStatusResponse {
+  data?: AllStatusResponse.Data;
 }
 
-export namespace AllRetrieveStatusResponse {
+export namespace AllStatusResponse {
   export interface Data {
     /**
      * Total number of browser sessions
@@ -68,5 +67,5 @@ export namespace AllRetrieveStatusResponse {
 }
 
 export declare namespace All {
-  export { type AllRetrieveStatusResponse as AllRetrieveStatusResponse };
+  export { type AllStatusResponse as AllStatusResponse };
 }

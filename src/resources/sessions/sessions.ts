@@ -3,7 +3,7 @@
 import { APIResource } from '../../core/resource';
 import * as Shared from '../shared';
 import * as AllAPI from './all';
-import { All, AllRetrieveStatusResponse } from './all';
+import { All, AllStatusResponse } from './all';
 import * as ClipboardAPI from './clipboard';
 import { Clipboard, ClipboardGetResponse, ClipboardSetParams, ClipboardSetResponse } from './clipboard';
 import * as KeyboardAPI from './keyboard';
@@ -681,7 +681,7 @@ export declare namespace Sessions {
     type SessionScrollParams as SessionScrollParams,
   };
 
-  export { All as All, type AllRetrieveStatusResponse as AllRetrieveStatusResponse };
+  export { All as All, type AllStatusResponse as AllStatusResponse };
 
   export {
     Recordings as Recordings,
