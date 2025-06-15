@@ -41,10 +41,16 @@ export class Clipboard extends APIResource {
 }
 
 export interface ClipboardGetResponse {
-  /**
-   * Text content of the clipboard
-   */
-  text?: string;
+  data?: ClipboardGetResponse.Data;
+}
+
+export namespace ClipboardGetResponse {
+  export interface Data {
+    /**
+     * Text content of the clipboard
+     */
+    text?: string;
+  }
 }
 
 export interface ClipboardSetResponse {
