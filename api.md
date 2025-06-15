@@ -1,27 +1,29 @@
+# Shared
+
+Types:
+
+- <code><a href="./src/resources/shared.ts">SuccessResponse</a></code>
+
 # Profiles
 
 Types:
 
-- <code><a href="./src/resources/profiles.ts">ProfileCreateResponse</a></code>
 - <code><a href="./src/resources/profiles.ts">ProfileRetrieveResponse</a></code>
-- <code><a href="./src/resources/profiles.ts">ProfileUpdateResponse</a></code>
 - <code><a href="./src/resources/profiles.ts">ProfileListResponse</a></code>
-- <code><a href="./src/resources/profiles.ts">ProfileDeleteResponse</a></code>
 
 Methods:
 
-- <code title="post /v1/profiles">client.profiles.<a href="./src/resources/profiles.ts">create</a>({ ...params }) -> ProfileCreateResponse</code>
+- <code title="post /v1/profiles">client.profiles.<a href="./src/resources/profiles.ts">create</a>({ ...params }) -> SuccessResponse</code>
 - <code title="get /v1/profiles/{name}">client.profiles.<a href="./src/resources/profiles.ts">retrieve</a>(name) -> ProfileRetrieveResponse</code>
-- <code title="put /v1/profiles/{name}">client.profiles.<a href="./src/resources/profiles.ts">update</a>(name, { ...params }) -> ProfileUpdateResponse</code>
+- <code title="put /v1/profiles/{name}">client.profiles.<a href="./src/resources/profiles.ts">update</a>(name, { ...params }) -> SuccessResponse</code>
 - <code title="get /v1/profiles">client.profiles.<a href="./src/resources/profiles.ts">list</a>() -> ProfileListResponse</code>
-- <code title="delete /v1/profiles/{name}">client.profiles.<a href="./src/resources/profiles.ts">delete</a>(name) -> ProfileDeleteResponse</code>
+- <code title="delete /v1/profiles/{name}">client.profiles.<a href="./src/resources/profiles.ts">delete</a>(name) -> SuccessResponse</code>
 
 # Sessions
 
 Types:
 
 - <code><a href="./src/resources/sessions/sessions.ts">SessionCreateResponse</a></code>
-- <code><a href="./src/resources/sessions/sessions.ts">SessionDeleteResponse</a></code>
 - <code><a href="./src/resources/sessions/sessions.ts">SessionCopyResponse</a></code>
 - <code><a href="./src/resources/sessions/sessions.ts">SessionDragAndDropResponse</a></code>
 - <code><a href="./src/resources/sessions/sessions.ts">SessionGotoResponse</a></code>
@@ -32,7 +34,7 @@ Types:
 Methods:
 
 - <code title="post /v1/sessions">client.sessions.<a href="./src/resources/sessions/sessions.ts">create</a>({ ...params }) -> SessionCreateResponse</code>
-- <code title="delete /v1/sessions/{session_id}">client.sessions.<a href="./src/resources/sessions/sessions.ts">delete</a>(sessionID) -> SessionDeleteResponse</code>
+- <code title="delete /v1/sessions/{session_id}">client.sessions.<a href="./src/resources/sessions/sessions.ts">delete</a>(sessionID) -> SuccessResponse</code>
 - <code title="post /v1/sessions/{sessionId}/copy">client.sessions.<a href="./src/resources/sessions/sessions.ts">copy</a>(sessionID) -> SessionCopyResponse</code>
 - <code title="post /v1/sessions/{sessionId}/drag-and-drop">client.sessions.<a href="./src/resources/sessions/sessions.ts">dragAndDrop</a>(sessionID, { ...params }) -> SessionDragAndDropResponse</code>
 - <code title="post /v1/sessions/{sessionId}/goto">client.sessions.<a href="./src/resources/sessions/sessions.ts">goto</a>(sessionID, { ...params }) -> SessionGotoResponse</code>
@@ -45,12 +47,11 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/sessions/all.ts">AllDeleteAllResponse</a></code>
 - <code><a href="./src/resources/sessions/all.ts">AllRetrieveStatusResponse</a></code>
 
 Methods:
 
-- <code title="delete /v1/sessions/all">client.sessions.all.<a href="./src/resources/sessions/all.ts">deleteAll</a>() -> AllDeleteAllResponse</code>
+- <code title="delete /v1/sessions/all">client.sessions.all.<a href="./src/resources/sessions/all.ts">deleteAll</a>() -> SuccessResponse</code>
 - <code title="get /v1/sessions/all/status">client.sessions.all.<a href="./src/resources/sessions/all.ts">retrieveStatus</a>() -> AllRetrieveStatusResponse</code>
 
 ## Recordings
@@ -132,6 +133,7 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/extensions.ts">ExtensionManifest</a></code>
 - <code><a href="./src/resources/extensions.ts">ExtensionRetrieveResponse</a></code>
 - <code><a href="./src/resources/extensions.ts">ExtensionListResponse</a></code>
 - <code><a href="./src/resources/extensions.ts">ExtensionDeleteResponse</a></code>

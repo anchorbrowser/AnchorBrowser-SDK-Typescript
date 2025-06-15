@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { All, type AllDeleteAllResponse, type AllRetrieveStatusResponse } from './all';
+export { All, type AllRetrieveStatusResponse } from './all';
 export {
   Clipboard,
   type ClipboardCreateResponse,
@@ -36,7 +36,6 @@ export {
 export {
   Sessions,
   type SessionCreateResponse,
-  type SessionDeleteResponse,
   type SessionCopyResponse,
   type SessionDragAndDropResponse,
   type SessionGotoResponse,

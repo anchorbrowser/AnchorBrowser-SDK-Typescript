@@ -29,9 +29,9 @@ const client = new Anchorbrowser({
   apiKey: process.env['ANCHORBROWSER_API_KEY'], // This is the default and can be omitted
 });
 
-const profile = await client.profiles.create({ name: 'REPLACE_ME' });
+const successResponse = await client.profiles.create({ name: 'REPLACE_ME' });
 
-console.log(profile.data);
+console.log(successResponse.data);
 ```
 
 ### Request & Response types
@@ -47,7 +47,7 @@ const client = new Anchorbrowser({
 });
 
 const params: Anchorbrowser.ProfileCreateParams = { name: 'REPLACE_ME' };
-const profile: Anchorbrowser.ProfileCreateResponse = await client.profiles.create(params);
+const successResponse: Anchorbrowser.SuccessResponse = await client.profiles.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -95,7 +95,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const profile = await client.profiles.create({ name: 'REPLACE_ME' }).catch(async (err) => {
+const successResponse = await client.profiles.create({ name: 'REPLACE_ME' }).catch(async (err) => {
   if (err instanceof Anchorbrowser.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -179,9 +179,11 @@ const response = await client.profiles.create({ name: 'REPLACE_ME' }).asResponse
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: profile, response: raw } = await client.profiles.create({ name: 'REPLACE_ME' }).withResponse();
+const { data: successResponse, response: raw } = await client.profiles
+  .create({ name: 'REPLACE_ME' })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(profile.data);
+console.log(successResponse.data);
 ```
 
 ### Logging

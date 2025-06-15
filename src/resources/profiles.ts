@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as Shared from './shared';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -12,12 +13,12 @@ export class Profiles extends APIResource {
    *
    * @example
    * ```ts
-   * const profile = await client.profiles.create({
+   * const successResponse = await client.profiles.create({
    *   name: 'my-profile',
    * });
    * ```
    */
-  create(body: ProfileCreateParams, options?: RequestOptions): APIPromise<ProfileCreateResponse> {
+  create(body: ProfileCreateParams, options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.post('/v1/profiles', { body, ...options });
   }
 
@@ -40,14 +41,16 @@ export class Profiles extends APIResource {
    *
    * @example
    * ```ts
-   * const profile = await client.profiles.update('my-profile');
+   * const successResponse = await client.profiles.update(
+   *   'my-profile',
+   * );
    * ```
    */
   update(
     name: string,
     body: ProfileUpdateParams,
     options?: RequestOptions,
-  ): APIPromise<ProfileUpdateResponse> {
+  ): APIPromise<Shared.SuccessResponse> {
     return this._client.put(path`/v1/profiles/${name}`, { body, ...options });
   }
 
@@ -68,21 +71,13 @@ export class Profiles extends APIResource {
    *
    * @example
    * ```ts
-   * const profile = await client.profiles.delete('my-profile');
+   * const successResponse = await client.profiles.delete(
+   *   'my-profile',
+   * );
    * ```
    */
-  delete(name: string, options?: RequestOptions): APIPromise<ProfileDeleteResponse> {
+  delete(name: string, options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.delete(path`/v1/profiles/${name}`, options);
-  }
-}
-
-export interface ProfileCreateResponse {
-  data?: ProfileCreateResponse.Data;
-}
-
-export namespace ProfileCreateResponse {
-  export interface Data {
-    status?: string;
   }
 }
 
@@ -126,16 +121,6 @@ export namespace ProfileRetrieveResponse {
      * Whether the profile stores browser cache.
      */
     store_cache?: boolean;
-  }
-}
-
-export interface ProfileUpdateResponse {
-  data?: ProfileUpdateResponse.Data;
-}
-
-export namespace ProfileUpdateResponse {
-  export interface Data {
-    status?: string;
   }
 }
 
@@ -190,16 +175,6 @@ export namespace ProfileListResponse {
        */
       store_cache?: boolean;
     }
-  }
-}
-
-export interface ProfileDeleteResponse {
-  data?: ProfileDeleteResponse.Data;
-}
-
-export namespace ProfileDeleteResponse {
-  export interface Data {
-    status?: string;
   }
 }
 
@@ -259,11 +234,8 @@ export interface ProfileUpdateParams {
 
 export declare namespace Profiles {
   export {
-    type ProfileCreateResponse as ProfileCreateResponse,
     type ProfileRetrieveResponse as ProfileRetrieveResponse,
-    type ProfileUpdateResponse as ProfileUpdateResponse,
     type ProfileListResponse as ProfileListResponse,
-    type ProfileDeleteResponse as ProfileDeleteResponse,
     type ProfileCreateParams as ProfileCreateParams,
     type ProfileUpdateParams as ProfileUpdateParams,
   };

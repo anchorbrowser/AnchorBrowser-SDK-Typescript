@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as Shared from '../shared';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 
@@ -10,10 +11,11 @@ export class All extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.sessions.all.deleteAll();
+   * const successResponse =
+   *   await client.sessions.all.deleteAll();
    * ```
    */
-  deleteAll(options?: RequestOptions): APIPromise<AllDeleteAllResponse> {
+  deleteAll(options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.delete('/v1/sessions/all', options);
   }
 
@@ -28,16 +30,6 @@ export class All extends APIResource {
    */
   retrieveStatus(options?: RequestOptions): APIPromise<AllRetrieveStatusResponse> {
     return this._client.get('/v1/sessions/all/status', options);
-  }
-}
-
-export interface AllDeleteAllResponse {
-  data?: AllDeleteAllResponse.Data;
-}
-
-export namespace AllDeleteAllResponse {
-  export interface Data {
-    status?: string;
   }
 }
 
@@ -76,8 +68,5 @@ export namespace AllRetrieveStatusResponse {
 }
 
 export declare namespace All {
-  export {
-    type AllDeleteAllResponse as AllDeleteAllResponse,
-    type AllRetrieveStatusResponse as AllRetrieveStatusResponse,
-  };
+  export { type AllRetrieveStatusResponse as AllRetrieveStatusResponse };
 }
