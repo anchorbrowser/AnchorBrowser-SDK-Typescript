@@ -7,51 +7,51 @@ import { path } from '../../internal/utils/path';
 
 export class Clipboard extends APIResource {
   /**
+   * Retrieves the current content of the clipboard
+   *
+   * @example
+   * ```ts
+   * const clipboard = await client.sessions.clipboard.get(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
+   */
+  get(sessionID: string, options?: RequestOptions): APIPromise<ClipboardGetResponse> {
+    return this._client.get(path`/v1/sessions/${sessionID}/clipboard`, options);
+  }
+
+  /**
    * Sets the content of the clipboard
    *
    * @example
    * ```ts
-   * const clipboard = await client.sessions.clipboard.create(
+   * const response = await client.sessions.clipboard.set(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
    *   { text: 'Text from clipboard API' },
    * );
    * ```
    */
-  create(
+  set(
     sessionID: string,
-    body: ClipboardCreateParams,
+    body: ClipboardSetParams,
     options?: RequestOptions,
-  ): APIPromise<ClipboardCreateResponse> {
+  ): APIPromise<ClipboardSetResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/clipboard`, { body, ...options });
   }
-
-  /**
-   * Retrieves the current content of the clipboard
-   *
-   * @example
-   * ```ts
-   * const clipboards = await client.sessions.clipboard.list(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  list(sessionID: string, options?: RequestOptions): APIPromise<ClipboardListResponse> {
-    return this._client.get(path`/v1/sessions/${sessionID}/clipboard`, options);
-  }
 }
 
-export interface ClipboardCreateResponse {
-  status?: string;
-}
-
-export interface ClipboardListResponse {
+export interface ClipboardGetResponse {
   /**
    * Text content of the clipboard
    */
   text?: string;
 }
 
-export interface ClipboardCreateParams {
+export interface ClipboardSetResponse {
+  status?: string;
+}
+
+export interface ClipboardSetParams {
   /**
    * Text to set in the clipboard
    */
@@ -60,8 +60,8 @@ export interface ClipboardCreateParams {
 
 export declare namespace Clipboard {
   export {
-    type ClipboardCreateResponse as ClipboardCreateResponse,
-    type ClipboardListResponse as ClipboardListResponse,
-    type ClipboardCreateParams as ClipboardCreateParams,
+    type ClipboardGetResponse as ClipboardGetResponse,
+    type ClipboardSetResponse as ClipboardSetResponse,
+    type ClipboardSetParams as ClipboardSetParams,
   };
 }
