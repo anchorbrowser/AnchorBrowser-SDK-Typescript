@@ -5,12 +5,7 @@ import * as Shared from '../shared';
 import * as AllAPI from './all';
 import { All, AllRetrieveStatusResponse } from './all';
 import * as ClipboardAPI from './clipboard';
-import {
-  Clipboard,
-  ClipboardCreateParams,
-  ClipboardCreateResponse,
-  ClipboardListResponse,
-} from './clipboard';
+import { Clipboard, ClipboardGetResponse, ClipboardSetParams, ClipboardSetResponse } from './clipboard';
 import * as KeyboardAPI from './keyboard';
 import {
   Keyboard,
@@ -719,8 +714,8 @@ export declare namespace Sessions {
 
   export {
     Clipboard as Clipboard,
-    type ClipboardCreateResponse as ClipboardCreateResponse,
-    type ClipboardListResponse as ClipboardListResponse,
-    type ClipboardCreateParams as ClipboardCreateParams,
+    type ClipboardGetResponse as ClipboardGetResponse,
+    type ClipboardSetResponse as ClipboardSetResponse,
+    type ClipboardSetParams as ClipboardSetParams,
   };
 }

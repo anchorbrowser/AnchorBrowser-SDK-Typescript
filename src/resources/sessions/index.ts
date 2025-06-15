@@ -3,9 +3,9 @@
 export { All, type AllRetrieveStatusResponse } from './all';
 export {
   Clipboard,
-  type ClipboardCreateResponse,
-  type ClipboardListResponse,
-  type ClipboardCreateParams,
+  type ClipboardGetResponse,
+  type ClipboardSetResponse,
+  type ClipboardSetParams,
 } from './clipboard';
 export {
   Keyboard,

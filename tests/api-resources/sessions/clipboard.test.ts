@@ -9,8 +9,20 @@ const client = new Anchorbrowser({
 
 describe('resource clipboard', () => {
   // skipped: tests are disabled for the time being
-  test.skip('create: only required params', async () => {
-    const responsePromise = client.sessions.clipboard.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+  test.skip('get', async () => {
+    const responsePromise = client.sessions.clipboard.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // skipped: tests are disabled for the time being
+  test.skip('set: only required params', async () => {
+    const responsePromise = client.sessions.clipboard.set('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Text from clipboard API',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -23,21 +35,9 @@ describe('resource clipboard', () => {
   });
 
   // skipped: tests are disabled for the time being
-  test.skip('create: required and optional params', async () => {
-    const response = await client.sessions.clipboard.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+  test.skip('set: required and optional params', async () => {
+    const response = await client.sessions.clipboard.set('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Text from clipboard API',
     });
-  });
-
-  // skipped: tests are disabled for the time being
-  test.skip('list', async () => {
-    const responsePromise = client.sessions.clipboard.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
   });
 });

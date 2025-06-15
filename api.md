@@ -108,13 +108,13 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/sessions/clipboard.ts">ClipboardCreateResponse</a></code>
-- <code><a href="./src/resources/sessions/clipboard.ts">ClipboardListResponse</a></code>
+- <code><a href="./src/resources/sessions/clipboard.ts">ClipboardGetResponse</a></code>
+- <code><a href="./src/resources/sessions/clipboard.ts">ClipboardSetResponse</a></code>
 
 Methods:
 
-- <code title="post /v1/sessions/{sessionId}/clipboard">client.sessions.clipboard.<a href="./src/resources/sessions/clipboard.ts">create</a>(sessionID, { ...params }) -> ClipboardCreateResponse</code>
-- <code title="get /v1/sessions/{sessionId}/clipboard">client.sessions.clipboard.<a href="./src/resources/sessions/clipboard.ts">list</a>(sessionID) -> ClipboardListResponse</code>
+- <code title="get /v1/sessions/{sessionId}/clipboard">client.sessions.clipboard.<a href="./src/resources/sessions/clipboard.ts">get</a>(sessionID) -> ClipboardGetResponse</code>
+- <code title="post /v1/sessions/{sessionId}/clipboard">client.sessions.clipboard.<a href="./src/resources/sessions/clipboard.ts">set</a>(sessionID, { ...params }) -> ClipboardSetResponse</code>
 
 # Tools
 
