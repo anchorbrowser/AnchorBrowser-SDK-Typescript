@@ -79,9 +79,9 @@ export interface ToolPerformWebTaskResponse {
 export namespace ToolPerformWebTaskResponse {
   export interface Data {
     /**
-     * The outcome or answer produced by the autonomous task.
+     * The outcome or answer as a string
      */
-    result?: string;
+    result?: string | { [key: string]: unknown };
   }
 }
 
