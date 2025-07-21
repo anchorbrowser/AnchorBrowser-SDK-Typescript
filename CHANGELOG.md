@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2025-07-21)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Refactors
+
+* **agent:** update WebSocket import and variable naming for clarity ([b308ece](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/b308ece169ffbc07da05e0ad10d987fada9a376b))
+
 ## 0.1.0-alpha.1 (2025-07-21)
 
 Full Changelog: [v0.0.1-alpha.0...v0.1.0-alpha.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.0.1-alpha.0...v0.1.0-alpha.1)
