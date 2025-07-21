@@ -756,6 +756,8 @@ export class Anchorbrowser {
   sessions: API.Sessions = new API.Sessions(this);
   tools: API.Tools = new API.Tools(this);
   extensions: API.Extensions = new API.Extensions(this);
+  browser: API.Browser = new API.Browser(this);
+  agent: API.Agent = new API.Agent(this);
 }
 Anchorbrowser.Profiles = Profiles;
 Anchorbrowser.Sessions = Sessions;

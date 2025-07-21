@@ -41,3 +41,4 @@ export {
   type ToolScreenshotWebpageParams,
 } from './tools';
 export { Browser } from './browser';
+export { Agent } from './agent';
