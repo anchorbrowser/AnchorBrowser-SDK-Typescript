@@ -1,7 +1,7 @@
 import { getAgentWsUrl, getAiServiceWorker, getPlaywrightChromiumFromCdpUrl } from '../lib/browser';
 import { APIResource } from '../core/resource';
 import { SessionCreateParams } from './sessions';
-import { WebSocket } from 'ws';
+import ws from 'ws';
 import type { Browser, BrowserContext, Page, Worker } from 'playwright';
 
 export type AgentTaskResult =
@@ -43,7 +43,7 @@ export class Agent extends APIResource {
     } = {},
   ): Promise<AgentTaskResult> {
     const setup = await this.setupBrowser(sessionOptions);
-    let ws: WebSocket | null = null;
+    let webSocket: ws.WebSocket | null = null;
 
     try {
       // Navigate to URL if provided
@@ -53,7 +53,7 @@ export class Agent extends APIResource {
 
       // Setup WebSocket for step notifications
       if (taskOptions?.onAgentStep) {
-        ws = this.setupWebSocket(setup.session.data?.id, taskOptions.onAgentStep);
+        webSocket = this.setupWebSocket(setup.session.data?.id, taskOptions.onAgentStep);
       }
 
       // Execute the task
@@ -62,7 +62,7 @@ export class Agent extends APIResource {
       return taskResult;
     } finally {
       // Cleanup resources
-      this.cleanupWebSocket(ws);
+      this.cleanupWebSocket(webSocket);
       await setup.browser.close();
     }
   }
@@ -147,14 +147,14 @@ export class Agent extends APIResource {
   /**
    * Set up WebSocket for agent step notifications
    */
-  private setupWebSocket(sessionId: string | undefined, onAgentStep: (step: string) => void): WebSocket {
+  private setupWebSocket(sessionId: string | undefined, onAgentStep: (step: string) => void): ws.WebSocket {
     if (!sessionId) {
       throw new Error('Session ID required for WebSocket connection');
     }
 
-    const ws = new WebSocket(getAgentWsUrl(this._client.baseURL, sessionId, this._client.apiKey));
+    const webSocket = new ws.WebSocket(getAgentWsUrl(this._client.baseURL, sessionId, this._client.apiKey));
 
-    ws.on('message', (data) => {
+    webSocket.on('message', (data) => {
       try {
         const parsed = JSON.parse(data.toString());
         onAgentStep(parsed);
@@ -163,11 +163,11 @@ export class Agent extends APIResource {
       }
     });
 
-    ws.on('error', (error) => {
+    webSocket.on('error', (error) => {
       console.error('WebSocket error:', error);
     });
 
-    return ws;
+    return webSocket;
   }
 
   /**
@@ -197,11 +197,11 @@ export class Agent extends APIResource {
   /**
    * Clean up WebSocket connection
    */
-  private cleanupWebSocket(ws: WebSocket | null): void {
-    if (ws) {
+  private cleanupWebSocket(webSocket: ws.WebSocket | null): void {
+    if (webSocket) {
       try {
-        ws.close();
-        ws.terminate();
+        webSocket.close();
+        webSocket.terminate();
       } catch (error) {
         console.error('Error closing WebSocket:', error);
       }
