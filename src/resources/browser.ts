@@ -4,17 +4,18 @@ import { SessionCreateParams } from './sessions';
 
 export class Browser extends APIResource {
   connect(sessionId: string) {
-    const cdpBaseUrl = this._client.baseURL.replace('https://', 'wss://').replace('api.', 'connect.');
-    return getPlaywrightChromiumFromCdpUrl(
-      `${cdpBaseUrl}?apiKey=${this._client.apiKey}&sessionId=${sessionId}`,
-    );
+    return getPlaywrightChromiumFromCdpUrl(this._client.baseURL, sessionId, this._client.apiKey);
   }
 
   async create({ sessionOptions }: { sessionOptions?: SessionCreateParams } = {}) {
     const session = await this._client.sessions.create(sessionOptions);
-    const cdpBaseUrl = this._client.baseURL.replace('https://', 'wss://').replace('api.', 'connect.');
+    if (!session.data?.id) {
+      throw new Error('Failed to create session: No session ID returned');
+    }
     const playwrightBrowser = await getPlaywrightChromiumFromCdpUrl(
-      `${cdpBaseUrl}?apiKey=${this._client.apiKey}&sessionId=${session.data?.id}`,
+      this._client.baseURL,
+      session.data?.id,
+      this._client.apiKey,
     );
     return playwrightBrowser;
   }
