@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2025-07-30)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Chores
+
+* **internal:** remove redundant imports config ([cdab6fb](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/cdab6fb49e67e7fa624573d3142aa8083262d1dc))
+
 ## 0.1.0-alpha.2 (2025-07-21)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
