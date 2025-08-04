@@ -14,8 +14,8 @@ export const getCdpUrl = (apiBaseURL: string, sessionId: string, apiKey: string)
     .replace('api.', 'connect.')}?apiKey=${apiKey}&sessionId=${sessionId}`;
 };
 
-export const getAgentWsUrl = (apiBaseURL: string, sessionId: string, apiKey: string) => {
-  return `${apiBaseURL.replace('https://', 'wss://').replace('api.', 'connect.')}/ws?sessionId=${sessionId}`;
+export const getAgentWsUrl = (apiBaseURL: string, sessionId: string) => {
+  return `${apiBaseURL.replace('https://', 'wss://')}/ws?sessionId=${sessionId}`;
 };
 
 export const getAiServiceWorker = (browserContext: BrowserContext): Worker | undefined => {

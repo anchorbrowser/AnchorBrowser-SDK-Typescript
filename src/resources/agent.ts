@@ -152,8 +152,7 @@ export class Agent extends APIResource {
       throw new Error('Session ID required for WebSocket connection');
     }
 
-    const webSocket = new ws.WebSocket(getAgentWsUrl(this._client.baseURL, sessionId, this._client.apiKey));
-
+    const webSocket = new ws.WebSocket(getAgentWsUrl(this._client.baseURL, sessionId));
     webSocket.on('message', (data) => {
       try {
         const parsed = JSON.parse(data.toString());
