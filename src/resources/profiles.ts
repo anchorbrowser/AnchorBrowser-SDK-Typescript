@@ -116,11 +116,6 @@ export namespace ProfileRetrieveResponse {
      * The current status of the profile.
      */
     status?: string;
-
-    /**
-     * Whether the profile stores browser cache.
-     */
-    store_cache?: boolean;
   }
 }
 
@@ -169,11 +164,6 @@ export namespace ProfileListResponse {
        * The current status of the profile.
        */
       status?: string;
-
-      /**
-       * Whether the profile stores browser cache.
-       */
-      store_cache?: boolean;
     }
   }
 }
@@ -183,6 +173,11 @@ export interface ProfileCreateParams {
    * The name of the profile.
    */
   name: string;
+
+  /**
+   * Whether to use a dedicated sticky IP for this profile. Defaults to false.
+   */
+  dedicated_sticky_ip?: boolean;
 
   /**
    * A description of the profile.
@@ -200,12 +195,6 @@ export interface ProfileCreateParams {
    * The source of the profile data. currently only `session` is supported.
    */
   source?: 'session';
-
-  /**
-   * Indicates whether the browser session cache should be saved when the browser
-   * session ends. Defaults to `false`.
-   */
-  store_cache?: boolean;
 }
 
 export interface ProfileUpdateParams {
@@ -224,12 +213,6 @@ export interface ProfileUpdateParams {
    * The source of the profile data. Currently, only `session` is supported.
    */
   source?: 'session';
-
-  /**
-   * Indicates whether the browser session cache should be saved when the browser
-   * session ends. Defaults to `false`.
-   */
-  store_cache?: boolean;
 }
 
 export declare namespace Profiles {

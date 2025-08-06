@@ -116,6 +116,20 @@ Methods:
 - <code title="get /v1/sessions/{sessionId}/clipboard">client.sessions.clipboard.<a href="./src/resources/sessions/clipboard.ts">get</a>(sessionID) -> ClipboardGetResponse</code>
 - <code title="post /v1/sessions/{sessionId}/clipboard">client.sessions.clipboard.<a href="./src/resources/sessions/clipboard.ts">set</a>(sessionID, { ...params }) -> ClipboardSetResponse</code>
 
+## Agent
+
+### Files
+
+Types:
+
+- <code><a href="./src/resources/sessions/agent/files.ts">FileListResponse</a></code>
+- <code><a href="./src/resources/sessions/agent/files.ts">FileUploadResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/sessions/{sessionId}/agent/files">client.sessions.agent.files.<a href="./src/resources/sessions/agent/files.ts">list</a>(sessionID) -> FileListResponse</code>
+- <code title="post /v1/sessions/{sessionId}/agent/files">client.sessions.agent.files.<a href="./src/resources/sessions/agent/files.ts">upload</a>(sessionID, { ...params }) -> FileUploadResponse</code>
+
 # Tools
 
 Types:
@@ -145,3 +159,14 @@ Methods:
 - <code title="get /v1/extensions">client.extensions.<a href="./src/resources/extensions.ts">list</a>() -> ExtensionListResponse</code>
 - <code title="delete /v1/extensions/{id}">client.extensions.<a href="./src/resources/extensions.ts">delete</a>(id) -> ExtensionDeleteResponse</code>
 - <code title="post /v1/extensions">client.extensions.<a href="./src/resources/extensions.ts">upload</a>({ ...params }) -> ExtensionUploadResponse</code>
+
+# Events
+
+Types:
+
+- <code><a href="./src/resources/events.ts">EventWaitForResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/events/{event_name}">client.events.<a href="./src/resources/events.ts">signal</a>(eventName, { ...params }) -> SuccessResponse</code>
+- <code title="post /v1/events/{event_name}/wait">client.events.<a href="./src/resources/events.ts">waitFor</a>(eventName, { ...params }) -> EventWaitForResponse</code>

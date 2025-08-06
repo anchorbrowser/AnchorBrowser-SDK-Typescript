@@ -79,9 +79,9 @@ export interface ToolPerformWebTaskResponse {
 export namespace ToolPerformWebTaskResponse {
   export interface Data {
     /**
-     * The outcome or answer as a string
+     * The outcome or answer produced by the autonomous task.
      */
-    result?: string | { [key: string]: unknown };
+    result?: string;
   }
 }
 
@@ -99,10 +99,32 @@ export interface ToolFetchWebpageParams {
   format?: 'html' | 'markdown';
 
   /**
+   * Body param: Whether to create a new page for the content.
+   */
+  new_page?: boolean;
+
+  /**
+   * Body param: The index of the page to fetch content from. **Overides new_page**.
+   */
+  page_index?: number;
+
+  /**
+   * Body param: Whether to return partial content if the content is not loaded
+   * within the 20 seconds.
+   */
+  return_partial_on_timeout?: boolean;
+
+  /**
    * Body param: The URL of the webpage to fetch content from. When left empty, the
    * current webpage is used.
    */
   url?: string;
+
+  /**
+   * Body param: The time to wait for **dynamic** content to load in
+   * **milliseconds**.
+   */
+  wait?: number;
 }
 
 export interface ToolPerformWebTaskParams {
@@ -119,9 +141,32 @@ export interface ToolPerformWebTaskParams {
   sessionId?: string;
 
   /**
+   * Body param: The AI agent to use for task completion. Defaults to browser-use.
+   */
+  agent?: 'browser-use' | 'openai-cua';
+
+  /**
+   * Body param: Whether to highlight elements during task execution for better
+   * visibility.
+   */
+  highlight_elements?: boolean;
+
+  /**
+   * Body param: The specific model to use for task completion. see our
+   * [models](/agentic-browser-control/ai-task-completion#available-models) page for
+   * more information.
+   */
+  model?: string;
+
+  /**
    * Body param: JSON Schema defining the expected structure of the output data.
    */
   output_schema?: unknown;
+
+  /**
+   * Body param: The AI provider to use for task completion.
+   */
+  provider?: 'openai' | 'gemini' | 'groq' | 'azure' | 'xai';
 
   /**
    * Body param: The URL of the webpage. If not provided, the tool will use the

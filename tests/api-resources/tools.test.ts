@@ -39,6 +39,9 @@ describe('resource tools', () => {
     const response = await client.tools.performWebTask({
       prompt: 'Collect the node names and their CPU average %',
       sessionId: 'sessionId',
+      agent: 'openai-cua',
+      highlight_elements: true,
+      model: 'gpt-4o',
       output_schema: {
         type: 'object',
         properties: {
@@ -57,6 +60,7 @@ describe('resource tools', () => {
         },
         required: ['nodes_cpu_usage'],
       },
+      provider: 'openai',
       url: 'https://anchorbrowser.io',
     });
   });
