@@ -16,6 +16,7 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
+import { EventSignalParams, EventWaitForParams, EventWaitForResponse, Events } from './resources/events';
 import {
   ExtensionDeleteResponse,
   ExtensionListResponse,
@@ -756,11 +757,13 @@ export class Anchorbrowser {
   sessions: API.Sessions = new API.Sessions(this);
   tools: API.Tools = new API.Tools(this);
   extensions: API.Extensions = new API.Extensions(this);
+  events: API.Events = new API.Events(this);
 }
 Anchorbrowser.Profiles = Profiles;
 Anchorbrowser.Sessions = Sessions;
 Anchorbrowser.Tools = Tools;
 Anchorbrowser.Extensions = Extensions;
+Anchorbrowser.Events = Events;
 export declare namespace Anchorbrowser {
   export type RequestOptions = Opts.RequestOptions;
 
@@ -805,6 +808,13 @@ export declare namespace Anchorbrowser {
     type ExtensionDeleteResponse as ExtensionDeleteResponse,
     type ExtensionUploadResponse as ExtensionUploadResponse,
     type ExtensionUploadParams as ExtensionUploadParams,
+  };
+
+  export {
+    Events as Events,
+    type EventWaitForResponse as EventWaitForResponse,
+    type EventSignalParams as EventSignalParams,
+    type EventWaitForParams as EventWaitForParams,
   };
 
   export type SuccessResponse = API.SuccessResponse;

@@ -61,56 +61,50 @@ export interface RecordingListResponse {
 
 export namespace RecordingListResponse {
   export interface Data {
-    data?: Data.Data;
+    /**
+     * Total number of video recordings
+     */
+    count?: number;
+
+    items?: Array<Data.Item>;
   }
 
   export namespace Data {
-    export interface Data {
+    export interface Item {
       /**
-       * Total number of video recordings
+       * Unique identifier for the recording
        */
-      count?: number;
+      id?: string;
 
-      items?: Array<Data.Item>;
-    }
+      /**
+       * Timestamp when the recording was created
+       */
+      created_at?: string;
 
-    export namespace Data {
-      export interface Item {
-        /**
-         * Unique identifier for the recording
-         */
-        id?: string;
+      /**
+       * Duration of the recording
+       */
+      duration?: string;
 
-        /**
-         * Timestamp when the recording was created
-         */
-        created_at?: string;
+      /**
+       * URL to access the recording file
+       */
+      file_link?: string;
 
-        /**
-         * Duration of the recording
-         */
-        duration?: string;
+      /**
+       * Indicates if this is the primary recording
+       */
+      is_primary?: boolean;
 
-        /**
-         * URL to access the recording file
-         */
-        file_link?: string;
+      /**
+       * Size of the recording file in bytes
+       */
+      size?: number;
 
-        /**
-         * Indicates if this is the primary recording
-         */
-        is_primary?: boolean;
-
-        /**
-         * Size of the recording file in bytes
-         */
-        size?: number;
-
-        /**
-         * Suggested filename for the recording
-         */
-        suggested_file_name?: string;
-      }
+      /**
+       * Suggested filename for the recording
+       */
+      suggested_file_name?: string;
     }
   }
 }

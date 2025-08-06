@@ -24,10 +24,10 @@ describe('resource profiles', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.profiles.create({
       name: 'my-profile',
+      dedicated_sticky_ip: false,
       description: 'This is my profile description.',
       session_id: '550e8400-e29b-41d4-a716-446655440000',
       source: 'session',
-      store_cache: true,
     });
   });
 

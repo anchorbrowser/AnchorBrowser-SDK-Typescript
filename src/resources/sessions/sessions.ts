@@ -28,6 +28,8 @@ import {
   MouseUpParams,
   MouseUpResponse,
 } from './mouse';
+import * as AgentAPI from './agent/agent';
+import { Agent } from './agent/agent';
 import * as RecordingsAPI from './recordings/recordings';
 import {
   RecordingListResponse,
@@ -46,6 +48,7 @@ export class Sessions extends APIResource {
   mouse: MouseAPI.Mouse = new MouseAPI.Mouse(this._client);
   keyboard: KeyboardAPI.Keyboard = new KeyboardAPI.Keyboard(this._client);
   clipboard: ClipboardAPI.Clipboard = new ClipboardAPI.Clipboard(this._client);
+  agent: AgentAPI.Agent = new AgentAPI.Agent(this._client);
 
   /**
    * Allocates a new browser session for the user, with optional configurations for
@@ -347,6 +350,17 @@ export namespace SessionCreateParams {
     captcha_solver?: Browser.CaptchaSolver;
 
     /**
+     * Array of extension IDs to load in the browser session. Extensions must be
+     * previously uploaded using the Extensions API.
+     */
+    extensions?: Array<string>;
+
+    /**
+     * Configuration for fullscreen mode.
+     */
+    fullscreen?: Browser.Fullscreen;
+
+    /**
      * Configuration for headless mode.
      */
     headless?: Browser.Headless;
@@ -390,6 +404,17 @@ export namespace SessionCreateParams {
       /**
        * Enable or disable captcha-solving. Requires proxy to be active. Defaults to
        * `false`.
+       */
+      active?: boolean;
+    }
+
+    /**
+     * Configuration for fullscreen mode.
+     */
+    export interface Fullscreen {
+      /**
+       * Enable or disable fullscreen mode. When enabled, the browser will start in
+       * fullscreen mode. Defaults to `false`.
        */
       active?: boolean;
     }
@@ -441,12 +466,6 @@ export namespace SessionCreateParams {
        * browser session ends. Defaults to `false`.
        */
       persist?: boolean;
-
-      /**
-       * Indicates whether the browser session cache should be saved when the browser
-       * session ends. Defaults to `false`.
-       */
-      store_cache?: boolean;
     }
 
     /**
@@ -470,14 +489,20 @@ export namespace SessionCreateParams {
    */
   export interface Session {
     /**
+     * The URL to navigate to when the browser session starts. If not provided, the
+     * browser will load an empty page.
+     */
+    initial_url?: string;
+
+    /**
      * Configuration for live viewing the browser session.
      */
     live_view?: Session.LiveView;
 
     /**
-     * Configuration options for proxy usage.
+     * Proxy Documentation available at [Proxy Documentation](/advanced/proxy)
      */
-    proxy?: Session.AnchorResidentialProxyType | Session.AnchorMobileProxyType | Session.CustomProxyType;
+    proxy?: Session.AnchorProxy | Session.CustomProxy;
 
     /**
      * Configuration for session recording.
@@ -501,44 +526,218 @@ export namespace SessionCreateParams {
       read_only?: boolean;
     }
 
-    /**
-     * Configuration options for residential proxy usage.
-     */
-    export interface AnchorResidentialProxyType {
-      type: 'anchor_residential';
+    export interface AnchorProxy {
+      active: boolean;
 
       /**
-       * Enable or disable proxy usage. Defaults to `false`.
+       * Supported country codes ISO 2 lowercase
+       *
+       * **On change make sure to update the Proxy type.**
        */
-      active?: boolean;
+      country_code?:
+        | 'af'
+        | 'al'
+        | 'dz'
+        | 'ad'
+        | 'ao'
+        | 'ag'
+        | 'ar'
+        | 'am'
+        | 'aw'
+        | 'au'
+        | 'at'
+        | 'az'
+        | 'bs'
+        | 'bh'
+        | 'bd'
+        | 'bb'
+        | 'by'
+        | 'be'
+        | 'bz'
+        | 'bj'
+        | 'bm'
+        | 'bo'
+        | 'ba'
+        | 'bw'
+        | 'br'
+        | 'bn'
+        | 'bg'
+        | 'bf'
+        | 'bi'
+        | 'kh'
+        | 'cm'
+        | 'ca'
+        | 'cv'
+        | 'td'
+        | 'cl'
+        | 'cn'
+        | 'co'
+        | 'cg'
+        | 'cr'
+        | 'ci'
+        | 'hr'
+        | 'cu'
+        | 'cy'
+        | 'cz'
+        | 'dk'
+        | 'dj'
+        | 'dm'
+        | 'do'
+        | 'ec'
+        | 'eg'
+        | 'sv'
+        | 'gq'
+        | 'ee'
+        | 'sz'
+        | 'et'
+        | 'fj'
+        | 'fi'
+        | 'fr'
+        | 'pf'
+        | 'ga'
+        | 'gm'
+        | 'ge'
+        | 'de'
+        | 'gh'
+        | 'gr'
+        | 'gd'
+        | 'gt'
+        | 'gn'
+        | 'gy'
+        | 'ht'
+        | 'hn'
+        | 'hk'
+        | 'hu'
+        | 'is'
+        | 'in'
+        | 'id'
+        | 'ir'
+        | 'iq'
+        | 'ie'
+        | 'il'
+        | 'it'
+        | 'jm'
+        | 'jp'
+        | 'jo'
+        | 'kz'
+        | 'ke'
+        | 'kw'
+        | 'kg'
+        | 'la'
+        | 'lv'
+        | 'lb'
+        | 'ls'
+        | 'lr'
+        | 'ly'
+        | 'lt'
+        | 'lu'
+        | 'mk'
+        | 'mg'
+        | 'mw'
+        | 'my'
+        | 'mv'
+        | 'ml'
+        | 'mt'
+        | 'mr'
+        | 'mx'
+        | 'md'
+        | 'mn'
+        | 'me'
+        | 'ma'
+        | 'mz'
+        | 'mm'
+        | 'na'
+        | 'np'
+        | 'nl'
+        | 'nc'
+        | 'nz'
+        | 'ni'
+        | 'ne'
+        | 'ng'
+        | 'no'
+        | 'om'
+        | 'pk'
+        | 'pa'
+        | 'pg'
+        | 'py'
+        | 'pe'
+        | 'ph'
+        | 'pl'
+        | 'pt'
+        | 'pr'
+        | 'qa'
+        | 'ro'
+        | 'ru'
+        | 'rw'
+        | 'lc'
+        | 'ws'
+        | 'sm'
+        | 'sa'
+        | 'sn'
+        | 'rs'
+        | 'sl'
+        | 'sg'
+        | 'sk'
+        | 'si'
+        | 'so'
+        | 'za'
+        | 'kr'
+        | 'ss'
+        | 'es'
+        | 'lk'
+        | 'sd'
+        | 'sr'
+        | 'se'
+        | 'ch'
+        | 'sy'
+        | 'st'
+        | 'tw'
+        | 'tj'
+        | 'tz'
+        | 'th'
+        | 'tl'
+        | 'tr'
+        | 'tg'
+        | 'tt'
+        | 'tn'
+        | 'tm'
+        | 'ug'
+        | 'ua'
+        | 'gb'
+        | 'us'
+        | 'uy'
+        | 'uz'
+        | 'vu'
+        | 've'
+        | 'vn'
+        | 'ye'
+        | 'zm'
+        | 'zw'
+        | 'bt'
+        | 'gw'
+        | 'mu'
+        | 'ae'
+        | 'as'
+        | 'fo'
+        | 'gf'
+        | 'gi'
+        | 'gp'
+        | 'gg'
+        | 'li'
+        | 'mq'
+        | 'mc'
+        | 'sc'
+        | 'tc';
 
       /**
-       * Country code for residential proxy
+       * **On change make sure to update the country_code.**
        */
-      country_code?: 'us' | 'uk' | 'fr' | 'it' | 'jp' | 'au' | 'de' | 'fi' | 'ca';
+      type?: 'anchor_residential' | 'anchor_mobile' | 'anchor_gov';
     }
 
-    /**
-     * Configuration options for mobile proxy usage.
-     */
-    export interface AnchorMobileProxyType {
-      type: 'anchor_mobile';
+    export interface CustomProxy {
+      active: boolean;
 
-      /**
-       * Enable or disable proxy usage. Defaults to `false`.
-       */
-      active?: boolean;
-
-      /**
-       * Country code for mobile proxy
-       */
-      country_code?: 'us' | 'uk' | 'fr' | 'it' | 'jp' | 'au' | 'de' | 'fi' | 'ca';
-    }
-
-    /**
-     * Configuration options for custom proxy usage.
-     */
-    export interface CustomProxyType {
       /**
        * Proxy password
        */
@@ -555,11 +754,6 @@ export namespace SessionCreateParams {
        * Proxy username
        */
       username: string;
-
-      /**
-       * Enable or disable proxy usage. Defaults to `false`.
-       */
-      active?: boolean;
     }
 
     /**
@@ -664,6 +858,7 @@ Sessions.Recordings = Recordings;
 Sessions.Mouse = Mouse;
 Sessions.Keyboard = Keyboard;
 Sessions.Clipboard = Clipboard;
+Sessions.Agent = Agent;
 
 export declare namespace Sessions {
   export {
@@ -718,4 +913,6 @@ export declare namespace Sessions {
     type ClipboardSetResponse as ClipboardSetResponse,
     type ClipboardSetParams as ClipboardSetParams,
   };
+
+  export { Agent as Agent };
 }
