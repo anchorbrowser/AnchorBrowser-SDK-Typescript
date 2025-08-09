@@ -350,6 +350,11 @@ export namespace SessionCreateParams {
     captcha_solver?: Browser.CaptchaSolver;
 
     /**
+     * Configuration for disabling web security features.
+     */
+    disable_web_security?: Browser.DisableWebSecurity;
+
+    /**
      * Array of extension IDs to load in the browser session. Extensions must be
      * previously uploaded using the Extensions API.
      */
@@ -403,6 +408,18 @@ export namespace SessionCreateParams {
     export interface CaptchaSolver {
       /**
        * Enable or disable captcha-solving. Requires proxy to be active. Defaults to
+       * `false`.
+       */
+      active?: boolean;
+    }
+
+    /**
+     * Configuration for disabling web security features.
+     */
+    export interface DisableWebSecurity {
+      /**
+       * Whether to disable web security features (CORS, same-origin policy, etc.).
+       * Allows accessing iframes and resources from different origins. Defaults to
        * `false`.
        */
       active?: boolean;
