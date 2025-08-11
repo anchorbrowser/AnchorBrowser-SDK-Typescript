@@ -118,6 +118,11 @@ Methods:
 
 ## Agent
 
+Methods:
+
+- <code title="post /v1/sessions/{session_id}/agent/pause">client.sessions.agent.<a href="./src/resources/sessions/agent/agent.ts">pause</a>(sessionID) -> SuccessResponse</code>
+- <code title="post /v1/sessions/{session_id}/agent/resume">client.sessions.agent.<a href="./src/resources/sessions/agent/agent.ts">resume</a>(sessionID) -> SuccessResponse</code>
+
 ### Files
 
 Types:
