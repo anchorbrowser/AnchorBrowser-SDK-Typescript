@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource sessions', () => {
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('create', async () => {
     const responsePromise = client.sessions.create();
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('create: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -51,7 +51,7 @@ describe('resource sessions', () => {
     ).rejects.toThrow(Anchorbrowser.NotFoundError);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('delete', async () => {
     const responsePromise = client.sessions.delete('session_id');
     const rawResponse = await responsePromise.asResponse();
@@ -63,7 +63,7 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('copy', async () => {
     const responsePromise = client.sessions.copy('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -75,7 +75,7 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('dragAndDrop: only required params', async () => {
     const responsePromise = client.sessions.dragAndDrop('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       endX: 500,
@@ -92,7 +92,7 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('dragAndDrop: required and optional params', async () => {
     const response = await client.sessions.dragAndDrop('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       endX: 500,
@@ -103,7 +103,7 @@ describe('resource sessions', () => {
     });
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('goto: only required params', async () => {
     const responsePromise = client.sessions.goto('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       url: 'https://www.google.com',
@@ -117,14 +117,14 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('goto: required and optional params', async () => {
     const response = await client.sessions.goto('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       url: 'https://www.google.com',
     });
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('paste: only required params', async () => {
     const responsePromise = client.sessions.paste('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Text pasted via API',
@@ -138,14 +138,14 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('paste: required and optional params', async () => {
     const response = await client.sessions.paste('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Text pasted via API',
     });
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('retrieveDownloads', async () => {
     const responsePromise = client.sessions.retrieveDownloads('session_id');
     const rawResponse = await responsePromise.asResponse();
@@ -157,7 +157,7 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('scroll: only required params', async () => {
     const responsePromise = client.sessions.scroll('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       deltaY: 100,
@@ -173,7 +173,7 @@ describe('resource sessions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('scroll: required and optional params', async () => {
     const response = await client.sessions.scroll('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       deltaY: 100,

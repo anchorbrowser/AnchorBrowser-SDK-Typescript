@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource tools', () => {
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('fetchWebpage', async () => {
     const responsePromise = client.tools.fetchWebpage({});
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource tools', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('performWebTask: only required params', async () => {
     const responsePromise = client.tools.performWebTask({
       prompt: 'Collect the node names and their CPU average %',
@@ -34,7 +34,7 @@ describe('resource tools', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('performWebTask: required and optional params', async () => {
     const response = await client.tools.performWebTask({
       prompt: 'Collect the node names and their CPU average %',

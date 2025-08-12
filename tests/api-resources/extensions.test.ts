@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource extensions', () => {
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.extensions.retrieve('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource extensions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.extensions.list();
     const rawResponse = await responsePromise.asResponse();
@@ -32,7 +32,7 @@ describe('resource extensions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('delete', async () => {
     const responsePromise = client.extensions.delete('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
@@ -44,7 +44,7 @@ describe('resource extensions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('upload: only required params', async () => {
     const responsePromise = client.extensions.upload({
       file: await toFile(Buffer.from('# my file contents'), 'README.md'),
@@ -59,7 +59,7 @@ describe('resource extensions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('upload: required and optional params', async () => {
     const response = await client.extensions.upload({
       file: await toFile(Buffer.from('# my file contents'), 'README.md'),

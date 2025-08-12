@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource clipboard', () => {
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('get', async () => {
     const responsePromise = client.sessions.clipboard.get('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource clipboard', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('set: only required params', async () => {
     const responsePromise = client.sessions.clipboard.set('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Text from clipboard API',
@@ -34,7 +34,7 @@ describe('resource clipboard', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('set: required and optional params', async () => {
     const response = await client.sessions.clipboard.set('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       text: 'Text from clipboard API',
