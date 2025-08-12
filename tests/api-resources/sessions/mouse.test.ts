@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource mouse', () => {
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('click: only required params', async () => {
     const responsePromise = client.sessions.mouse.click('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       x: 0,
@@ -23,7 +23,7 @@ describe('resource mouse', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('click: required and optional params', async () => {
     const response = await client.sessions.mouse.click('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       x: 0,
@@ -32,7 +32,7 @@ describe('resource mouse', () => {
     });
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('doubleClick: only required params', async () => {
     const responsePromise = client.sessions.mouse.doubleClick('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       x: 0,
@@ -47,7 +47,7 @@ describe('resource mouse', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('doubleClick: required and optional params', async () => {
     const response = await client.sessions.mouse.doubleClick('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       x: 0,
@@ -56,7 +56,7 @@ describe('resource mouse', () => {
     });
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('down: only required params', async () => {
     const responsePromise = client.sessions.mouse.down('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       x: 0,
@@ -71,7 +71,7 @@ describe('resource mouse', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('down: required and optional params', async () => {
     const response = await client.sessions.mouse.down('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       x: 0,
@@ -80,7 +80,7 @@ describe('resource mouse', () => {
     });
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('move: only required params', async () => {
     const responsePromise = client.sessions.mouse.move('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       x: 0,
@@ -95,12 +95,12 @@ describe('resource mouse', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('move: required and optional params', async () => {
     const response = await client.sessions.mouse.move('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { x: 0, y: 0 });
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('up: only required params', async () => {
     const responsePromise = client.sessions.mouse.up('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { x: 0, y: 0 });
     const rawResponse = await responsePromise.asResponse();
@@ -112,7 +112,7 @@ describe('resource mouse', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('up: required and optional params', async () => {
     const response = await client.sessions.mouse.up('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       x: 0,

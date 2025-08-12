@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource all', () => {
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('delete', async () => {
     const responsePromise = client.sessions.all.delete();
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource all', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('status', async () => {
     const responsePromise = client.sessions.all.status();
     const rawResponse = await responsePromise.asResponse();

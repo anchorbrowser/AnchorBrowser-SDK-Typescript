@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource agent', () => {
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('pause', async () => {
     const responsePromise = client.sessions.agent.pause('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource agent', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('resume', async () => {
     const responsePromise = client.sessions.agent.resume('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
