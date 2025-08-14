@@ -868,6 +868,11 @@ export interface SessionScrollParams {
    * Number of steps to break the scroll into for smoother scrolling
    */
   steps?: number;
+
+  /**
+   * Whether to use the OS scroll or the Playwright scroll
+   */
+  useOs?: boolean;
 }
 
 Sessions.All = All;
