@@ -181,6 +181,7 @@ describe('resource sessions', () => {
       y: 0,
       deltaX: 0,
       steps: 10,
+      useOs: false,
     });
   });
 });
