@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.2.0 (2025-08-16)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* Add disable_web_security ([a612d6c](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/a612d6ca28e89575d9df7a93045e293c3ce59773))
+* added additional fetch-webpage options ([e9299e7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/e9299e7da40294373c8741404416ea341383cb4b))
+* added agent pause and continue ([7b0f720](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/7b0f7209c9ec3431a1c1f15cd013d2398b6ea4c6))
+* added use os for scroll ([61b095a](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/61b095ae97f7e7c35467ad96ee67838a30330ec0))
+
+
+### Chores
+
+* **deps:** update dependency @types/node to v20.17.58 ([7329f60](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/7329f60c628b8ee159498bd7927397b2d47d1819))
+* **internal:** codegen related update ([798e696](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/798e696224f65b0ba1309a1d515cdd79eb385b3e))
+* **internal:** formatting change ([40190c3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/40190c30d7c22e7ec8325e9df2113c7ec6317728))
+* **internal:** move publish config ([36b2c2d](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/36b2c2d229172d49828b2ca62b83ffb0043aeee2))
+* **internal:** update comment in script ([ad599b7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/ad599b78606b14ba361feaae1415dfc939932b32))
+* update @stainless-api/prism-cli to v5.15.0 ([9bd7664](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/9bd7664d16778528cb5aa5c80fef6ead2efe1791))
+
 ## 0.1.0 (2025-08-04)
 
 Full Changelog: [v0.1.0-alpha.3...v0.1.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.1.0-alpha.3...v0.1.0)
