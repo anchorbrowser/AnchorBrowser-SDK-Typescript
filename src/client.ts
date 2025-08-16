@@ -760,11 +760,13 @@ export class Anchorbrowser {
   browser: API.Browser = new API.Browser(this);
   agent: API.Agent = new API.Agent(this);
 }
+
 Anchorbrowser.Profiles = Profiles;
 Anchorbrowser.Sessions = Sessions;
 Anchorbrowser.Tools = Tools;
 Anchorbrowser.Extensions = Extensions;
 Anchorbrowser.Events = Events;
+
 export declare namespace Anchorbrowser {
   export type RequestOptions = Opts.RequestOptions;
 
