@@ -759,11 +759,13 @@ export class Anchorbrowser {
   extensions: API.Extensions = new API.Extensions(this);
   events: API.Events = new API.Events(this);
 }
+
 Anchorbrowser.Profiles = Profiles;
 Anchorbrowser.Sessions = Sessions;
 Anchorbrowser.Tools = Tools;
 Anchorbrowser.Extensions = Extensions;
 Anchorbrowser.Events = Events;
+
 export declare namespace Anchorbrowser {
   export type RequestOptions = Opts.RequestOptions;
 
