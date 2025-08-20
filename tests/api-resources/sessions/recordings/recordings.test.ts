@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource recordings', () => {
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.sessions.recordings.list('session_id');
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource recordings', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('pause', async () => {
     const responsePromise = client.sessions.recordings.pause('session_id');
     const rawResponse = await responsePromise.asResponse();
@@ -32,7 +32,7 @@ describe('resource recordings', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('resume', async () => {
     const responsePromise = client.sessions.recordings.resume('session_id');
     const rawResponse = await responsePromise.asResponse();

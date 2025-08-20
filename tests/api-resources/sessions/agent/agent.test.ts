@@ -7,10 +7,10 @@ const client = new Anchorbrowser({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource all', () => {
+describe('resource agent', () => {
   // Prism tests are disabled
-  test.skip('delete', async () => {
-    const responsePromise = client.sessions.all.delete();
+  test.skip('pause', async () => {
+    const responsePromise = client.sessions.agent.pause('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,8 +21,8 @@ describe('resource all', () => {
   });
 
   // Prism tests are disabled
-  test.skip('status', async () => {
-    const responsePromise = client.sessions.all.status();
+  test.skip('resume', async () => {
+    const responsePromise = client.sessions.agent.resume('550e8400-e29b-41d4-a716-446655440000');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
