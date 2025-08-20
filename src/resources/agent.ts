@@ -18,7 +18,7 @@ export interface TaskOptions {
   onAgentStep?: (step: string) => void;
 }
 
-interface BrowserSetup {
+export interface BrowserSetup {
   session: { data?: { id?: string } };
   browser: Browser;
   context: BrowserContext;
