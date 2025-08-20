@@ -181,7 +181,7 @@ export class Anchorbrowser {
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
       throw new Errors.AnchorbrowserError(
-        "The ANCHORBROWSER_API_KEY environment variable is missing or empty; either provide it, or instantiate the Anchorbrowser client with an apiKey option, like new Anchorbrowser({ apiKey: 'My API Key' }).",
+        "The ANCHORBROWSER_API_KEY environment variable is missing or empty; either provide it, or instantiate the Anchorbrowser client with an apiKey option, like new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' }).",
       );
     }
 
