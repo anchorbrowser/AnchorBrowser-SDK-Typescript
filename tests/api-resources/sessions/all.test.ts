@@ -3,7 +3,7 @@
 import Anchorbrowser from 'anchorbrowser';
 
 const client = new Anchorbrowser({
-  apiKey: 'My API Key',
+  apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
