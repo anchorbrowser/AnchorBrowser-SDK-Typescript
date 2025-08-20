@@ -1,35 +1,16 @@
-import type { Browser, BrowserContext, Page, Worker } from 'playwright';
+import type { Worker } from 'playwright';
 import { WebSocket } from 'ws';
 import { APIResource } from '../core/resource';
 import {
+  AgentTaskResult,
+  BrowserSetup,
   getAgentWsUrl,
   getAiServiceWorker,
   getCdpUrl,
   getPlaywrightChromiumFromCdpUrl,
+  TaskOptions,
 } from '../lib/browser';
 import { SessionCreateParams } from './sessions';
-
-export type AgentTaskResult =
-  | string
-  | {
-      result: Record<string, unknown>;
-    };
-
-export interface TaskOptions {
-  url?: string;
-  outputSchema?: object;
-  model?: string;
-  provider?: string;
-  onAgentStep?: (step: string) => void;
-}
-
-export interface BrowserSetup {
-  session: { data?: { id?: string } };
-  browser: Browser;
-  context: BrowserContext;
-  page: Page | undefined;
-  ai: Worker;
-}
 
 export class Agent extends APIResource {
   /**
