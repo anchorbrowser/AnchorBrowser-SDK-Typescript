@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource profiles', () => {
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.profiles.create({ name: 'my-profile' });
     const rawResponse = await responsePromise.asResponse();
@@ -20,18 +20,18 @@ describe('resource profiles', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.profiles.create({
       name: 'my-profile',
+      dedicated_sticky_ip: false,
       description: 'This is my profile description.',
       session_id: '550e8400-e29b-41d4-a716-446655440000',
       source: 'session',
-      store_cache: true,
     });
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.profiles.retrieve('my-profile');
     const rawResponse = await responsePromise.asResponse();
@@ -43,7 +43,7 @@ describe('resource profiles', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('update', async () => {
     const responsePromise = client.profiles.update('my-profile', {});
     const rawResponse = await responsePromise.asResponse();
@@ -55,7 +55,7 @@ describe('resource profiles', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.profiles.list();
     const rawResponse = await responsePromise.asResponse();
@@ -67,7 +67,7 @@ describe('resource profiles', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // skipped: tests are disabled for the time being
+  // Prism tests are disabled
   test.skip('delete', async () => {
     const responsePromise = client.profiles.delete('my-profile');
     const rawResponse = await responsePromise.asResponse();
