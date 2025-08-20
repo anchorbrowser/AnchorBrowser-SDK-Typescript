@@ -1,4 +1,27 @@
+import type { Browser, Page } from 'playwright';
 import { BrowserContext, chromium, Worker } from 'playwright';
+
+export interface BrowserSetup {
+  session: { data?: { id?: string } };
+  browser: Browser;
+  context: BrowserContext;
+  page: Page | undefined;
+  ai: Worker;
+}
+
+export type AgentTaskResult =
+  | string
+  | {
+      result: Record<string, unknown>;
+    };
+
+export interface TaskOptions {
+  url?: string;
+  outputSchema?: object;
+  model?: string;
+  provider?: string;
+  onAgentStep?: (step: string) => void;
+}
 
 export const getPlaywrightChromiumFromCdpUrl = async (
   apiBaseURL: string,
