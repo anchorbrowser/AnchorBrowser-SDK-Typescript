@@ -1,7 +1,12 @@
 import type { Browser, BrowserContext, Page, Worker } from 'playwright';
 import { WebSocket } from 'ws';
 import { APIResource } from '../core/resource';
-import { getAgentWsUrl, getAiServiceWorker, getPlaywrightChromiumFromCdpUrl } from '../lib/browser';
+import {
+  getAgentWsUrl,
+  getAiServiceWorker,
+  getCdpUrl,
+  getPlaywrightChromiumFromCdpUrl,
+} from '../lib/browser';
 import { SessionCreateParams } from './sessions';
 
 export type AgentTaskResult =
@@ -127,7 +132,7 @@ export class Agent extends APIResource {
         {
           data: {
             id: sessionId,
-            cdp_url: 'ws://localhost:9222',
+            cdp_url: getCdpUrl(this._client.baseURL, sessionId, this._client.apiKey),
             live_view_url: this._client.baseURL,
           },
         }
