@@ -759,6 +759,7 @@ export class Anchorbrowser {
   extensions: API.Extensions = new API.Extensions(this);
   browser: API.Browser = new API.Browser(this);
   agent: API.Agent = new API.Agent(this);
+  events: API.Events = new API.Events(this);
 }
 
 Anchorbrowser.Profiles = Profiles;

@@ -11,11 +11,12 @@ export const getPlaywrightChromiumFromCdpUrl = async (
 export const getCdpUrl = (apiBaseURL: string, sessionId: string, apiKey: string) => {
   return `${apiBaseURL
     .replace('https://', 'wss://')
+    .replace('http://', 'ws://')
     .replace('api.', 'connect.')}?apiKey=${apiKey}&sessionId=${sessionId}`;
 };
 
 export const getAgentWsUrl = (apiBaseURL: string, sessionId: string) => {
-  return `${apiBaseURL.replace('https://', 'wss://')}/ws?sessionId=${sessionId}`;
+  return `${apiBaseURL.replace('https://', 'wss://').replace('http://', 'ws://')}/ws?sessionId=${sessionId}`;
 };
 
 export const getAiServiceWorker = (browserContext: BrowserContext): Worker | undefined => {
