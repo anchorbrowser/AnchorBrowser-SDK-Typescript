@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.3.0 (2025-08-20)
+
+Full Changelog: [v0.2.0...v0.3.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.2.0...v0.3.0)
+
+### Features
+
+* add events property to Anchorbrowser class for enhanced event handling ([928e99e](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/928e99e2709bb879d89e4adc94babc1370fa3217))
+* **api:** manual updates ([78ebada](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/78ebadaf19003a6d00af3ef7a5553ae8585a1e0a))
+* **mcp:** add code execution tool ([da46587](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/da4658736520c9ecf159d1fa1f0977a693670140))
+
+
+### Bug Fixes
+
+* **browser:** move utils functions ([bcbf6a1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/bcbf6a17aeccb7c2b700598063520f1608278135))
+* change BrowserSetup interface to export for better accessibility ([05d9a5a](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/05d9a5a08421119bb290f652a0b5db4706310b8d))
+
+
+### Chores
+
+* **deps:** update undici-types to version 6.21.0 in yarn.lock ([64c3f5b](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/64c3f5b0d8da8f54b6003cd9f52cc83ea8187369))
+
+
+### Refactors
+
+* update cdp_url assignment in Agent class to use getCdpUrl function ([341400c](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/341400ce71c5b45530cf339cb396650cfc6d98e9))
+
 ## 0.2.0 (2025-08-16)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.1.0...v0.2.0)
