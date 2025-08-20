@@ -1,8 +1,8 @@
-import { getAgentWsUrl, getAiServiceWorker, getPlaywrightChromiumFromCdpUrl } from '../lib/browser';
-import { APIResource } from '../core/resource';
-import { SessionCreateParams } from './sessions';
-import ws from 'ws';
 import type { Browser, BrowserContext, Page, Worker } from 'playwright';
+import { WebSocket } from 'ws';
+import { APIResource } from '../core/resource';
+import { getAgentWsUrl, getAiServiceWorker, getPlaywrightChromiumFromCdpUrl } from '../lib/browser';
+import { SessionCreateParams } from './sessions';
 
 export type AgentTaskResult =
   | string
@@ -10,9 +10,11 @@ export type AgentTaskResult =
       result: Record<string, unknown>;
     };
 
-interface TaskOptions {
+export interface TaskOptions {
   url?: string;
   outputSchema?: object;
+  model?: string;
+  provider?: string;
   onAgentStep?: (step: string) => void;
 }
 
@@ -37,13 +39,15 @@ export class Agent extends APIResource {
     {
       sessionOptions,
       taskOptions,
+      sessionId,
     }: {
       sessionOptions?: SessionCreateParams;
       taskOptions?: TaskOptions;
+      sessionId?: string;
     } = {},
   ): Promise<AgentTaskResult> {
-    const setup = await this.setupBrowser(sessionOptions);
-    let webSocket: ws.WebSocket | null = null;
+    const setup = await this.setupBrowser(sessionOptions, sessionId);
+    let webSocket: WebSocket | null = null;
 
     try {
       // Navigate to URL if provided
@@ -57,7 +61,7 @@ export class Agent extends APIResource {
       }
 
       // Execute the task
-      const taskResult = await this.executeTask(setup.ai!, prompt, taskOptions?.outputSchema);
+      const taskResult = await this.executeTask(setup.ai!, prompt, taskOptions);
 
       return taskResult;
     } finally {
@@ -93,7 +97,7 @@ export class Agent extends APIResource {
       }
 
       // Create task promise without executing it
-      const taskPayload = this.createTaskPayload(prompt, taskOptions?.outputSchema);
+      const taskPayload = this.createTaskPayload(prompt, taskOptions);
       const taskResultPromise = setup.ai?.evaluate(taskPayload);
 
       if (!taskResultPromise) {
@@ -114,8 +118,20 @@ export class Agent extends APIResource {
   /**
    * Set up browser and session
    */
-  private async setupBrowser(sessionOptions?: SessionCreateParams): Promise<BrowserSetup> {
-    const session = await this._client.sessions.create(sessionOptions);
+  private async setupBrowser(
+    sessionOptions?: SessionCreateParams,
+    sessionId?: string,
+  ): Promise<BrowserSetup> {
+    const session =
+      sessionId ?
+        {
+          data: {
+            id: sessionId,
+            cdp_url: 'ws://localhost:9222',
+            live_view_url: this._client.baseURL,
+          },
+        }
+      : await this._client.sessions.create(sessionOptions);
 
     if (!session.data?.id) {
       throw new Error('Failed to create session: No session ID returned');
@@ -147,12 +163,12 @@ export class Agent extends APIResource {
   /**
    * Set up WebSocket for agent step notifications
    */
-  private setupWebSocket(sessionId: string | undefined, onAgentStep: (step: string) => void): ws.WebSocket {
+  private setupWebSocket(sessionId: string | undefined, onAgentStep: (step: string) => void): WebSocket {
     if (!sessionId) {
       throw new Error('Session ID required for WebSocket connection');
     }
 
-    const webSocket = new ws.WebSocket(getAgentWsUrl(this._client.baseURL, sessionId));
+    const webSocket = new WebSocket(getAgentWsUrl(this._client.baseURL, sessionId));
     webSocket.on('message', (data) => {
       try {
         const parsed = JSON.parse(data.toString());
@@ -172,14 +188,16 @@ export class Agent extends APIResource {
   /**
    * Create task payload for AI execution
    */
-  private createTaskPayload(prompt: string, outputSchema?: object): string {
+  private createTaskPayload(prompt: string, taskOptions?: TaskOptions): string {
     if (!prompt || prompt.trim().length === 0) {
       throw new Error('Prompt cannot be empty');
     }
 
     return JSON.stringify({
       prompt,
-      output_schema: outputSchema,
+      output_schema: taskOptions?.outputSchema,
+      model: taskOptions?.model,
+      provider: taskOptions?.provider,
     });
   }
 
@@ -196,7 +214,7 @@ export class Agent extends APIResource {
   /**
    * Clean up WebSocket connection
    */
-  private cleanupWebSocket(webSocket: ws.WebSocket | null): void {
+  private cleanupWebSocket(webSocket: WebSocket | null): void {
     if (webSocket) {
       try {
         webSocket.close();
