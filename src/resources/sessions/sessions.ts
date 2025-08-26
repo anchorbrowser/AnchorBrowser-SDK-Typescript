@@ -483,6 +483,12 @@ export namespace SessionCreateParams {
        * browser session ends. Defaults to `false`.
        */
       persist?: boolean;
+
+      /**
+       * When enabled, resets the profile's preferences on session creation. Defaults to
+       * `false`.
+       */
+      reset_preferences?: boolean;
     }
 
     /**
