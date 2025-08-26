@@ -35,7 +35,7 @@ describe('resource sessions', () => {
             headless: { active: true },
             p2p_download: { active: false },
             popup_blocker: { active: false },
-            profile: { name: 'my-profile', persist: true },
+            profile: { name: 'my-profile', persist: true, reset_preferences: false },
             viewport: { height: 900, width: 1440 },
           },
           session: {
