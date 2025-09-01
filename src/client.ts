@@ -52,6 +52,7 @@ import {
   SessionPasteParams,
   SessionPasteResponse,
   SessionRetrieveDownloadsResponse,
+  SessionRetrieveResponse,
   SessionScrollParams,
   SessionScrollResponse,
   Sessions,
@@ -780,6 +781,7 @@ export declare namespace Anchorbrowser {
   export {
     Sessions as Sessions,
     type SessionCreateResponse as SessionCreateResponse,
+    type SessionRetrieveResponse as SessionRetrieveResponse,
     type SessionCopyResponse as SessionCopyResponse,
     type SessionDragAndDropResponse as SessionDragAndDropResponse,
     type SessionGotoResponse as SessionGotoResponse,
