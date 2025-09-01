@@ -24,6 +24,7 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/sessions/sessions.ts">SessionCreateResponse</a></code>
+- <code><a href="./src/resources/sessions/sessions.ts">SessionRetrieveResponse</a></code>
 - <code><a href="./src/resources/sessions/sessions.ts">SessionCopyResponse</a></code>
 - <code><a href="./src/resources/sessions/sessions.ts">SessionDragAndDropResponse</a></code>
 - <code><a href="./src/resources/sessions/sessions.ts">SessionGotoResponse</a></code>
@@ -34,6 +35,7 @@ Types:
 Methods:
 
 - <code title="post /v1/sessions">client.sessions.<a href="./src/resources/sessions/sessions.ts">create</a>({ ...params }) -> SessionCreateResponse</code>
+- <code title="get /v1/sessions/{session_id}">client.sessions.<a href="./src/resources/sessions/sessions.ts">retrieve</a>(sessionID) -> SessionRetrieveResponse</code>
 - <code title="delete /v1/sessions/{session_id}">client.sessions.<a href="./src/resources/sessions/sessions.ts">delete</a>(sessionID) -> SuccessResponse</code>
 - <code title="post /v1/sessions/{sessionId}/copy">client.sessions.<a href="./src/resources/sessions/sessions.ts">copy</a>(sessionID) -> SessionCopyResponse</code>
 - <code title="post /v1/sessions/{sessionId}/drag-and-drop">client.sessions.<a href="./src/resources/sessions/sessions.ts">dragAndDrop</a>(sessionID, { ...params }) -> SessionDragAndDropResponse</code>

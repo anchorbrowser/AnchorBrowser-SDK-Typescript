@@ -21,6 +21,7 @@ export {
 export {
   Sessions,
   type SessionCreateResponse,
+  type SessionRetrieveResponse,
   type SessionCopyResponse,
   type SessionDragAndDropResponse,
   type SessionGotoResponse,
