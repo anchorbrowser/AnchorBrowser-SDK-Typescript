@@ -67,6 +67,20 @@ export class Sessions extends APIResource {
   }
 
   /**
+   * Retrieves detailed information about a specific browser session.
+   *
+   * @example
+   * ```ts
+   * const session = await client.sessions.retrieve(
+   *   'session_id',
+   * );
+   * ```
+   */
+  retrieve(sessionID: string, options?: RequestOptions): APIPromise<SessionRetrieveResponse> {
+    return this._client.get(path`/v1/sessions/${sessionID}`, options);
+  }
+
+  /**
    * Deletes the browser session associated with the provided browser session ID.
    * Requires a valid API key for authentication.
    *
@@ -232,6 +246,68 @@ export namespace SessionCreateResponse {
      */
     live_view_url?: string;
   }
+}
+
+export interface SessionRetrieveResponse {
+  /**
+   * The configuration settings for the session.
+   */
+  configuration?: unknown;
+
+  /**
+   * The timestamp when the session was created.
+   */
+  created_at?: string;
+
+  /**
+   * The number of credits consumed by the session.
+   */
+  credits_used?: number;
+
+  /**
+   * The duration of the session in seconds.
+   */
+  duration?: number;
+
+  /**
+   * Whether this is a playground session.
+   */
+  playground?: boolean;
+
+  /**
+   * The number of bytes transferred through the proxy.
+   */
+  proxy_bytes?: number;
+
+  /**
+   * The unique identifier of the session.
+   */
+  session_id?: string;
+
+  /**
+   * The current status of the session.
+   */
+  status?: string;
+
+  /**
+   * Array of steps executed in the session.
+   */
+  steps?: Array<unknown>;
+
+  /**
+   * Tags associated with the session.
+   */
+  tags?: unknown;
+
+  /**
+   * The team ID associated with the session.
+   */
+  team_id?: string;
+
+  /**
+   * Token usage information.
+   */
+  tokens?: unknown;
 }
 
 export interface SessionCopyResponse {
@@ -891,6 +967,7 @@ Sessions.Agent = Agent;
 export declare namespace Sessions {
   export {
     type SessionCreateResponse as SessionCreateResponse,
+    type SessionRetrieveResponse as SessionRetrieveResponse,
     type SessionCopyResponse as SessionCopyResponse,
     type SessionDragAndDropResponse as SessionDragAndDropResponse,
     type SessionGotoResponse as SessionGotoResponse,
