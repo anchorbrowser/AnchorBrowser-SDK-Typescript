@@ -41,7 +41,7 @@ describe('resource sessions', () => {
           session: {
             initial_url: 'https://anchorbrowser.io',
             live_view: { read_only: false },
-            proxy: { active: true, country_code: 'af', type: 'anchor_residential' },
+            proxy: { active: true, city: 'city', country_code: 'af', region: 'region', type: 'anchor_proxy' },
             recording: { active: false },
             timeout: { idle_timeout: 3, max_duration: 10 },
           },
