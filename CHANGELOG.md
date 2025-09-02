@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.4.0 (2025-09-02)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* BRO-622 update openapi spec with session get ([0890d3c](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/0890d3cb396900caac8dabc808cb28dbf931098b))
+* BRO-764 City based proxy ([c5e29ab](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/c5e29abcbac82c5f2ee0bd42a6060271cbab2cd5))
+
+
+### Chores
+
+* add package to package.json ([e8da73c](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/e8da73cf53dae754a63217da4c3248b3249d46d7))
+* **client:** qualify global Blob ([cd2d7e8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/cd2d7e85f03c77a890a2209deca3f35afbb61eff))
+* **internal:** update global Error reference ([dc9ba76](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/dc9ba76fc5c32dce13a5fcf59716ddcf62c866a5))
+* update CI script ([9d345d6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/9d345d60ccb639d6b7dd7e514bd94a7dde9e38bc))
+
+
+### Documentation
+
+* add reset_preferences option to session profile configuration i… ([af9e74c](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/af9e74cf7170d5c6cb11255f690df81a30889a65))
+
 ## 0.3.0 (2025-08-20)
 
 Full Changelog: [v0.2.0...v0.3.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.2.0...v0.3.0)
