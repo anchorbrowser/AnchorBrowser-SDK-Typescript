@@ -3,7 +3,7 @@
 import Anchorbrowser, { toFile } from 'anchorbrowser';
 
 const client = new Anchorbrowser({
-  apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+  apiKey: 'Your API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 

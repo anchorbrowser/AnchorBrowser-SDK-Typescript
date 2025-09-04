@@ -23,7 +23,7 @@ describe('instantiate client', () => {
     const client = new Anchorbrowser({
       baseURL: 'http://localhost:5000/',
       defaultHeaders: { 'X-My-Default-Header': '2' },
-      apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+      apiKey: 'Your API Key',
     });
 
     test('they are used in the request', async () => {
@@ -87,18 +87,14 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      const client = new Anchorbrowser({
-        logger: logger,
-        logLevel: 'debug',
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
-      });
+      const client = new Anchorbrowser({ logger: logger, logLevel: 'debug', apiKey: 'Your API Key' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).toHaveBeenCalled();
     });
 
     test('default logLevel is warn', async () => {
-      const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+      const client = new Anchorbrowser({ apiKey: 'Your API Key' });
       expect(client.logLevel).toBe('warn');
     });
 
@@ -111,11 +107,7 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      const client = new Anchorbrowser({
-        logger: logger,
-        logLevel: 'info',
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
-      });
+      const client = new Anchorbrowser({ logger: logger, logLevel: 'info', apiKey: 'Your API Key' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).not.toHaveBeenCalled();
@@ -131,7 +123,7 @@ describe('instantiate client', () => {
       };
 
       process.env['ANCHORBROWSER_LOG'] = 'debug';
-      const client = new Anchorbrowser({ logger: logger, apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+      const client = new Anchorbrowser({ logger: logger, apiKey: 'Your API Key' });
       expect(client.logLevel).toBe('debug');
 
       await forceAPIResponseForClient(client);
@@ -148,7 +140,7 @@ describe('instantiate client', () => {
       };
 
       process.env['ANCHORBROWSER_LOG'] = 'not a log level';
-      const client = new Anchorbrowser({ logger: logger, apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+      const client = new Anchorbrowser({ logger: logger, apiKey: 'Your API Key' });
       expect(client.logLevel).toBe('warn');
       expect(warnMock).toHaveBeenCalledWith(
         'process.env[\'ANCHORBROWSER_LOG\'] was set to "not a log level", expected one of ["off","error","warn","info","debug"]',
@@ -165,11 +157,7 @@ describe('instantiate client', () => {
       };
 
       process.env['ANCHORBROWSER_LOG'] = 'debug';
-      const client = new Anchorbrowser({
-        logger: logger,
-        logLevel: 'off',
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
-      });
+      const client = new Anchorbrowser({ logger: logger, logLevel: 'off', apiKey: 'Your API Key' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).not.toHaveBeenCalled();
@@ -185,11 +173,7 @@ describe('instantiate client', () => {
       };
 
       process.env['ANCHORBROWSER_LOG'] = 'not a log level';
-      const client = new Anchorbrowser({
-        logger: logger,
-        logLevel: 'debug',
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
-      });
+      const client = new Anchorbrowser({ logger: logger, logLevel: 'debug', apiKey: 'Your API Key' });
       expect(client.logLevel).toBe('debug');
       expect(warnMock).not.toHaveBeenCalled();
     });
@@ -200,7 +184,7 @@ describe('instantiate client', () => {
       const client = new Anchorbrowser({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo' },
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+        apiKey: 'Your API Key',
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/foo?apiVersion=foo');
     });
@@ -209,7 +193,7 @@ describe('instantiate client', () => {
       const client = new Anchorbrowser({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo', hello: 'world' },
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+        apiKey: 'Your API Key',
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/foo?apiVersion=foo&hello=world');
     });
@@ -218,7 +202,7 @@ describe('instantiate client', () => {
       const client = new Anchorbrowser({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { hello: 'world' },
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+        apiKey: 'Your API Key',
       });
       expect(client.buildURL('/foo', { hello: undefined })).toEqual('http://localhost:5000/foo');
     });
@@ -227,7 +211,7 @@ describe('instantiate client', () => {
   test('custom fetch', async () => {
     const client = new Anchorbrowser({
       baseURL: 'http://localhost:5000/',
-      apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+      apiKey: 'Your API Key',
       fetch: (url) => {
         return Promise.resolve(
           new Response(JSON.stringify({ url, custom: true }), {
@@ -245,7 +229,7 @@ describe('instantiate client', () => {
     // make sure the global fetch type is assignable to our Fetch type
     const client = new Anchorbrowser({
       baseURL: 'http://localhost:5000/',
-      apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+      apiKey: 'Your API Key',
       fetch: defaultFetch,
     });
   });
@@ -253,7 +237,7 @@ describe('instantiate client', () => {
   test('custom signal', async () => {
     const client = new Anchorbrowser({
       baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
-      apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+      apiKey: 'Your API Key',
       fetch: (...args) => {
         return new Promise((resolve, reject) =>
           setTimeout(
@@ -285,7 +269,7 @@ describe('instantiate client', () => {
 
     const client = new Anchorbrowser({
       baseURL: 'http://localhost:5000/',
-      apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+      apiKey: 'Your API Key',
       fetch: testFetch,
     });
 
@@ -297,7 +281,7 @@ describe('instantiate client', () => {
     test('trailing slash', () => {
       const client = new Anchorbrowser({
         baseURL: 'http://localhost:5000/custom/path/',
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+        apiKey: 'Your API Key',
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/custom/path/foo');
     });
@@ -305,7 +289,7 @@ describe('instantiate client', () => {
     test('no trailing slash', () => {
       const client = new Anchorbrowser({
         baseURL: 'http://localhost:5000/custom/path',
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+        apiKey: 'Your API Key',
       });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/custom/path/foo');
     });
@@ -315,43 +299,37 @@ describe('instantiate client', () => {
     });
 
     test('explicit option', () => {
-      const client = new Anchorbrowser({
-        baseURL: 'https://example.com',
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
-      });
+      const client = new Anchorbrowser({ baseURL: 'https://example.com', apiKey: 'Your API Key' });
       expect(client.baseURL).toEqual('https://example.com');
     });
 
     test('env variable', () => {
       process.env['ANCHORBROWSER_BASE_URL'] = 'https://example.com/from_env';
-      const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+      const client = new Anchorbrowser({ apiKey: 'Your API Key' });
       expect(client.baseURL).toEqual('https://example.com/from_env');
     });
 
     test('empty env variable', () => {
       process.env['ANCHORBROWSER_BASE_URL'] = ''; // empty
-      const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+      const client = new Anchorbrowser({ apiKey: 'Your API Key' });
       expect(client.baseURL).toEqual('https://api.anchorbrowser.io');
     });
 
     test('blank env variable', () => {
       process.env['ANCHORBROWSER_BASE_URL'] = '  '; // blank
-      const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+      const client = new Anchorbrowser({ apiKey: 'Your API Key' });
       expect(client.baseURL).toEqual('https://api.anchorbrowser.io');
     });
 
     test('in request options', () => {
-      const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+      const client = new Anchorbrowser({ apiKey: 'Your API Key' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/option/foo',
       );
     });
 
     test('in request options overridden by client options', () => {
-      const client = new Anchorbrowser({
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
-        baseURL: 'http://localhost:5000/client',
-      });
+      const client = new Anchorbrowser({ apiKey: 'Your API Key', baseURL: 'http://localhost:5000/client' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/client/foo',
       );
@@ -359,7 +337,7 @@ describe('instantiate client', () => {
 
     test('in request options overridden by env variable', () => {
       process.env['ANCHORBROWSER_BASE_URL'] = 'http://localhost:5000/env';
-      const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+      const client = new Anchorbrowser({ apiKey: 'Your API Key' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/env/foo',
       );
@@ -367,11 +345,11 @@ describe('instantiate client', () => {
   });
 
   test('maxRetries option is correctly set', () => {
-    const client = new Anchorbrowser({ maxRetries: 4, apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+    const client = new Anchorbrowser({ maxRetries: 4, apiKey: 'Your API Key' });
     expect(client.maxRetries).toEqual(4);
 
     // default
-    const client2 = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+    const client2 = new Anchorbrowser({ apiKey: 'Your API Key' });
     expect(client2.maxRetries).toEqual(2);
   });
 
@@ -380,7 +358,7 @@ describe('instantiate client', () => {
       const client = new Anchorbrowser({
         baseURL: 'http://localhost:5000/',
         maxRetries: 3,
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+        apiKey: 'Your API Key',
       });
 
       const newClient = client.withOptions({
@@ -406,7 +384,7 @@ describe('instantiate client', () => {
         baseURL: 'http://localhost:5000/',
         defaultHeaders: { 'X-Test-Header': 'test-value' },
         defaultQuery: { 'test-param': 'test-value' },
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+        apiKey: 'Your API Key',
       });
 
       const newClient = client.withOptions({
@@ -424,7 +402,7 @@ describe('instantiate client', () => {
       const client = new Anchorbrowser({
         baseURL: 'http://localhost:5000/',
         timeout: 1000,
-        apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+        apiKey: 'Your API Key',
       });
 
       // Modify the client properties directly after creation
@@ -453,21 +431,21 @@ describe('instantiate client', () => {
 
   test('with environment variable arguments', () => {
     // set options via env var
-    process.env['ANCHORBROWSER_API_KEY'] = 'sk-1jdfiaj0advpoaskdfpoks';
+    process.env['ANCHORBROWSER_API_KEY'] = 'Your API Key';
     const client = new Anchorbrowser();
-    expect(client.apiKey).toBe('sk-1jdfiaj0advpoaskdfpoks');
+    expect(client.apiKey).toBe('Your API Key');
   });
 
   test('with overridden environment variable arguments', () => {
     // set options via env var
-    process.env['ANCHORBROWSER_API_KEY'] = 'another sk-1jdfiaj0advpoaskdfpoks';
-    const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
-    expect(client.apiKey).toBe('sk-1jdfiaj0advpoaskdfpoks');
+    process.env['ANCHORBROWSER_API_KEY'] = 'another Your API Key';
+    const client = new Anchorbrowser({ apiKey: 'Your API Key' });
+    expect(client.apiKey).toBe('Your API Key');
   });
 });
 
 describe('request building', () => {
-  const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+  const client = new Anchorbrowser({ apiKey: 'Your API Key' });
 
   describe('custom headers', () => {
     test('handles undefined', async () => {
@@ -486,7 +464,7 @@ describe('request building', () => {
 });
 
 describe('default encoder', () => {
-  const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' });
+  const client = new Anchorbrowser({ apiKey: 'Your API Key' });
 
   class Serializable {
     toJSON() {
@@ -571,7 +549,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks', timeout: 10, fetch: testFetch });
+    const client = new Anchorbrowser({ apiKey: 'Your API Key', timeout: 10, fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -601,11 +579,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Anchorbrowser({
-      apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
-      fetch: testFetch,
-      maxRetries: 4,
-    });
+    const client = new Anchorbrowser({ apiKey: 'Your API Key', fetch: testFetch, maxRetries: 4 });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
 
@@ -629,11 +603,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new Anchorbrowser({
-      apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
-      fetch: testFetch,
-      maxRetries: 4,
-    });
+    const client = new Anchorbrowser({ apiKey: 'Your API Key', fetch: testFetch, maxRetries: 4 });
 
     expect(
       await client.request({
@@ -663,7 +633,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
     const client = new Anchorbrowser({
-      apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
+      apiKey: 'Your API Key',
       fetch: testFetch,
       maxRetries: 4,
       defaultHeaders: { 'X-Stainless-Retry-Count': null },
@@ -695,11 +665,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new Anchorbrowser({
-      apiKey: 'sk-1jdfiaj0advpoaskdfpoks',
-      fetch: testFetch,
-      maxRetries: 4,
-    });
+    const client = new Anchorbrowser({ apiKey: 'Your API Key', fetch: testFetch, maxRetries: 4 });
 
     expect(
       await client.request({
@@ -729,7 +695,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks', fetch: testFetch });
+    const client = new Anchorbrowser({ apiKey: 'Your API Key', fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -759,7 +725,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks', fetch: testFetch });
+    const client = new Anchorbrowser({ apiKey: 'Your API Key', fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
