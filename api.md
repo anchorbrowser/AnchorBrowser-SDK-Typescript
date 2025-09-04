@@ -31,6 +31,7 @@ Types:
 - <code><a href="./src/resources/sessions/sessions.ts">SessionPasteResponse</a></code>
 - <code><a href="./src/resources/sessions/sessions.ts">SessionRetrieveDownloadsResponse</a></code>
 - <code><a href="./src/resources/sessions/sessions.ts">SessionScrollResponse</a></code>
+- <code><a href="./src/resources/sessions/sessions.ts">SessionUploadFileResponse</a></code>
 
 Methods:
 
@@ -44,6 +45,7 @@ Methods:
 - <code title="get /v1/sessions/{session_id}/downloads">client.sessions.<a href="./src/resources/sessions/sessions.ts">retrieveDownloads</a>(sessionID) -> SessionRetrieveDownloadsResponse</code>
 - <code title="get /v1/sessions/{sessionId}/screenshot">client.sessions.<a href="./src/resources/sessions/sessions.ts">retrieveScreenshot</a>(sessionID) -> Response</code>
 - <code title="post /v1/sessions/{sessionId}/scroll">client.sessions.<a href="./src/resources/sessions/sessions.ts">scroll</a>(sessionID, { ...params }) -> SessionScrollResponse</code>
+- <code title="post /v1/sessions/{sessionId}/uploads">client.sessions.<a href="./src/resources/sessions/sessions.ts">uploadFile</a>(sessionID, { ...params }) -> SessionUploadFileResponse</code>
 
 ## All
 
