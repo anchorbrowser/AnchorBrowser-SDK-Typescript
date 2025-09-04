@@ -38,8 +38,10 @@ import {
   Recordings,
 } from './recordings/recordings';
 import { APIPromise } from '../../core/api-promise';
+import { type Uploadable } from '../../core/uploads';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
+import { multipartFormRequestOptions } from '../../internal/uploads';
 import { path } from '../../internal/utils/path';
 
 export class Sessions extends APIResource {
@@ -223,6 +225,32 @@ export class Sessions extends APIResource {
   ): APIPromise<SessionScrollResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/scroll`, { body, ...options });
   }
+
+  /**
+   * Upload files directly to a browser session for use with web forms and file
+   * inputs.
+   *
+   * Files are saved to the session's uploads directory and can be referenced in CDP
+   * commands.
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.uploadFile(
+   *   '550e8400-e29b-41d4-a716-446655440000',
+   *   { file: fs.createReadStream('path/to/file') },
+   * );
+   * ```
+   */
+  uploadFile(
+    sessionID: string,
+    body: SessionUploadFileParams,
+    options?: RequestOptions,
+  ): APIPromise<SessionUploadFileResponse> {
+    return this._client.post(
+      path`/v1/sessions/${sessionID}/uploads`,
+      multipartFormRequestOptions({ body, ...options }, this._client),
+    );
+  }
 }
 
 export interface SessionCreateResponse {
@@ -396,6 +424,18 @@ export namespace SessionRetrieveDownloadsResponse {
 
 export interface SessionScrollResponse {
   status?: string;
+}
+
+export interface SessionUploadFileResponse {
+  data?: SessionUploadFileResponse.Data;
+}
+
+export namespace SessionUploadFileResponse {
+  export interface Data {
+    message?: string;
+
+    status?: string;
+  }
 }
 
 export interface SessionCreateParams {
@@ -970,6 +1010,13 @@ export interface SessionScrollParams {
   useOs?: boolean;
 }
 
+export interface SessionUploadFileParams {
+  /**
+   * File to upload to the browser session
+   */
+  file: Uploadable;
+}
+
 Sessions.All = All;
 Sessions.Recordings = Recordings;
 Sessions.Mouse = Mouse;
@@ -987,11 +1034,13 @@ export declare namespace Sessions {
     type SessionPasteResponse as SessionPasteResponse,
     type SessionRetrieveDownloadsResponse as SessionRetrieveDownloadsResponse,
     type SessionScrollResponse as SessionScrollResponse,
+    type SessionUploadFileResponse as SessionUploadFileResponse,
     type SessionCreateParams as SessionCreateParams,
     type SessionDragAndDropParams as SessionDragAndDropParams,
     type SessionGotoParams as SessionGotoParams,
     type SessionPasteParams as SessionPasteParams,
     type SessionScrollParams as SessionScrollParams,
+    type SessionUploadFileParams as SessionUploadFileParams,
   };
 
   export { All as All, type AllStatusResponse as AllStatusResponse };

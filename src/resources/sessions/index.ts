@@ -44,9 +44,11 @@ export {
   type SessionPasteResponse,
   type SessionRetrieveDownloadsResponse,
   type SessionScrollResponse,
+  type SessionUploadFileResponse,
   type SessionCreateParams,
   type SessionDragAndDropParams,
   type SessionGotoParams,
   type SessionPasteParams,
   type SessionScrollParams,
+  type SessionUploadFileParams,
 } from './sessions';
