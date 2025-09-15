@@ -150,6 +150,20 @@ export class Sessions extends APIResource {
   }
 
   /**
+   * Retrieves a list of pages associated with a specific browser session.
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.listPages(
+   *   'session_id',
+   * );
+   * ```
+   */
+  listPages(sessionID: string, options?: RequestOptions): APIPromise<SessionListPagesResponse> {
+    return this._client.get(path`/v1/sessions/${sessionID}/pages`, options);
+  }
+
+  /**
    * Pastes text at the current cursor position
    *
    * @example
@@ -351,6 +365,32 @@ export interface SessionDragAndDropResponse {
 
 export interface SessionGotoResponse {
   status?: string;
+}
+
+export type SessionListPagesResponse = Array<SessionListPagesResponse.SessionListPagesResponseItem>;
+
+export namespace SessionListPagesResponse {
+  export interface SessionListPagesResponseItem {
+    /**
+     * The unique identifier of the page.
+     */
+    id: string;
+
+    /**
+     * The frontend URL for accessing the page.
+     */
+    frontend_url: string;
+
+    /**
+     * The title of the page.
+     */
+    title: string;
+
+    /**
+     * The URL of the page.
+     */
+    url: string;
+  }
 }
 
 export interface SessionPasteResponse {
@@ -1031,6 +1071,7 @@ export declare namespace Sessions {
     type SessionCopyResponse as SessionCopyResponse,
     type SessionDragAndDropResponse as SessionDragAndDropResponse,
     type SessionGotoResponse as SessionGotoResponse,
+    type SessionListPagesResponse as SessionListPagesResponse,
     type SessionPasteResponse as SessionPasteResponse,
     type SessionRetrieveDownloadsResponse as SessionRetrieveDownloadsResponse,
     type SessionScrollResponse as SessionScrollResponse,

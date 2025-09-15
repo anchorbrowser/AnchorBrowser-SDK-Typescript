@@ -41,6 +41,7 @@ export {
   type SessionCopyResponse,
   type SessionDragAndDropResponse,
   type SessionGotoResponse,
+  type SessionListPagesResponse,
   type SessionPasteResponse,
   type SessionRetrieveDownloadsResponse,
   type SessionScrollResponse,
