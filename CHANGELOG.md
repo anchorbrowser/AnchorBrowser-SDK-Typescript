@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.5.0 (2025-09-15)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* Added OpenAPI specification for file uploads to browser sessions, inc… ([717e874](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/717e87429ca28b4826463b4154cb4ca4e565464c))
+* **api:** manual updates ([3edd5b1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/3edd5b1a35fc9970c8eac4ed5bca9092bccf42ed))
+* **api:** manual updates ([9932f9a](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/9932f9a95f126823135228b359a0e5fbba7d5019))
+
+
+### Bug Fixes
+
+* coerce nullable values to undefined ([9b272f5](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/9b272f5fb393231f243be1a766c23a54dc3e4f7e))
+
+
+### Chores
+
+* ci build action ([dfb3c1f](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/dfb3c1f0145539c917de5815e9a372670444e186))
+
+
+### Documentation
+
+* fix apiKey placeholder ([b4e30fe](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/b4e30fe83a1bc1a37b89b679ad577bdcd3b21374))
+
 ## 0.4.0 (2025-09-02)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.3.0...v0.4.0)
