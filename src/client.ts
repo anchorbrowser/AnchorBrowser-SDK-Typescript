@@ -49,12 +49,15 @@ import {
   SessionDragAndDropResponse,
   SessionGotoParams,
   SessionGotoResponse,
+  SessionListPagesResponse,
   SessionPasteParams,
   SessionPasteResponse,
   SessionRetrieveDownloadsResponse,
   SessionRetrieveResponse,
   SessionScrollParams,
   SessionScrollResponse,
+  SessionUploadFileParams,
+  SessionUploadFileResponse,
   Sessions,
 } from './resources/sessions/sessions';
 import { type Fetch } from './internal/builtin-types';
@@ -182,7 +185,7 @@ export class Anchorbrowser {
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
       throw new Errors.AnchorbrowserError(
-        "The ANCHORBROWSER_API_KEY environment variable is missing or empty; either provide it, or instantiate the Anchorbrowser client with an apiKey option, like new Anchorbrowser({ apiKey: 'sk-1jdfiaj0advpoaskdfpoks' }).",
+        "The ANCHORBROWSER_API_KEY environment variable is missing or empty; either provide it, or instantiate the Anchorbrowser client with an apiKey option, like new Anchorbrowser({ apiKey: 'Your API Key' }).",
       );
     }
 
@@ -787,14 +790,17 @@ export declare namespace Anchorbrowser {
     type SessionCopyResponse as SessionCopyResponse,
     type SessionDragAndDropResponse as SessionDragAndDropResponse,
     type SessionGotoResponse as SessionGotoResponse,
+    type SessionListPagesResponse as SessionListPagesResponse,
     type SessionPasteResponse as SessionPasteResponse,
     type SessionRetrieveDownloadsResponse as SessionRetrieveDownloadsResponse,
     type SessionScrollResponse as SessionScrollResponse,
+    type SessionUploadFileResponse as SessionUploadFileResponse,
     type SessionCreateParams as SessionCreateParams,
     type SessionDragAndDropParams as SessionDragAndDropParams,
     type SessionGotoParams as SessionGotoParams,
     type SessionPasteParams as SessionPasteParams,
     type SessionScrollParams as SessionScrollParams,
+    type SessionUploadFileParams as SessionUploadFileParams,
   };
 
   export {

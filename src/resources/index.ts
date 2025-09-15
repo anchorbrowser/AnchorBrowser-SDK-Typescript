@@ -25,14 +25,17 @@ export {
   type SessionCopyResponse,
   type SessionDragAndDropResponse,
   type SessionGotoResponse,
+  type SessionListPagesResponse,
   type SessionPasteResponse,
   type SessionRetrieveDownloadsResponse,
   type SessionScrollResponse,
+  type SessionUploadFileResponse,
   type SessionCreateParams,
   type SessionDragAndDropParams,
   type SessionGotoParams,
   type SessionPasteParams,
   type SessionScrollParams,
+  type SessionUploadFileParams,
 } from './sessions/sessions';
 export {
   Tools,
