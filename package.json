@@ -12,6 +12,33 @@
   "files": [
     "**/*"
   ],
+  "keywords": [
+    "anchorbrowser",
+    "anchor",
+    "browser",
+    "automation",
+    "infrastructure",
+    "agentic-browser",
+    "sdk",
+    "typescript",
+    "browser-automation",
+    "agent-api",
+    "ai-agents",
+    "automation-infra",
+    "cloud-browser",
+    "self-healing",
+    "cdp",
+    "playwright",
+    "browser-agents",
+    "proxy",
+    "captcha-bypass",
+    "web-scraping",
+    "form-filling",
+    "session-management",
+    "enterprise-security",
+    "browser-infrastructure",
+    "autonomous-web"
+  ],
   "private": false,
   "publishConfig": {
     "access": "public"
