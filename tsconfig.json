@@ -7,10 +7,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "baseUrl": "./",
     "paths": {
-      "anchorbrowser/*": ["src/*"],
-      "anchorbrowser": ["src/index.ts"]
+      "anchorbrowser/*": ["./src/*"],
+      "anchorbrowser": ["./src/index.ts"]
     },
     "noEmit": true,
 
