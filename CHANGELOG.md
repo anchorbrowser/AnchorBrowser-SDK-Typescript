@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.5.2 (2025-09-27)
+
+Full Changelog: [v0.5.1...v0.5.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.5.1...v0.5.2)
+
+### Performance Improvements
+
+* faster formatting ([02f2428](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/02f2428791e49a29ffc3c86fcf0dbf613e7bb79a))
+
+
+### Chores
+
+* do not install brew dependencies in ./scripts/bootstrap by default ([4ed65e6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/4ed65e6a05eac2fd40eb61599255758aa6386ed9))
+* **internal:** codegen related update ([ac6c44b](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/ac6c44bf2f021aea3167e3bbfc2caea6955516c1))
+* **internal:** fix incremental formatting in some cases ([bb89d63](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/bb89d630deb41e436476ed797499127e4b4ab8fd))
+* **internal:** ignore .eslintcache ([4da306a](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/4da306a47c3e8bbcd1206ba2d5a165a07860442a))
+* **internal:** remove deprecated `compilerOptions.baseUrl` from tsconfig.json ([f91c077](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/f91c0775c062fe99c28c6e0ee9944ee9e234d286))
+
 ## 0.5.1 (2025-09-18)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.5.0...v0.5.1)
