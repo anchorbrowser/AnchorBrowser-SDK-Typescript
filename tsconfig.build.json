@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "anchorbrowser/*": ["dist/src/*"],
-      "anchorbrowser": ["dist/src/index.ts"]
+      "anchorbrowser/*": ["./dist/src/*"],
+      "anchorbrowser": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,
