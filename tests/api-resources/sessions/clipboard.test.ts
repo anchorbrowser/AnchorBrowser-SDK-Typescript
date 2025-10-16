@@ -23,7 +23,7 @@ describe('resource clipboard', () => {
   // Prism tests are disabled
   test.skip('set: only required params', async () => {
     const responsePromise = client.sessions.clipboard.set('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      text: 'Text from clipboard API',
+      text: 'text',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -37,7 +37,7 @@ describe('resource clipboard', () => {
   // Prism tests are disabled
   test.skip('set: required and optional params', async () => {
     const response = await client.sessions.clipboard.set('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      text: 'Text from clipboard API',
+      text: 'text',
     });
   });
 });

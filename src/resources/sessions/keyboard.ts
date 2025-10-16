@@ -8,14 +8,6 @@ import { path } from '../../internal/utils/path';
 export class Keyboard extends APIResource {
   /**
    * Performs a keyboard shortcut using the specified keys
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.keyboard.shortcut(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { keys: ['Ctrl', 'a'] },
-   * );
-   * ```
    */
   shortcut(
     sessionID: string,
@@ -27,14 +19,6 @@ export class Keyboard extends APIResource {
 
   /**
    * Types the specified text with optional delay between keystrokes
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.keyboard.type(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { text: 'Hello from Session Manager VNC API test!' },
-   * );
-   * ```
    */
   type(
     sessionID: string,

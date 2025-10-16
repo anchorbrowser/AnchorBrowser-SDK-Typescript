@@ -8,11 +8,6 @@ import { RequestOptions } from '../../internal/request-options';
 export class All extends APIResource {
   /**
    * Terminates all active browser sessions associated with the provided API key.
-   *
-   * @example
-   * ```ts
-   * const successResponse = await client.sessions.all.delete();
-   * ```
    */
   delete(options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.delete('/v1/sessions/all', options);
@@ -21,11 +16,6 @@ export class All extends APIResource {
   /**
    * Retrieves status information for all browser sessions associated with the API
    * key.
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.all.status();
-   * ```
    */
   status(options?: RequestOptions): APIPromise<AllStatusResponse> {
     return this._client.get('/v1/sessions/all/status', options);

@@ -15,7 +15,6 @@ Methods:
 
 - <code title="post /v1/profiles">client.profiles.<a href="./src/resources/profiles.ts">create</a>({ ...params }) -> SuccessResponse</code>
 - <code title="get /v1/profiles/{name}">client.profiles.<a href="./src/resources/profiles.ts">retrieve</a>(name) -> ProfileRetrieveResponse</code>
-- <code title="put /v1/profiles/{name}">client.profiles.<a href="./src/resources/profiles.ts">update</a>(name, { ...params }) -> SuccessResponse</code>
 - <code title="get /v1/profiles">client.profiles.<a href="./src/resources/profiles.ts">list</a>() -> ProfileListResponse</code>
 - <code title="delete /v1/profiles/{name}">client.profiles.<a href="./src/resources/profiles.ts">delete</a>(name) -> SuccessResponse</code>
 

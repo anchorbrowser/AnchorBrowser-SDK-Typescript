@@ -13,13 +13,6 @@ export class Agent extends APIResource {
 
   /**
    * Pauses the AI agent for the specified browser session.
-   *
-   * @example
-   * ```ts
-   * const successResponse = await client.sessions.agent.pause(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
    */
   pause(sessionID: string, options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/agent/pause`, options);
@@ -27,13 +20,6 @@ export class Agent extends APIResource {
 
   /**
    * Resumes the AI agent for the specified browser session.
-   *
-   * @example
-   * ```ts
-   * const successResponse = await client.sessions.agent.resume(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
    */
   resume(sessionID: string, options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/agent/resume`, options);

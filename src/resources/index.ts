@@ -16,7 +16,6 @@ export {
   type ProfileRetrieveResponse,
   type ProfileListResponse,
   type ProfileCreateParams,
-  type ProfileUpdateParams,
 } from './profiles';
 export {
   Sessions,

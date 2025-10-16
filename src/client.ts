@@ -30,7 +30,6 @@ import {
   ProfileCreateParams,
   ProfileListResponse,
   ProfileRetrieveResponse,
-  ProfileUpdateParams,
   Profiles,
 } from './resources/profiles';
 import {
@@ -778,7 +777,6 @@ export declare namespace Anchorbrowser {
     type ProfileRetrieveResponse as ProfileRetrieveResponse,
     type ProfileListResponse as ProfileListResponse,
     type ProfileCreateParams as ProfileCreateParams,
-    type ProfileUpdateParams as ProfileUpdateParams,
   };
 
   export {

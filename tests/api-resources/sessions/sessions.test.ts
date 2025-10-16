@@ -27,23 +27,23 @@ describe('resource sessions', () => {
       client.sessions.create(
         {
           browser: {
-            adblock: { active: false },
-            captcha_solver: { active: false },
-            disable_web_security: { active: false },
-            extensions: ['550e8400-e29b-41d4-a716-446655440000', '6ba7b810-9dad-11d1-80b4-00c04fd430c8'],
-            fullscreen: { active: false },
+            adblock: { active: true },
+            captcha_solver: { active: true },
+            disable_web_security: { active: true },
+            extensions: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+            fullscreen: { active: true },
             headless: { active: true },
-            p2p_download: { active: false },
-            popup_blocker: { active: false },
-            profile: { name: 'my-profile', persist: true, reset_preferences: false },
-            viewport: { height: 900, width: 1440 },
+            p2p_download: { active: true },
+            popup_blocker: { active: true },
+            profile: { name: 'name', persist: true },
+            viewport: { height: 0, width: 0 },
           },
           session: {
-            initial_url: 'https://anchorbrowser.io',
-            live_view: { read_only: false },
+            initial_url: 'https://example.com',
+            live_view: { read_only: true },
             proxy: { active: true, city: 'city', country_code: 'af', region: 'region', type: 'anchor_proxy' },
-            recording: { active: false },
-            timeout: { idle_timeout: 3, max_duration: 10 },
+            recording: { active: true },
+            timeout: { idle_timeout: 0, max_duration: 0 },
           },
         },
         { path: '/_stainless_unknown_path' },
@@ -90,10 +90,10 @@ describe('resource sessions', () => {
   // Prism tests are disabled
   test.skip('dragAndDrop: only required params', async () => {
     const responsePromise = client.sessions.dragAndDrop('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      endX: 500,
-      endY: 300,
-      startX: 400,
-      startY: 200,
+      endX: 0,
+      endY: 0,
+      startX: 0,
+      startY: 0,
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -107,19 +107,17 @@ describe('resource sessions', () => {
   // Prism tests are disabled
   test.skip('dragAndDrop: required and optional params', async () => {
     const response = await client.sessions.dragAndDrop('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      endX: 500,
-      endY: 300,
-      startX: 400,
-      startY: 200,
+      endX: 0,
+      endY: 0,
+      startX: 0,
+      startY: 0,
       button: 'left',
     });
   });
 
   // Prism tests are disabled
   test.skip('goto: only required params', async () => {
-    const responsePromise = client.sessions.goto('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      url: 'https://www.google.com',
-    });
+    const responsePromise = client.sessions.goto('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { url: 'url' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -131,9 +129,7 @@ describe('resource sessions', () => {
 
   // Prism tests are disabled
   test.skip('goto: required and optional params', async () => {
-    const response = await client.sessions.goto('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      url: 'https://www.google.com',
-    });
+    const response = await client.sessions.goto('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { url: 'url' });
   });
 
   // Prism tests are disabled
@@ -150,9 +146,7 @@ describe('resource sessions', () => {
 
   // Prism tests are disabled
   test.skip('paste: only required params', async () => {
-    const responsePromise = client.sessions.paste('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      text: 'Text pasted via API',
-    });
+    const responsePromise = client.sessions.paste('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { text: 'text' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -164,9 +158,7 @@ describe('resource sessions', () => {
 
   // Prism tests are disabled
   test.skip('paste: required and optional params', async () => {
-    const response = await client.sessions.paste('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      text: 'Text pasted via API',
-    });
+    const response = await client.sessions.paste('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { text: 'text' });
   });
 
   // Prism tests are disabled
@@ -184,7 +176,7 @@ describe('resource sessions', () => {
   // Prism tests are disabled
   test.skip('scroll: only required params', async () => {
     const responsePromise = client.sessions.scroll('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      deltaY: 100,
+      deltaY: 0,
       x: 0,
       y: 0,
     });
@@ -200,18 +192,18 @@ describe('resource sessions', () => {
   // Prism tests are disabled
   test.skip('scroll: required and optional params', async () => {
     const response = await client.sessions.scroll('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      deltaY: 100,
+      deltaY: 0,
       x: 0,
       y: 0,
       deltaX: 0,
-      steps: 10,
-      useOs: false,
+      steps: 0,
+      useOs: true,
     });
   });
 
   // Prism tests are disabled
   test.skip('uploadFile: only required params', async () => {
-    const responsePromise = client.sessions.uploadFile('550e8400-e29b-41d4-a716-446655440000', {
+    const responsePromise = client.sessions.uploadFile('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       file: await toFile(Buffer.from('# my file contents'), 'README.md'),
     });
     const rawResponse = await responsePromise.asResponse();
@@ -225,7 +217,7 @@ describe('resource sessions', () => {
 
   // Prism tests are disabled
   test.skip('uploadFile: required and optional params', async () => {
-    const response = await client.sessions.uploadFile('550e8400-e29b-41d4-a716-446655440000', {
+    const response = await client.sessions.uploadFile('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       file: await toFile(Buffer.from('# my file contents'), 'README.md'),
     });
   });
