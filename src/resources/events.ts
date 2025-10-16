@@ -15,7 +15,7 @@ export class Events extends APIResource {
    * @example
    * ```ts
    * const successResponse = await client.events.signal(
-   *   'workflow_completed',
+   *   'event_name',
    *   {
    *     data: {
    *       message: 'bar',
@@ -41,9 +41,7 @@ export class Events extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.events.waitFor(
-   *   'workflow_completed',
-   * );
+   * const response = await client.events.waitFor('event_name');
    * ```
    */
   waitFor(

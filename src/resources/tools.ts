@@ -9,11 +9,6 @@ export class Tools extends APIResource {
   /**
    * Retrieve the rendered content of a webpage, optionally formatted as Markdown or
    * HTML.
-   *
-   * @example
-   * ```ts
-   * const response = await client.tools.fetchWebpage();
-   * ```
    */
   fetchWebpage(params: ToolFetchWebpageParams, options?: RequestOptions): APIPromise<string> {
     const { sessionId, ...body } = params;
@@ -27,13 +22,6 @@ export class Tools extends APIResource {
 
   /**
    * Start from a URL and perform the given task.
-   *
-   * @example
-   * ```ts
-   * const response = await client.tools.performWebTask({
-   *   prompt: 'Collect the node names and their CPU average %',
-   * });
-   * ```
    */
   performWebTask(
     params: ToolPerformWebTaskParams,
@@ -46,14 +34,6 @@ export class Tools extends APIResource {
   /**
    * This endpoint captures a screenshot of the specified webpage using Chromium.
    * Users can customize the viewport dimensions and capture options.
-   *
-   * @example
-   * ```ts
-   * const response = await client.tools.screenshotWebpage();
-   *
-   * const content = await response.blob();
-   * console.log(content);
-   * ```
    */
   screenshotWebpage(params: ToolScreenshotWebpageParams, options?: RequestOptions): APIPromise<Response> {
     const { sessionId, ...body } = params;

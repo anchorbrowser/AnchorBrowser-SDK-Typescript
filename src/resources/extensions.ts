@@ -12,13 +12,6 @@ import { path } from '../internal/utils/path';
 export class Extensions extends APIResource {
   /**
    * Get details of a specific extension by its ID
-   *
-   * @example
-   * ```ts
-   * const extension = await client.extensions.retrieve(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
    */
   retrieve(id: string, options?: RequestOptions): APIPromise<ExtensionRetrieveResponse> {
     return this._client.get(path`/v1/extensions/${id}`, options);
@@ -26,11 +19,6 @@ export class Extensions extends APIResource {
 
   /**
    * Get all extensions for the authenticated user
-   *
-   * @example
-   * ```ts
-   * const extensions = await client.extensions.list();
-   * ```
    */
   list(options?: RequestOptions): APIPromise<ExtensionListResponse> {
     return this._client.get('/v1/extensions', options);
@@ -38,13 +26,6 @@ export class Extensions extends APIResource {
 
   /**
    * Delete an extension and remove it from storage
-   *
-   * @example
-   * ```ts
-   * const extension = await client.extensions.delete(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
    */
   delete(id: string, options?: RequestOptions): APIPromise<ExtensionDeleteResponse> {
     return this._client.delete(path`/v1/extensions/${id}`, options);
@@ -53,14 +34,6 @@ export class Extensions extends APIResource {
   /**
    * Upload a new browser extension as a ZIP file. The extension will be validated
    * and stored for use in browser sessions.
-   *
-   * @example
-   * ```ts
-   * const response = await client.extensions.upload({
-   *   file: fs.createReadStream('path/to/file'),
-   *   name: 'My Custom Extension',
-   * });
-   * ```
    */
   upload(body: ExtensionUploadParams, options?: RequestOptions): APIPromise<ExtensionUploadResponse> {
     return this._client.post(

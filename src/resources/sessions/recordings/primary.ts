@@ -10,17 +10,6 @@ export class Primary extends APIResource {
   /**
    * Downloads the primary recording file for the specified browser session. Returns
    * the recording as an MP4 file.
-   *
-   * @example
-   * ```ts
-   * const primary =
-   *   await client.sessions.recordings.primary.get(
-   *     'session_id',
-   *   );
-   *
-   * const content = await primary.blob();
-   * console.log(content);
-   * ```
    */
   get(sessionID: string, options?: RequestOptions): APIPromise<Response> {
     return this._client.get(path`/v1/sessions/${sessionID}/recordings/primary/fetch`, {
