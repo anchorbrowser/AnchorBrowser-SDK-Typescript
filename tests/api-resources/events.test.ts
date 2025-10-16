@@ -10,7 +10,7 @@ const client = new Anchorbrowser({
 describe('resource events', () => {
   // Prism tests are disabled
   test.skip('signal: only required params', async () => {
-    const responsePromise = client.events.signal('workflow_completed', {
+    const responsePromise = client.events.signal('event_name', {
       data: { message: 'bar', result: 'bar', timestamp: 'bar' },
     });
     const rawResponse = await responsePromise.asResponse();
@@ -24,14 +24,14 @@ describe('resource events', () => {
 
   // Prism tests are disabled
   test.skip('signal: required and optional params', async () => {
-    const response = await client.events.signal('workflow_completed', {
+    const response = await client.events.signal('event_name', {
       data: { message: 'bar', result: 'bar', timestamp: 'bar' },
     });
   });
 
   // Prism tests are disabled
   test.skip('waitFor', async () => {
-    const responsePromise = client.events.waitFor('workflow_completed');
+    const responsePromise = client.events.waitFor('event_name');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -45,7 +45,7 @@ describe('resource events', () => {
   test.skip('waitFor: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.events.waitFor('workflow_completed', { timeoutMs: 30000 }, { path: '/_stainless_unknown_path' }),
+      client.events.waitFor('event_name', { timeoutMs: 0 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(Anchorbrowser.NotFoundError);
   });
 });

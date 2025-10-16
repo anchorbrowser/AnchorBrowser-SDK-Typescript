@@ -8,14 +8,6 @@ import { path } from '../../internal/utils/path';
 export class Mouse extends APIResource {
   /**
    * Performs a mouse click at the specified coordinates
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.mouse.click(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 0, y: 0 },
-   * );
-   * ```
    */
   click(sessionID: string, body: MouseClickParams, options?: RequestOptions): APIPromise<MouseClickResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/mouse/click`, { body, ...options });
@@ -23,14 +15,6 @@ export class Mouse extends APIResource {
 
   /**
    * Performs a double click at the specified coordinates
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.mouse.doubleClick(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 0, y: 0 },
-   * );
-   * ```
    */
   doubleClick(
     sessionID: string,
@@ -42,14 +26,6 @@ export class Mouse extends APIResource {
 
   /**
    * Performs a mouse button down action at the specified coordinates
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.mouse.down(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 0, y: 0 },
-   * );
-   * ```
    */
   down(sessionID: string, body: MouseDownParams, options?: RequestOptions): APIPromise<MouseDownResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/mouse/down`, { body, ...options });
@@ -57,14 +33,6 @@ export class Mouse extends APIResource {
 
   /**
    * Moves the mouse cursor to the specified coordinates
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.mouse.move(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 0, y: 0 },
-   * );
-   * ```
    */
   move(sessionID: string, body: MouseMoveParams, options?: RequestOptions): APIPromise<MouseMoveResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/mouse/move`, { body, ...options });
@@ -72,14 +40,6 @@ export class Mouse extends APIResource {
 
   /**
    * Performs a mouse button up action at the specified coordinates
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.mouse.up(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 0, y: 0 },
-   * );
-   * ```
    */
   up(sessionID: string, body: MouseUpParams, options?: RequestOptions): APIPromise<MouseUpResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/mouse/up`, { body, ...options });

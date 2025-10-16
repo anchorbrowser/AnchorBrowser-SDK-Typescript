@@ -10,13 +10,6 @@ export class Profiles extends APIResource {
   /**
    * Creates a new profile from a browser session. A Profile stores cookies, local
    * storage, and cache.
-   *
-   * @example
-   * ```ts
-   * const successResponse = await client.profiles.create({
-   *   name: 'my-profile',
-   * });
-   * ```
    */
   create(body: ProfileCreateParams, options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.post('/v1/profiles', { body, ...options });
@@ -24,43 +17,13 @@ export class Profiles extends APIResource {
 
   /**
    * Retrieves details of a specific profile by its name.
-   *
-   * @example
-   * ```ts
-   * const profile = await client.profiles.retrieve(
-   *   'my-profile',
-   * );
-   * ```
    */
   retrieve(name: string, options?: RequestOptions): APIPromise<ProfileRetrieveResponse> {
     return this._client.get(path`/v1/profiles/${name}`, options);
   }
 
   /**
-   * Updates the description or data of an existing profile using a browser session.
-   *
-   * @example
-   * ```ts
-   * const successResponse = await client.profiles.update(
-   *   'my-profile',
-   * );
-   * ```
-   */
-  update(
-    name: string,
-    body: ProfileUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<Shared.SuccessResponse> {
-    return this._client.put(path`/v1/profiles/${name}`, { body, ...options });
-  }
-
-  /**
    * Fetches all stored profiles.
-   *
-   * @example
-   * ```ts
-   * const profiles = await client.profiles.list();
-   * ```
    */
   list(options?: RequestOptions): APIPromise<ProfileListResponse> {
     return this._client.get('/v1/profiles', options);
@@ -68,13 +31,6 @@ export class Profiles extends APIResource {
 
   /**
    * Deletes an existing profile by its name.
-   *
-   * @example
-   * ```ts
-   * const successResponse = await client.profiles.delete(
-   *   'my-profile',
-   * );
-   * ```
    */
   delete(name: string, options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.delete(path`/v1/profiles/${name}`, options);
@@ -197,29 +153,10 @@ export interface ProfileCreateParams {
   source?: 'session';
 }
 
-export interface ProfileUpdateParams {
-  /**
-   * The new description for the profile.
-   */
-  description?: string;
-
-  /**
-   * The browser session ID is required if the source is set to `session`. The
-   * browser session must belong to the user and be active.
-   */
-  session_id?: string;
-
-  /**
-   * The source of the profile data. Currently, only `session` is supported.
-   */
-  source?: 'session';
-}
-
 export declare namespace Profiles {
   export {
     type ProfileRetrieveResponse as ProfileRetrieveResponse,
     type ProfileListResponse as ProfileListResponse,
     type ProfileCreateParams as ProfileCreateParams,
-    type ProfileUpdateParams as ProfileUpdateParams,
   };
 }

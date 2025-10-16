@@ -10,7 +10,7 @@ const client = new Anchorbrowser({
 describe('resource profiles', () => {
   // Prism tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.profiles.create({ name: 'my-profile' });
+    const responsePromise = client.profiles.create({ name: 'name' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,29 +23,17 @@ describe('resource profiles', () => {
   // Prism tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.profiles.create({
-      name: 'my-profile',
-      dedicated_sticky_ip: false,
-      description: 'This is my profile description.',
-      session_id: '550e8400-e29b-41d4-a716-446655440000',
+      name: 'name',
+      dedicated_sticky_ip: true,
+      description: 'description',
+      session_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       source: 'session',
     });
   });
 
   // Prism tests are disabled
   test.skip('retrieve', async () => {
-    const responsePromise = client.profiles.retrieve('my-profile');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('update', async () => {
-    const responsePromise = client.profiles.update('my-profile', {});
+    const responsePromise = client.profiles.retrieve('name');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -69,7 +57,7 @@ describe('resource profiles', () => {
 
   // Prism tests are disabled
   test.skip('delete', async () => {
-    const responsePromise = client.profiles.delete('my-profile');
+    const responsePromise = client.profiles.delete('name');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

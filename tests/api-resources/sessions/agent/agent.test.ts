@@ -10,7 +10,7 @@ const client = new Anchorbrowser({
 describe('resource agent', () => {
   // Prism tests are disabled
   test.skip('pause', async () => {
-    const responsePromise = client.sessions.agent.pause('550e8400-e29b-41d4-a716-446655440000');
+    const responsePromise = client.sessions.agent.pause('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,7 +22,7 @@ describe('resource agent', () => {
 
   // Prism tests are disabled
   test.skip('resume', async () => {
-    const responsePromise = client.sessions.agent.resume('550e8400-e29b-41d4-a716-446655440000');
+    const responsePromise = client.sessions.agent.resume('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

@@ -11,7 +11,7 @@ describe('resource keyboard', () => {
   // Prism tests are disabled
   test.skip('shortcut: only required params', async () => {
     const responsePromise = client.sessions.keyboard.shortcut('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      keys: ['Ctrl', 'a'],
+      keys: ['string'],
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -25,15 +25,15 @@ describe('resource keyboard', () => {
   // Prism tests are disabled
   test.skip('shortcut: required and optional params', async () => {
     const response = await client.sessions.keyboard.shortcut('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      keys: ['Ctrl', 'a'],
-      holdTime: 100,
+      keys: ['string'],
+      holdTime: 0,
     });
   });
 
   // Prism tests are disabled
   test.skip('type: only required params', async () => {
     const responsePromise = client.sessions.keyboard.type('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      text: 'Hello from Session Manager VNC API test!',
+      text: 'text',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -47,8 +47,8 @@ describe('resource keyboard', () => {
   // Prism tests are disabled
   test.skip('type: required and optional params', async () => {
     const response = await client.sessions.keyboard.type('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      text: 'Hello from Session Manager VNC API test!',
-      delay: 30,
+      text: 'text',
+      delay: 0,
     });
   });
 });

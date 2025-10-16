@@ -12,13 +12,6 @@ export class Files extends APIResource {
    * List all resources that have been uploaded to the browser session for agent use.
    * Returns resource metadata including name, size, type, and last modified
    * timestamp.
-   *
-   * @example
-   * ```ts
-   * const files = await client.sessions.agent.files.list(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   * );
-   * ```
    */
   list(sessionID: string, options?: RequestOptions): APIPromise<FileListResponse> {
     return this._client.get(path`/v1/sessions/${sessionID}/agent/files`, options);
@@ -30,14 +23,6 @@ export class Files extends APIResource {
    * be made available as agent resources. If you upload a single file, it will be
    * saved directly as an agent resource. Resources are then accessible to AI agents
    * for task completion and automation.
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.agent.files.upload(
-   *   '550e8400-e29b-41d4-a716-446655440000',
-   *   { file: fs.createReadStream('path/to/file') },
-   * );
-   * ```
    */
   upload(
     sessionID: string,
