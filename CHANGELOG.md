@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.6.0 (2025-10-16)
+
+Full Changelog: [v0.5.1...v0.6.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.5.1...v0.6.0)
+
+### Features
+
+* BRO-959 us as default proxy country code ([80e0005](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/80e00053c474d8b9c2a15b1124c8d3e8a486699b))
+
+
+### Performance Improvements
+
+* faster formatting ([02f2428](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/02f2428791e49a29ffc3c86fcf0dbf613e7bb79a))
+
+
+### Chores
+
+* do not install brew dependencies in ./scripts/bootstrap by default ([4ed65e6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/4ed65e6a05eac2fd40eb61599255758aa6386ed9))
+* **internal:** codegen related update ([ac6c44b](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/ac6c44bf2f021aea3167e3bbfc2caea6955516c1))
+* **internal:** fix incremental formatting in some cases ([bb89d63](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/bb89d630deb41e436476ed797499127e4b4ab8fd))
+* **internal:** ignore .eslintcache ([4da306a](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/4da306a47c3e8bbcd1206ba2d5a165a07860442a))
+* **internal:** remove .eslintcache ([fd13f1d](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/fd13f1ddafe3b1c4c639950a36eb94672c6e2d7c))
+* **internal:** remove deprecated `compilerOptions.baseUrl` from tsconfig.json ([f91c077](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/f91c0775c062fe99c28c6e0ee9944ee9e234d286))
+* **internal:** use npm pack for build uploads ([4006584](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/40065840d303d70c72df07d22f7484330856cf4a))
+* **jsdoc:** fix [@link](https://github.com/link) annotations to refer only to parts of the package‘s public interface ([09833b8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/09833b84ffc467ba0de74606dbcf7eed36243717))
+
 ## 0.5.1 (2025-09-18)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.5.0...v0.5.1)
