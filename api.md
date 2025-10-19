@@ -180,3 +180,15 @@ Methods:
 
 - <code title="post /v1/events/{event_name}">client.events.<a href="./src/resources/events.ts">signal</a>(eventName, { ...params }) -> SuccessResponse</code>
 - <code title="post /v1/events/{event_name}/wait">client.events.<a href="./src/resources/events.ts">waitFor</a>(eventName, { ...params }) -> EventWaitForResponse</code>
+
+# BatchSessions
+
+Types:
+
+- <code><a href="./src/resources/batch-sessions.ts">BatchSessionCreateResponse</a></code>
+- <code><a href="./src/resources/batch-sessions.ts">BatchSessionRetrieveResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/batch-sessions">client.batchSessions.<a href="./src/resources/batch-sessions.ts">create</a>({ ...params }) -> BatchSessionCreateResponse</code>
+- <code title="get /v1/batch-sessions/{batch_id}">client.batchSessions.<a href="./src/resources/batch-sessions.ts">retrieve</a>(batchID) -> BatchSessionRetrieveResponse</code>
