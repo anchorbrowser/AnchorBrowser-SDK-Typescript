@@ -241,6 +241,12 @@ export namespace BatchSessionCreateParams {
     browser?: Configuration.Browser;
 
     /**
+     * Array of integrations to load in the browser session. Integrations must be
+     * previously created using the Integrations API.
+     */
+    integrations?: Array<Configuration.Integration>;
+
+    /**
      * Session-related configurations.
      */
     session?: Configuration.Session;
@@ -410,6 +416,41 @@ export namespace BatchSessionCreateParams {
          * Width of the viewport in pixels. Defaults to `1440`.
          */
         width?: number;
+      }
+    }
+
+    export interface Integration {
+      /**
+       * Unique integration ID
+       */
+      id: string;
+
+      configuration: Integration.OnePasswordAllSecretsConfig | Integration.OnePasswordSpecificSecretsConfig;
+
+      /**
+       * Integration type
+       */
+      type: '1PASSWORD';
+    }
+
+    export namespace Integration {
+      export interface OnePasswordAllSecretsConfig {
+        /**
+         * Load all secrets from 1Password
+         */
+        load_mode: 'all';
+      }
+
+      export interface OnePasswordSpecificSecretsConfig {
+        /**
+         * Load specific secrets from 1Password
+         */
+        load_mode: 'specific';
+
+        /**
+         * Array of secret references to load
+         */
+        secrets: Array<string>;
       }
     }
 
