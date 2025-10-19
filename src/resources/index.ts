@@ -1,6 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export * from './shared';
+export {
+  BatchSessions,
+  type BatchSessionCreateResponse,
+  type BatchSessionRetrieveResponse,
+  type BatchSessionCreateParams,
+} from './batch-sessions';
 export { Events, type EventWaitForResponse, type EventSignalParams, type EventWaitForParams } from './events';
 export {
   Extensions,
