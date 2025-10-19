@@ -18,6 +18,13 @@ export {
   type ExtensionUploadParams,
 } from './extensions';
 export {
+  Integrations,
+  type IntegrationCreateResponse,
+  type IntegrationListResponse,
+  type IntegrationDeleteResponse,
+  type IntegrationCreateParams,
+} from './integrations';
+export {
   Profiles,
   type ProfileRetrieveResponse,
   type ProfileListResponse,

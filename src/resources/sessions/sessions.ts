@@ -55,6 +55,11 @@ export class Sessions extends APIResource {
   /**
    * Allocates a new browser session for the user, with optional configurations for
    * ad-blocking, captcha solving, proxy usage, and idle timeout.
+   *
+   * @example
+   * ```ts
+   * const session = await client.sessions.create();
+   * ```
    */
   create(
     body: SessionCreateParams | null | undefined = {},
@@ -65,6 +70,13 @@ export class Sessions extends APIResource {
 
   /**
    * Retrieves detailed information about a specific browser session.
+   *
+   * @example
+   * ```ts
+   * const session = await client.sessions.retrieve(
+   *   'session_id',
+   * );
+   * ```
    */
   retrieve(sessionID: string, options?: RequestOptions): APIPromise<SessionRetrieveResponse> {
     return this._client.get(path`/v1/sessions/${sessionID}`, options);
@@ -73,6 +85,13 @@ export class Sessions extends APIResource {
   /**
    * Deletes the browser session associated with the provided browser session ID.
    * Requires a valid API key for authentication.
+   *
+   * @example
+   * ```ts
+   * const successResponse = await client.sessions.delete(
+   *   'session_id',
+   * );
+   * ```
    */
   delete(sessionID: string, options?: RequestOptions): APIPromise<Shared.SuccessResponse> {
     return this._client.delete(path`/v1/sessions/${sessionID}`, options);
@@ -80,6 +99,13 @@ export class Sessions extends APIResource {
 
   /**
    * Copies the currently selected text to the clipboard
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.copy(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   copy(sessionID: string, options?: RequestOptions): APIPromise<SessionCopyResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/copy`, options);
@@ -87,6 +113,14 @@ export class Sessions extends APIResource {
 
   /**
    * Performs a drag and drop operation from start coordinates to end coordinates
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.dragAndDrop(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { endX: 0, endY: 0, startX: 0, startY: 0 },
+   * );
+   * ```
    */
   dragAndDrop(
     sessionID: string,
@@ -98,6 +132,14 @@ export class Sessions extends APIResource {
 
   /**
    * Navigates the browser session to the specified URL
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.goto(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { url: 'url' },
+   * );
+   * ```
    */
   goto(
     sessionID: string,
@@ -109,6 +151,13 @@ export class Sessions extends APIResource {
 
   /**
    * Retrieves a list of pages associated with a specific browser session.
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.listPages(
+   *   'session_id',
+   * );
+   * ```
    */
   listPages(sessionID: string, options?: RequestOptions): APIPromise<SessionListPagesResponse> {
     return this._client.get(path`/v1/sessions/${sessionID}/pages`, options);
@@ -116,6 +165,14 @@ export class Sessions extends APIResource {
 
   /**
    * Pastes text at the current cursor position
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.paste(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { text: 'text' },
+   * );
+   * ```
    */
   paste(
     sessionID: string,
@@ -128,6 +185,13 @@ export class Sessions extends APIResource {
   /**
    * Retrieves metadata of files downloaded during a browser session. Requires a
    * valid API key for authentication.
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.retrieveDownloads(
+   *   'session_id',
+   * );
+   * ```
    */
   retrieveDownloads(
     sessionID: string,
@@ -138,6 +202,16 @@ export class Sessions extends APIResource {
 
   /**
    * Takes a screenshot of the current browser session and returns it as an image.
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.retrieveScreenshot(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   *
+   * const content = await response.blob();
+   * console.log(content);
+   * ```
    */
   retrieveScreenshot(sessionID: string, options?: RequestOptions): APIPromise<Response> {
     return this._client.get(path`/v1/sessions/${sessionID}/screenshot`, {
@@ -149,6 +223,14 @@ export class Sessions extends APIResource {
 
   /**
    * Performs a scroll action at the specified coordinates
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.scroll(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { deltaY: 0, x: 0, y: 0 },
+   * );
+   * ```
    */
   scroll(
     sessionID: string,
@@ -164,6 +246,14 @@ export class Sessions extends APIResource {
    *
    * Files are saved to the session's uploads directory and can be referenced in CDP
    * commands.
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.uploadFile(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { file: fs.createReadStream('path/to/file') },
+   * );
+   * ```
    */
   uploadFile(
     sessionID: string,
@@ -395,6 +485,12 @@ export interface SessionCreateParams {
   browser?: SessionCreateParams.Browser;
 
   /**
+   * Array of integrations to load in the browser session. Integrations must be
+   * previously created using the Integrations API.
+   */
+  integrations?: Array<SessionCreateParams.Integration>;
+
+  /**
    * Session-related configurations.
    */
   session?: SessionCreateParams.Session;
@@ -564,6 +660,41 @@ export namespace SessionCreateParams {
        * Width of the viewport in pixels. Defaults to `1440`.
        */
       width?: number;
+    }
+  }
+
+  export interface Integration {
+    /**
+     * Unique integration ID
+     */
+    id: string;
+
+    configuration: Integration.OnePasswordAllSecretsConfig | Integration.OnePasswordSpecificSecretsConfig;
+
+    /**
+     * Integration type
+     */
+    type: '1PASSWORD';
+  }
+
+  export namespace Integration {
+    export interface OnePasswordAllSecretsConfig {
+      /**
+       * Load all secrets from 1Password
+       */
+      load_mode: 'all';
+    }
+
+    export interface OnePasswordSpecificSecretsConfig {
+      /**
+       * Load specific secrets from 1Password
+       */
+      load_mode: 'specific';
+
+      /**
+       * Array of secret references to load
+       */
+      secrets: Array<string>;
     }
   }
 
