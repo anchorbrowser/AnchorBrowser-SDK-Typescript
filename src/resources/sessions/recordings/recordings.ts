@@ -14,6 +14,13 @@ export class Recordings extends APIResource {
   /**
    * Retrieves the URLs of the browser session's video recordings. Requires a valid
    * API key for authentication.
+   *
+   * @example
+   * ```ts
+   * const recordings = await client.sessions.recordings.list(
+   *   'session_id',
+   * );
+   * ```
    */
   list(sessionID: string, options?: RequestOptions): APIPromise<RecordingListResponse> {
     return this._client.get(path`/v1/sessions/${sessionID}/recordings`, options);
@@ -21,6 +28,13 @@ export class Recordings extends APIResource {
 
   /**
    * Pauses the video recording for the specified browser session.
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.recordings.pause(
+   *   'session_id',
+   * );
+   * ```
    */
   pause(sessionID: string, options?: RequestOptions): APIPromise<RecordingPauseResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/recordings/pause`, options);
@@ -28,6 +42,13 @@ export class Recordings extends APIResource {
 
   /**
    * Resumes the video recording for the specified browser session.
+   *
+   * @example
+   * ```ts
+   * const response = await client.sessions.recordings.resume(
+   *   'session_id',
+   * );
+   * ```
    */
   resume(sessionID: string, options?: RequestOptions): APIPromise<RecordingResumeResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/recordings/resume`, options);
