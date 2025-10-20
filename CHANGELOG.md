@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.0 (2025-10-20)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* added batch and cursor rules ([8b5d15b](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/8b5d15b98c68e445463cc593b158869b402016c6))
+* **api:** manual updates ([1829d5e](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/1829d5e97eef442019a0e42cd610a70763b77ed6))
+* Bro 908 1 password integration 2 ([812e423](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/812e42333d0e2bade35b98c94445e60218ee8e93))
+* BRO-976 docs: add extra_stealth to openai and sdk ([40a9d09](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/40a9d09ec967da6c51114863de3d44e3b5bea5c9))
+
 ## 0.6.0 (2025-10-16)
 
 Full Changelog: [v0.5.1...v0.6.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.5.1...v0.6.0)
