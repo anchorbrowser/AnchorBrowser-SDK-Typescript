@@ -41,21 +41,6 @@ export class Mouse extends APIResource {
   }
 
   /**
-   * Performs a mouse button down action at the specified coordinates
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.mouse.down(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 0, y: 0 },
-   * );
-   * ```
-   */
-  down(sessionID: string, body: MouseDownParams, options?: RequestOptions): APIPromise<MouseDownResponse> {
-    return this._client.post(path`/v1/sessions/${sessionID}/mouse/down`, { body, ...options });
-  }
-
-  /**
    * Moves the mouse cursor to the specified coordinates
    *
    * @example
@@ -69,21 +54,6 @@ export class Mouse extends APIResource {
   move(sessionID: string, body: MouseMoveParams, options?: RequestOptions): APIPromise<MouseMoveResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/mouse/move`, { body, ...options });
   }
-
-  /**
-   * Performs a mouse button up action at the specified coordinates
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.mouse.up(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 0, y: 0 },
-   * );
-   * ```
-   */
-  up(sessionID: string, body: MouseUpParams, options?: RequestOptions): APIPromise<MouseUpResponse> {
-    return this._client.post(path`/v1/sessions/${sessionID}/mouse/up`, { body, ...options });
-  }
 }
 
 export interface MouseClickResponse {
@@ -94,15 +64,7 @@ export interface MouseDoubleClickResponse {
   status?: string;
 }
 
-export interface MouseDownResponse {
-  status?: string;
-}
-
 export interface MouseMoveResponse {
-  status?: string;
-}
-
-export interface MouseUpResponse {
   status?: string;
 }
 
@@ -140,23 +102,6 @@ export interface MouseDoubleClickParams {
   button?: 'left' | 'middle' | 'right';
 }
 
-export interface MouseDownParams {
-  /**
-   * X coordinate
-   */
-  x: number;
-
-  /**
-   * Y coordinate
-   */
-  y: number;
-
-  /**
-   * Mouse button to use
-   */
-  button?: 'left' | 'middle' | 'right';
-}
-
 export interface MouseMoveParams {
   /**
    * X coordinate
@@ -169,34 +114,13 @@ export interface MouseMoveParams {
   y: number;
 }
 
-export interface MouseUpParams {
-  /**
-   * X coordinate
-   */
-  x: number;
-
-  /**
-   * Y coordinate
-   */
-  y: number;
-
-  /**
-   * Mouse button to use
-   */
-  button?: 'left' | 'middle' | 'right';
-}
-
 export declare namespace Mouse {
   export {
     type MouseClickResponse as MouseClickResponse,
     type MouseDoubleClickResponse as MouseDoubleClickResponse,
-    type MouseDownResponse as MouseDownResponse,
     type MouseMoveResponse as MouseMoveResponse,
-    type MouseUpResponse as MouseUpResponse,
     type MouseClickParams as MouseClickParams,
     type MouseDoubleClickParams as MouseDoubleClickParams,
-    type MouseDownParams as MouseDownParams,
     type MouseMoveParams as MouseMoveParams,
-    type MouseUpParams as MouseUpParams,
   };
 }

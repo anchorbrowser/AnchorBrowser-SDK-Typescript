@@ -19,14 +19,10 @@ export {
   Mouse,
   type MouseClickResponse,
   type MouseDoubleClickResponse,
-  type MouseDownResponse,
   type MouseMoveResponse,
-  type MouseUpResponse,
   type MouseClickParams,
   type MouseDoubleClickParams,
-  type MouseDownParams,
   type MouseMoveParams,
-  type MouseUpParams,
 } from './mouse';
 export {
   Recordings,

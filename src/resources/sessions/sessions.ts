@@ -21,12 +21,8 @@ import {
   MouseClickResponse,
   MouseDoubleClickParams,
   MouseDoubleClickResponse,
-  MouseDownParams,
-  MouseDownResponse,
   MouseMoveParams,
   MouseMoveResponse,
-  MouseUpParams,
-  MouseUpResponse,
 } from './mouse';
 import * as AgentAPI from './agent/agent';
 import { Agent } from './agent/agent';
@@ -1148,14 +1144,10 @@ export declare namespace Sessions {
     Mouse as Mouse,
     type MouseClickResponse as MouseClickResponse,
     type MouseDoubleClickResponse as MouseDoubleClickResponse,
-    type MouseDownResponse as MouseDownResponse,
     type MouseMoveResponse as MouseMoveResponse,
-    type MouseUpResponse as MouseUpResponse,
     type MouseClickParams as MouseClickParams,
     type MouseDoubleClickParams as MouseDoubleClickParams,
-    type MouseDownParams as MouseDownParams,
     type MouseMoveParams as MouseMoveParams,
-    type MouseUpParams as MouseUpParams,
   };
 
   export {
