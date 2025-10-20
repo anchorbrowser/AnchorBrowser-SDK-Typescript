@@ -85,17 +85,13 @@ Types:
 
 - <code><a href="./src/resources/sessions/mouse.ts">MouseClickResponse</a></code>
 - <code><a href="./src/resources/sessions/mouse.ts">MouseDoubleClickResponse</a></code>
-- <code><a href="./src/resources/sessions/mouse.ts">MouseDownResponse</a></code>
 - <code><a href="./src/resources/sessions/mouse.ts">MouseMoveResponse</a></code>
-- <code><a href="./src/resources/sessions/mouse.ts">MouseUpResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/sessions/{sessionId}/mouse/click">client.sessions.mouse.<a href="./src/resources/sessions/mouse.ts">click</a>(sessionID, { ...params }) -> MouseClickResponse</code>
 - <code title="post /v1/sessions/{sessionId}/mouse/doubleClick">client.sessions.mouse.<a href="./src/resources/sessions/mouse.ts">doubleClick</a>(sessionID, { ...params }) -> MouseDoubleClickResponse</code>
-- <code title="post /v1/sessions/{sessionId}/mouse/down">client.sessions.mouse.<a href="./src/resources/sessions/mouse.ts">down</a>(sessionID, { ...params }) -> MouseDownResponse</code>
 - <code title="post /v1/sessions/{sessionId}/mouse/move">client.sessions.mouse.<a href="./src/resources/sessions/mouse.ts">move</a>(sessionID, { ...params }) -> MouseMoveResponse</code>
-- <code title="post /v1/sessions/{sessionId}/mouse/up">client.sessions.mouse.<a href="./src/resources/sessions/mouse.ts">up</a>(sessionID, { ...params }) -> MouseUpResponse</code>
 
 ## Keyboard
 
@@ -192,17 +188,3 @@ Methods:
 
 - <code title="post /v1/batch-sessions">client.batchSessions.<a href="./src/resources/batch-sessions.ts">create</a>({ ...params }) -> BatchSessionCreateResponse</code>
 - <code title="get /v1/batch-sessions/{batch_id}">client.batchSessions.<a href="./src/resources/batch-sessions.ts">retrieve</a>(batchID) -> BatchSessionRetrieveResponse</code>
-
-# Integrations
-
-Types:
-
-- <code><a href="./src/resources/integrations.ts">IntegrationCreateResponse</a></code>
-- <code><a href="./src/resources/integrations.ts">IntegrationListResponse</a></code>
-- <code><a href="./src/resources/integrations.ts">IntegrationDeleteResponse</a></code>
-
-Methods:
-
-- <code title="post /v1/integrations">client.integrations.<a href="./src/resources/integrations.ts">create</a>({ ...params }) -> IntegrationCreateResponse</code>
-- <code title="get /v1/integrations">client.integrations.<a href="./src/resources/integrations.ts">list</a>() -> IntegrationListResponse</code>
-- <code title="delete /v1/integrations/{integrationId}">client.integrations.<a href="./src/resources/integrations.ts">delete</a>(integrationID) -> IntegrationDeleteResponse</code>

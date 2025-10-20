@@ -57,30 +57,6 @@ describe('resource mouse', () => {
   });
 
   // Prism tests are disabled
-  test.skip('down: only required params', async () => {
-    const responsePromise = client.sessions.mouse.down('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      x: 0,
-      y: 0,
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('down: required and optional params', async () => {
-    const response = await client.sessions.mouse.down('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      x: 0,
-      y: 0,
-      button: 'left',
-    });
-  });
-
-  // Prism tests are disabled
   test.skip('move: only required params', async () => {
     const responsePromise = client.sessions.mouse.move('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       x: 0,
@@ -98,26 +74,5 @@ describe('resource mouse', () => {
   // Prism tests are disabled
   test.skip('move: required and optional params', async () => {
     const response = await client.sessions.mouse.move('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { x: 0, y: 0 });
-  });
-
-  // Prism tests are disabled
-  test.skip('up: only required params', async () => {
-    const responsePromise = client.sessions.mouse.up('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { x: 0, y: 0 });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('up: required and optional params', async () => {
-    const response = await client.sessions.mouse.up('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      x: 0,
-      y: 0,
-      button: 'left',
-    });
   });
 });
