@@ -33,13 +33,6 @@ import {
   Extensions,
 } from './resources/extensions';
 import {
-  IntegrationCreateParams,
-  IntegrationCreateResponse,
-  IntegrationDeleteResponse,
-  IntegrationListResponse,
-  Integrations,
-} from './resources/integrations';
-import {
   ProfileCreateParams,
   ProfileListResponse,
   ProfileRetrieveResponse,
@@ -775,7 +768,6 @@ export class Anchorbrowser {
   extensions: API.Extensions = new API.Extensions(this);
   events: API.Events = new API.Events(this);
   batchSessions: API.BatchSessions = new API.BatchSessions(this);
-  integrations: API.Integrations = new API.Integrations(this);
 }
 
 Anchorbrowser.Profiles = Profiles;
@@ -784,7 +776,6 @@ Anchorbrowser.Tools = Tools;
 Anchorbrowser.Extensions = Extensions;
 Anchorbrowser.Events = Events;
 Anchorbrowser.BatchSessions = BatchSessions;
-Anchorbrowser.Integrations = Integrations;
 
 export declare namespace Anchorbrowser {
   export type RequestOptions = Opts.RequestOptions;
@@ -847,14 +838,6 @@ export declare namespace Anchorbrowser {
     type BatchSessionCreateResponse as BatchSessionCreateResponse,
     type BatchSessionRetrieveResponse as BatchSessionRetrieveResponse,
     type BatchSessionCreateParams as BatchSessionCreateParams,
-  };
-
-  export {
-    Integrations as Integrations,
-    type IntegrationCreateResponse as IntegrationCreateResponse,
-    type IntegrationListResponse as IntegrationListResponse,
-    type IntegrationDeleteResponse as IntegrationDeleteResponse,
-    type IntegrationCreateParams as IntegrationCreateParams,
   };
 
   export type SuccessResponse = API.SuccessResponse;
