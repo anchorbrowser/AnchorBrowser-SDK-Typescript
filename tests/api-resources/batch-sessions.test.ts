@@ -30,6 +30,7 @@ describe('resource batchSessions', () => {
           captcha_solver: { active: true },
           disable_web_security: { active: true },
           extensions: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+          extra_stealth: { active: true },
           fullscreen: { active: true },
           headless: { active: true },
           p2p_download: { active: true },

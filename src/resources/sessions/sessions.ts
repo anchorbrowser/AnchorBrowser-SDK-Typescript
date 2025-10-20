@@ -523,6 +523,12 @@ export namespace SessionCreateParams {
     extensions?: Array<string>;
 
     /**
+     * Configuration for extra stealth mode to enhance browser fingerprinting
+     * protection.
+     */
+    extra_stealth?: Browser.ExtraStealth;
+
+    /**
      * Configuration for fullscreen mode.
      */
     fullscreen?: Browser.Fullscreen;
@@ -583,6 +589,17 @@ export namespace SessionCreateParams {
        * Whether to disable web security features (CORS, same-origin policy, etc.).
        * Allows accessing iframes and resources from different origins. Defaults to
        * `false`.
+       */
+      active?: boolean;
+    }
+
+    /**
+     * Configuration for extra stealth mode to enhance browser fingerprinting
+     * protection.
+     */
+    export interface ExtraStealth {
+      /**
+       * Enable or disable extra stealth mode.
        */
       active?: boolean;
     }
