@@ -188,3 +188,25 @@ Methods:
 
 - <code title="post /v1/batch-sessions">client.batchSessions.<a href="./src/resources/batch-sessions.ts">create</a>({ ...params }) -> BatchSessionCreateResponse</code>
 - <code title="get /v1/batch-sessions/{batch_id}">client.batchSessions.<a href="./src/resources/batch-sessions.ts">retrieve</a>(batchID) -> BatchSessionRetrieveResponse</code>
+
+# Task
+
+Types:
+
+- <code><a href="./src/resources/task/task.ts">TaskCreateResponse</a></code>
+- <code><a href="./src/resources/task/task.ts">TaskListResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/task">client.task.<a href="./src/resources/task/task.ts">create</a>({ ...params }) -> TaskCreateResponse</code>
+- <code title="get /v1/task">client.task.<a href="./src/resources/task/task.ts">list</a>({ ...params }) -> TaskListResponse</code>
+
+## Run
+
+Types:
+
+- <code><a href="./src/resources/task/run.ts">RunExecuteResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/task/run">client.task.run.<a href="./src/resources/task/run.ts">execute</a>({ ...params }) -> RunExecuteResponse</code>
