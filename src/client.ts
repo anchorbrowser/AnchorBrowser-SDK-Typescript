@@ -65,6 +65,13 @@ import {
   SessionUploadFileResponse,
   Sessions,
 } from './resources/sessions/sessions';
+import {
+  Task,
+  TaskCreateParams,
+  TaskCreateResponse,
+  TaskListParams,
+  TaskListResponse,
+} from './resources/task/task';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -770,6 +777,7 @@ export class Anchorbrowser {
   agent: API.Agent = new API.Agent(this);
   events: API.Events = new API.Events(this);
   batchSessions: API.BatchSessions = new API.BatchSessions(this);
+  task: API.Task = new API.Task(this);
 }
 
 Anchorbrowser.Profiles = Profiles;
@@ -778,6 +786,7 @@ Anchorbrowser.Tools = Tools;
 Anchorbrowser.Extensions = Extensions;
 Anchorbrowser.Events = Events;
 Anchorbrowser.BatchSessions = BatchSessions;
+Anchorbrowser.Task = Task;
 
 export declare namespace Anchorbrowser {
   export type RequestOptions = Opts.RequestOptions;
@@ -840,6 +849,14 @@ export declare namespace Anchorbrowser {
     type BatchSessionCreateResponse as BatchSessionCreateResponse,
     type BatchSessionRetrieveResponse as BatchSessionRetrieveResponse,
     type BatchSessionCreateParams as BatchSessionCreateParams,
+  };
+
+  export {
+    Task as Task,
+    type TaskCreateResponse as TaskCreateResponse,
+    type TaskListResponse as TaskListResponse,
+    type TaskCreateParams as TaskCreateParams,
+    type TaskListParams as TaskListParams,
   };
 
   export type SuccessResponse = API.SuccessResponse;

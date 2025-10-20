@@ -43,6 +43,13 @@ export {
   type SessionUploadFileParams,
 } from './sessions/sessions';
 export {
+  Task,
+  type TaskCreateResponse,
+  type TaskListResponse,
+  type TaskCreateParams,
+  type TaskListParams,
+} from './task/task';
+export {
   Tools,
   type ToolFetchWebpageResponse,
   type ToolPerformWebTaskResponse,
