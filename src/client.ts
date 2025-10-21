@@ -71,7 +71,7 @@ import {
   TaskCreateResponse,
   TaskListParams,
   TaskListResponse,
-} from './resources/task/task';
+} from './resources/task';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';

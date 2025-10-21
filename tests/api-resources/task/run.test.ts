@@ -10,7 +10,7 @@ const client = new Anchorbrowser({
 describe('resource run', () => {
   // Prism tests are disabled
   test.skip('execute: only required params', async () => {
-    const responsePromise = client.task.run.execute({ taskId: '550e8400-e29b-41d4-a716-446655440000' });
+    const responsePromise = client.task.run({ taskId: '550e8400-e29b-41d4-a716-446655440000' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,7 +22,7 @@ describe('resource run', () => {
 
   // Prism tests are disabled
   test.skip('execute: required and optional params', async () => {
-    const response = await client.task.run.execute({
+    const response = await client.task.run({
       taskId: '550e8400-e29b-41d4-a716-446655440000',
       inputs: { ANCHOR_TARGET_URL: 'https://example.com', ANCHOR_MAX_PAGES: '10' },
       overrideBrowserConfiguration: {
