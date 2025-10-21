@@ -48,7 +48,9 @@ export {
   type TaskListResponse,
   type TaskCreateParams,
   type TaskListParams,
-} from './task/task';
+  type RunExecuteResponse,
+  type RunExecuteParams,
+} from './task';
 export {
   Tools,
   type ToolFetchWebpageResponse,
