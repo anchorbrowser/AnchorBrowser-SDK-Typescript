@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.8.0 (2025-10-21)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.7.0...v0.8.0)
+
+### ⚠ BREAKING CHANGES
+
+* **typescript:** Use `client.task.run()` instead of `client.task.run.execute()`
+
+### Features
+
+* **typescript:** move task.run.execute() to task.run() ([35592a3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/35592a3180b4b532f18f772453faa409d6c0f699))
+
+
+### Bug Fixes
+
+* reorganize task tests ([8377775](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/837777522d57fa018082ee62ba52059d1aa6bba8))
+* resolve linting errors ([f615ada](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/f615ada44e4ad8cac0ff38ca2ce5a579b9061e39))
+
 ## 0.7.0 (2025-10-20)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.6.0...v0.7.0)
