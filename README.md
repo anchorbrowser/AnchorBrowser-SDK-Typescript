@@ -26,9 +26,9 @@ const client = new Anchorbrowser({
   apiKey: process.env['ANCHORBROWSER_API_KEY'], // This is the default and can be omitted
 });
 
-const successResponse = await client.profiles.create({ name: 'REPLACE_ME' });
+const session = await client.sessions.create({ session: { recording: { active: false } } });
 
-console.log(successResponse.data);
+console.log(session.data);
 ```
 
 ### Request & Response types
@@ -43,8 +43,8 @@ const client = new Anchorbrowser({
   apiKey: process.env['ANCHORBROWSER_API_KEY'], // This is the default and can be omitted
 });
 
-const params: Anchorbrowser.ProfileCreateParams = { name: 'REPLACE_ME' };
-const successResponse: Anchorbrowser.SuccessResponse = await client.profiles.create(params);
+const params: Anchorbrowser.SessionCreateParams = { session: { recording: { active: false } } };
+const session: Anchorbrowser.SessionCreateResponse = await client.sessions.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -96,15 +96,17 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const successResponse = await client.profiles.create({ name: 'REPLACE_ME' }).catch(async (err) => {
-  if (err instanceof Anchorbrowser.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
-  }
-});
+const session = await client.sessions
+  .create({ session: { recording: { active: false } } })
+  .catch(async (err) => {
+    if (err instanceof Anchorbrowser.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
@@ -136,7 +138,7 @@ const client = new Anchorbrowser({
 });
 
 // Or, configure per-request:
-await client.profiles.create({ name: 'REPLACE_ME' }, {
+await client.sessions.create({ session: { recording: { active: false } } }, {
   maxRetries: 5,
 });
 ```
@@ -153,7 +155,7 @@ const client = new Anchorbrowser({
 });
 
 // Override per-request:
-await client.profiles.create({ name: 'REPLACE_ME' }, {
+await client.sessions.create({ session: { recording: { active: false } } }, {
   timeout: 5 * 1000,
 });
 ```
@@ -176,15 +178,15 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Anchorbrowser();
 
-const response = await client.profiles.create({ name: 'REPLACE_ME' }).asResponse();
+const response = await client.sessions.create({ session: { recording: { active: false } } }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: successResponse, response: raw } = await client.profiles
-  .create({ name: 'REPLACE_ME' })
+const { data: session, response: raw } = await client.sessions
+  .create({ session: { recording: { active: false } } })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(successResponse.data);
+console.log(session.data);
 ```
 
 ### Logging
@@ -264,7 +266,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.profiles.create({
+client.sessions.create({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
