@@ -20,6 +20,13 @@ export interface TaskOptions {
   outputSchema?: object;
   model?: string;
   provider?: string;
+  agent?: string;
+  highlightElements?: boolean;
+  detectElements?: boolean;
+  extendedSystemMessage?: string;
+  humanIntervention?: boolean;
+  maxSteps?: number;
+  secretValues?: Record<string, any>;
   onAgentStep?: (step: string) => void;
 }
 
