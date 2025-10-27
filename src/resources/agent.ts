@@ -187,25 +187,25 @@ export class Agent extends APIResource {
     };
 
     if (taskOptions?.agent !== undefined) {
-      payload.agent = taskOptions.agent;
+      payload['agent'] = taskOptions.agent;
     }
     if (taskOptions?.highlightElements !== undefined) {
-      payload.highlight_elements = taskOptions.highlightElements;
+      payload['highlight_elements'] = taskOptions.highlightElements;
     }
     if (taskOptions?.detectElements !== undefined) {
-      payload.detect_elements = taskOptions.detectElements;
+      payload['detect_elements'] = taskOptions.detectElements;
     }
     if (taskOptions?.extendedSystemMessage !== undefined) {
-      payload.extended_system_message = taskOptions.extendedSystemMessage;
+      payload['extended_system_message'] = taskOptions.extendedSystemMessage;
     }
     if (taskOptions?.humanIntervention !== undefined) {
-      payload.human_intervention = taskOptions.humanIntervention;
+      payload['human_intervention'] = taskOptions.humanIntervention;
     }
     if (taskOptions?.maxSteps !== undefined) {
-      payload.max_steps = taskOptions.maxSteps;
+      payload['max_steps'] = taskOptions.maxSteps;
     }
     if (taskOptions?.secretValues !== undefined) {
-      payload.secret_values = taskOptions.secretValues;
+      payload['secret_values'] = taskOptions.secretValues;
     }
 
     return JSON.stringify(payload);
