@@ -179,19 +179,43 @@ export class Agent extends APIResource {
       throw new Error('Prompt cannot be empty');
     }
 
-    return JSON.stringify({
+    const payload: Record<string, any> = {
       prompt,
       output_schema: taskOptions?.outputSchema,
       model: taskOptions?.model,
       provider: taskOptions?.provider,
-    });
+    };
+
+    if (taskOptions?.agent !== undefined) {
+      payload.agent = taskOptions.agent;
+    }
+    if (taskOptions?.highlightElements !== undefined) {
+      payload.highlight_elements = taskOptions.highlightElements;
+    }
+    if (taskOptions?.detectElements !== undefined) {
+      payload.detect_elements = taskOptions.detectElements;
+    }
+    if (taskOptions?.extendedSystemMessage !== undefined) {
+      payload.extended_system_message = taskOptions.extendedSystemMessage;
+    }
+    if (taskOptions?.humanIntervention !== undefined) {
+      payload.human_intervention = taskOptions.humanIntervention;
+    }
+    if (taskOptions?.maxSteps !== undefined) {
+      payload.max_steps = taskOptions.maxSteps;
+    }
+    if (taskOptions?.secretValues !== undefined) {
+      payload.secret_values = taskOptions.secretValues;
+    }
+
+    return JSON.stringify(payload);
   }
 
   /**
    * Execute task on AI worker
    */
-  private async executeTask(ai: Worker, prompt: string, outputSchema?: object): Promise<AgentTaskResult> {
-    const taskPayload = this.createTaskPayload(prompt, outputSchema);
+  private async executeTask(ai: Worker, prompt: string, taskOptions?: TaskOptions): Promise<AgentTaskResult> {
+    const taskPayload = this.createTaskPayload(prompt, taskOptions);
     const result = await ai.evaluate(taskPayload);
 
     return result as AgentTaskResult;
