@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.1 (2025-10-27)
+
+Full Changelog: [v0.8.0...v0.8.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.0...v0.8.1)
+
+### Features
+
+* **api:** manual updates ([39f7d39](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/39f7d3984bab0e9c35a1d844ea53d69432714f54))
+
 ## 0.8.0 (2025-10-21)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.7.0...v0.8.0)
