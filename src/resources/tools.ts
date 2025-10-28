@@ -126,10 +126,28 @@ export interface ToolPerformWebTaskParams {
   agent?: 'browser-use' | 'openai-cua';
 
   /**
+   * Body param: Enable element detection for better interaction accuracy. Improves
+   * the agent's ability to identify and interact with UI elements.
+   */
+  detect_elements?: boolean;
+
+  /**
    * Body param: Whether to highlight elements during task execution for better
    * visibility.
    */
   highlight_elements?: boolean;
+
+  /**
+   * Body param: Allow human intervention during task execution. When enabled, the
+   * agent can request human input for ambiguous situations.
+   */
+  human_intervention?: boolean;
+
+  /**
+   * Body param: Maximum number of steps the agent can take to complete the task.
+   * Defaults to 25.
+   */
+  max_steps?: number;
 
   /**
    * Body param: The specific model to use for task completion. see our
@@ -147,6 +165,12 @@ export interface ToolPerformWebTaskParams {
    * Body param: The AI provider to use for task completion.
    */
   provider?: 'openai' | 'gemini' | 'groq' | 'azure' | 'xai';
+
+  /**
+   * Body param: Secret values to pass to the agent for secure credential handling.
+   * Keys and values are passed as environment variables to the agent.
+   */
+  secret_values?: { [key: string]: string };
 
   /**
    * Body param: The URL of the webpage. If not provided, the tool will use the
