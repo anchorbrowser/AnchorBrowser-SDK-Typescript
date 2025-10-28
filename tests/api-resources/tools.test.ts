@@ -38,10 +38,14 @@ describe('resource tools', () => {
       prompt: 'prompt',
       sessionId: 'sessionId',
       agent: 'browser-use',
+      detect_elements: true,
       highlight_elements: true,
+      human_intervention: true,
+      max_steps: 0,
       model: 'model',
       output_schema: {},
       provider: 'openai',
+      secret_values: { foo: 'string' },
       url: 'url',
     });
   });
