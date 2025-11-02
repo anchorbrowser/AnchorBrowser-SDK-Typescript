@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.3 (2025-11-02)
+
+Full Changelog: [v0.8.2...v0.8.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.2...v0.8.3)
+
+### Features
+
+* Enhanced agent features documentation ([94021be](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/94021befa38a5ef1f83940989edf915504d7bff1))
+
 ## 0.8.2 (2025-10-27)
 
 Full Changelog: [v0.8.1...v0.8.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.1...v0.8.2)
