@@ -145,7 +145,7 @@ export interface ToolPerformWebTaskParams {
 
   /**
    * Body param: Maximum number of steps the agent can take to complete the task.
-   * Defaults to 25.
+   * Defaults to 200.
    */
   max_steps?: number;
 
