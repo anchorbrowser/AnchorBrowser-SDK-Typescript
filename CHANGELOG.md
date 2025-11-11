@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.5 (2025-11-11)
+
+Full Changelog: [v0.8.4...v0.8.5](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.4...v0.8.5)
+
 ## 0.8.4 (2025-11-11)
 
 Full Changelog: [v0.8.3...v0.8.4](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.3...v0.8.4)
