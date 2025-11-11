@@ -1236,6 +1236,11 @@ export interface RunExecuteParams {
   taskId: string;
 
   /**
+   * Whether to run the task asynchronously.
+   */
+  async?: boolean;
+
+  /**
    * Environment variables for task execution (keys must start with ANCHOR\_)
    */
   inputs?: { [key: string]: string };
