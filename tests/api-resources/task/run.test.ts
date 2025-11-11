@@ -24,6 +24,7 @@ describe('resource run', () => {
   test.skip('execute: required and optional params', async () => {
     const response = await client.task.run.execute({
       taskId: '550e8400-e29b-41d4-a716-446655440000',
+      async: true,
       inputs: { ANCHOR_TARGET_URL: 'https://example.com', ANCHOR_MAX_PAGES: '10' },
       overrideBrowserConfiguration: {
         initial_url: 'https://example.com',
