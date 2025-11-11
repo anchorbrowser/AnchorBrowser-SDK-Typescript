@@ -368,7 +368,9 @@ export class Anchorbrowser {
   ): APIPromise<Rsp> {
     return this.request(
       Promise.resolve(opts).then((opts) => {
-        return { method, path, ...opts };
+        const timeout = opts?.timeout ?? 1200000;
+        const maxRetries = opts?.maxRetries ?? 0;
+        return { method, path, timeout, maxRetries, ...opts };
       }),
     );
   }
