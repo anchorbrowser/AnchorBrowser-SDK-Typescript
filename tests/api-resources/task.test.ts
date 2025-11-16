@@ -81,8 +81,6 @@ describe('resource task', () => {
         recording: { active: true },
         timeout: { idle_timeout: 0, max_duration: 0 },
       },
-      sessionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      taskSessionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       version: '1',
     });
   });
@@ -112,8 +110,6 @@ describe('resource task', () => {
         recording: { active: true },
         timeout: { idle_timeout: 0, max_duration: 0 },
       },
-      sessionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      taskSessionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       version: '1',
     });
   });
