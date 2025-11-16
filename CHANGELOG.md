@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.6 (2025-11-16)
+
+Full Changelog: [v0.8.5...v0.8.6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.5...v0.8.6)
+
+### Features
+
+* BRO-1203 docs: remove sessionId and taskSessionId parameters from run… ([d631bcd](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/d631bcd9c5afd8ef59ccc783fa8feb450e69c346))
+
 ## 0.8.5 (2025-11-11)
 
 Full Changelog: [v0.8.4...v0.8.5](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.4...v0.8.5)
