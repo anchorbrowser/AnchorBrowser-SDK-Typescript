@@ -1251,16 +1251,6 @@ export interface RunExecuteParams {
   overrideBrowserConfiguration?: RunExecuteParams.OverrideBrowserConfiguration;
 
   /**
-   * Optional existing session ID to use
-   */
-  sessionId?: string;
-
-  /**
-   * Optional task-specific session ID
-   */
-  taskSessionId?: string;
-
-  /**
    * Version to run (draft, latest, or version number)
    */
   version?: string;
