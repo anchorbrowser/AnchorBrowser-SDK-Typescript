@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.7 (2025-12-02)
+
+Full Changelog: [v0.8.6...v0.8.7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.6...v0.8.7)
+
+### Chores
+
+* **client:** fix logger property type ([a89f929](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/a89f929ee1c1ab02efd269513d0c4df5303fd085))
+
 ## 0.8.6 (2025-11-16)
 
 Full Changelog: [v0.8.5...v0.8.6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.5...v0.8.6)
