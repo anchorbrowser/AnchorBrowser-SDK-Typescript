@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.8 (2025-12-03)
+
+Full Changelog: [v0.8.7...v0.8.8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.7...v0.8.8)
+
+### Chores
+
+* **internal:** upgrade eslint ([69d9904](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/69d9904a22fe4cbc9dcbdc95cdbf2270167cc14c))
+
 ## 0.8.7 (2025-12-02)
 
 Full Changelog: [v0.8.6...v0.8.7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.6...v0.8.7)
