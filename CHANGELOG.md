@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.9 (2025-12-06)
+
+Full Changelog: [v0.8.8...v0.8.9](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.8...v0.8.9)
+
+### Bug Fixes
+
+* **mcp:** correct code tool API endpoint ([b756f78](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/b756f78d66652321b95a78133b65fb5de0af13ca))
+* **mcp:** return correct lines on typescript errors ([1c62f32](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/1c62f324a7e5c6fd4e44524a07c096c6a1a0ecf8))
+
+
+### Chores
+
+* **internal:** codegen related update ([d3ee073](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/d3ee073eb9fe028e9da7b3d3110878918ce91296))
+* **internal:** codegen related update ([6588981](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/6588981aaf84ee092071e69f237cf73bdd7361bc))
+
 ## 0.8.8 (2025-12-03)
 
 Full Changelog: [v0.8.7...v0.8.8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.7...v0.8.8)
