@@ -16,12 +16,7 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import {
-  BatchSessionCreateParams,
-  BatchSessionCreateResponse,
-  BatchSessionRetrieveResponse,
-  BatchSessions,
-} from './resources/batch-sessions';
+import { BatchSessions } from './resources/batch-sessions';
 import { EventSignalParams, EventWaitForParams, EventWaitForResponse, Events } from './resources/events';
 import {
   ExtensionDeleteResponse,
@@ -32,6 +27,7 @@ import {
   ExtensionUploadResponse,
   Extensions,
 } from './resources/extensions';
+import { Identities, IdentityRetrieveCredentialsResponse } from './resources/identities';
 import {
   ProfileCreateParams,
   ProfileListResponse,
@@ -776,6 +772,7 @@ export class Anchorbrowser {
   events: API.Events = new API.Events(this);
   batchSessions: API.BatchSessions = new API.BatchSessions(this);
   task: API.Task = new API.Task(this);
+  identities: API.Identities = new API.Identities(this);
 }
 
 Anchorbrowser.Profiles = Profiles;
@@ -785,6 +782,7 @@ Anchorbrowser.Extensions = Extensions;
 Anchorbrowser.Events = Events;
 Anchorbrowser.BatchSessions = BatchSessions;
 Anchorbrowser.Task = Task;
+Anchorbrowser.Identities = Identities;
 
 export declare namespace Anchorbrowser {
   export type RequestOptions = Opts.RequestOptions;
@@ -842,12 +840,7 @@ export declare namespace Anchorbrowser {
     type EventWaitForParams as EventWaitForParams,
   };
 
-  export {
-    BatchSessions as BatchSessions,
-    type BatchSessionCreateResponse as BatchSessionCreateResponse,
-    type BatchSessionRetrieveResponse as BatchSessionRetrieveResponse,
-    type BatchSessionCreateParams as BatchSessionCreateParams,
-  };
+  export { BatchSessions as BatchSessions };
 
   export {
     Task as Task,
@@ -855,6 +848,11 @@ export declare namespace Anchorbrowser {
     type TaskListResponse as TaskListResponse,
     type TaskCreateParams as TaskCreateParams,
     type TaskListParams as TaskListParams,
+  };
+
+  export {
+    Identities as Identities,
+    type IdentityRetrieveCredentialsResponse as IdentityRetrieveCredentialsResponse,
   };
 
   export type SuccessResponse = API.SuccessResponse;
