@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.0 (2025-12-11)
+
+Full Changelog: [v0.8.9...v0.9.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.9...v0.9.0)
+
+### Features
+
+* **api:** manual updates ([7f35229](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/7f35229dc0f373ada1040413c74370fa84f29ae2))
+* BRO-1383 Add get identity credentials endpoint to SDK ([2f76200](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/2f76200c333bf386c2955d4e9452550a6cc85f09))
+
 ## 0.8.9 (2025-12-06)
 
 Full Changelog: [v0.8.8...v0.8.9](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.8.8...v0.8.9)
