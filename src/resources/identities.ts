@@ -21,9 +21,9 @@ export interface IdentityRetrieveCredentialsResponse {
   /**
    * The ID of the identity
    */
-  id?: string;
+  id: string;
 
-  credentials?: Array<
+  credentials: Array<
     | IdentityRetrieveCredentialsResponse.UsernamePasswordCredentialSchema
     | IdentityRetrieveCredentialsResponse.AuthenticatorCredentialSchema
     | IdentityRetrieveCredentialsResponse.CustomCredentialSchema
@@ -32,12 +32,12 @@ export interface IdentityRetrieveCredentialsResponse {
   /**
    * The name of the identity
    */
-  name?: string;
+  name: string;
 
   /**
    * The url related to the identity
    */
-  source?: string;
+  source: string;
 }
 
 export namespace IdentityRetrieveCredentialsResponse {
@@ -45,43 +45,43 @@ export namespace IdentityRetrieveCredentialsResponse {
     /**
      * The password of the credential
      */
-    password?: string;
+    password: string;
 
     /**
      * The type of credential
      */
-    type?: 'username_password';
+    type: 'username_password';
 
     /**
      * The username of the credential
      */
-    username?: string;
+    username: string;
   }
 
   export interface AuthenticatorCredentialSchema {
     /**
      * The OTP of the credential
      */
-    otp?: string;
+    otp: string;
 
     /**
      * The secret of the credential
      */
-    secret?: string;
+    secret: string;
 
     /**
      * The type of credential
      */
-    type?: 'authenticator';
+    type: 'authenticator';
   }
 
   export interface CustomCredentialSchema {
-    fields?: Array<CustomCredentialSchema.Field>;
+    fields: Array<CustomCredentialSchema.Field>;
 
     /**
      * The type of credential
      */
-    type?: 'custom';
+    type: 'custom';
   }
 
   export namespace CustomCredentialSchema {
@@ -89,12 +89,12 @@ export namespace IdentityRetrieveCredentialsResponse {
       /**
        * The name of the field
        */
-      name?: string;
+      name: string;
 
       /**
        * The value of the field
        */
-      value?: string;
+      value: string;
     }
   }
 }
