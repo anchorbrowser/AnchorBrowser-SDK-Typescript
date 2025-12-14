@@ -16,6 +16,7 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
+import { BatchSessions } from './resources/batch-sessions';
 import { EventSignalParams, EventWaitForParams, EventWaitForResponse, Events } from './resources/events';
 import {
   ExtensionDeleteResponse,
@@ -773,6 +774,7 @@ export class Anchorbrowser {
   browser: API.Browser = new API.Browser(this);
   agent: API.Agent = new API.Agent(this);
   events: API.Events = new API.Events(this);
+  batchSessions: API.BatchSessions = new API.BatchSessions(this);
   task: API.Task = new API.Task(this);
   identities: API.Identities = new API.Identities(this);
 }
@@ -782,6 +784,7 @@ Anchorbrowser.Sessions = Sessions;
 Anchorbrowser.Tools = Tools;
 Anchorbrowser.Extensions = Extensions;
 Anchorbrowser.Events = Events;
+Anchorbrowser.BatchSessions = BatchSessions;
 Anchorbrowser.Task = Task;
 Anchorbrowser.Identities = Identities;
 
@@ -840,6 +843,8 @@ export declare namespace Anchorbrowser {
     type EventSignalParams as EventSignalParams,
     type EventWaitForParams as EventWaitForParams,
   };
+
+  export { BatchSessions as BatchSessions };
 
   export {
     Task as Task,
