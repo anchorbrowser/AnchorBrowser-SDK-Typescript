@@ -13,7 +13,6 @@ export class Mouse extends APIResource {
    * ```ts
    * const response = await client.sessions.mouse.click(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { x: 0, y: 0 },
    * );
    * ```
    */
@@ -70,19 +69,36 @@ export interface MouseMoveResponse {
 
 export interface MouseClickParams {
   /**
+   * Mouse button to use
+   */
+  button?: 'left' | 'middle' | 'right';
+
+  /**
+   * If a selector was passed and multiple elements match the selector, the index of
+   * the element in the list (0-based). Defaults to 0.
+   */
+  index?: number;
+
+  /**
+   * A valid CSS selector for the requested element
+   */
+  selector?: string;
+
+  /**
+   * If a selector was passed, timeout in ms for waiting for the DOM element to be
+   * selected. Defaults to 5000 (5 seconds).
+   */
+  timeout?: number;
+
+  /**
    * X coordinate
    */
-  x: number;
+  x?: number;
 
   /**
    * Y coordinate
    */
-  y: number;
-
-  /**
-   * Mouse button to use
-   */
-  button?: 'left' | 'middle' | 'right';
+  y?: number;
 }
 
 export interface MouseDoubleClickParams {

@@ -177,6 +177,8 @@ Methods:
 - <code title="post /v1/events/{event_name}">client.events.<a href="./src/resources/events.ts">signal</a>(eventName, { ...params }) -> SuccessResponse</code>
 - <code title="post /v1/events/{event_name}/wait">client.events.<a href="./src/resources/events.ts">waitFor</a>(eventName, { ...params }) -> EventWaitForResponse</code>
 
+# BatchSessions
+
 # Task
 
 Types:

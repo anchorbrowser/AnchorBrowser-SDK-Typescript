@@ -9,11 +9,8 @@ const client = new Anchorbrowser({
 
 describe('resource mouse', () => {
   // Prism tests are disabled
-  test.skip('click: only required params', async () => {
-    const responsePromise = client.sessions.mouse.click('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      x: 0,
-      y: 0,
-    });
+  test.skip('click', async () => {
+    const responsePromise = client.sessions.mouse.click('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,15 +18,6 @@ describe('resource mouse', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('click: required and optional params', async () => {
-    const response = await client.sessions.mouse.click('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      x: 0,
-      y: 0,
-      button: 'left',
-    });
   });
 
   // Prism tests are disabled
