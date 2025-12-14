@@ -88,7 +88,7 @@ export interface MouseClickParams {
    * If a selector was passed, timeout in ms for waiting for the DOM element to be
    * selected. Defaults to 5000 (5 seconds).
    */
-  timeout?: number;
+  selectorTimeoutMs?: number;
 
   /**
    * X coordinate
