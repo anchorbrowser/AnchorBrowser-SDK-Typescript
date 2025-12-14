@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.10.0 (2025-12-14)
+
+Full Changelog: [v0.9.1...v0.10.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.9.1...v0.10.0)
+
+### Features
+
+* **api:** manual updates ([1e21f65](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/1e21f65299975a5e06c6ccf03af229abd180e417))
+* Bro 949 mouse click api to support dom selector click ([5cdc35e](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/5cdc35e7704383d62dd1cc516beffaa40e58da88))
+* Bro 949 mouse click api to support dom selector click ([5b43d9a](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/5b43d9ae6d83cbcf6d4914a916d7e15f82910941))
+
 ## 0.9.1 (2025-12-11)
 
 Full Changelog: [v0.9.0...v0.9.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.9.0...v0.9.1)
