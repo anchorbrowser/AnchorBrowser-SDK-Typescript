@@ -47,6 +47,7 @@ describe('resource tools', () => {
       provider: 'openai',
       secret_values: { foo: 'string' },
       url: 'url',
+      directlyOpenUrl: true,
     });
   });
 });
