@@ -177,6 +177,11 @@ export interface ToolPerformWebTaskParams {
    * current page in the session.
    */
   url?: string;
+
+   /**
+   * Body param: If true, the tool will directly open the URL in the browser.
+   */
+  directlyOpenUrl?: boolean;
 }
 
 export interface ToolScreenshotWebpageParams {
