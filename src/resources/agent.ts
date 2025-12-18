@@ -207,6 +207,9 @@ export class Agent extends APIResource {
     if (taskOptions?.secretValues !== undefined) {
       payload['secret_values'] = taskOptions.secretValues;
     }
+    if (taskOptions?.directlyOpenUrl !== undefined) {
+      payload['directly_open_url'] = taskOptions.directlyOpenUrl;
+    }
 
     return JSON.stringify(payload);
   }
