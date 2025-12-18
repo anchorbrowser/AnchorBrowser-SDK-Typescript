@@ -178,7 +178,7 @@ export interface ToolPerformWebTaskParams {
    */
   url?: string;
 
-   /**
+  /**
    * Body param: If true, the tool will directly open the URL in the browser.
    */
   directlyOpenUrl?: boolean;
