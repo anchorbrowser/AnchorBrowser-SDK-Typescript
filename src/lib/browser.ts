@@ -27,6 +27,7 @@ export interface TaskOptions {
   humanIntervention?: boolean;
   maxSteps?: number;
   secretValues?: Record<string, any>;
+  directlyOpenUrl?: boolean;
   onAgentStep?: (step: string) => void;
 }
 
