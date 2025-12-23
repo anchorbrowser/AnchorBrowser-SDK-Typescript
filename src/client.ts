@@ -748,7 +748,7 @@ export class Anchorbrowser {
   }
 
   static Anchorbrowser = this;
-  static DEFAULT_TIMEOUT = 60000; // 1 minute
+  static DEFAULT_TIMEOUT = 3600000; // 1 hour
 
   static AnchorbrowserError = Errors.AnchorbrowserError;
   static APIError = Errors.APIError;
