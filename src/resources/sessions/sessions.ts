@@ -481,6 +481,14 @@ export interface SessionCreateParams {
   browser?: SessionCreateParams.Browser;
 
   /**
+   * Activates an authenticated session.
+   *
+   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
+   * enable.
+   */
+  identities?: Array<SessionCreateParams.Identity>;
+
+  /**
    * Array of integrations to load in the browser session. Integrations must be
    * previously created using the Integrations API.
    */
@@ -674,6 +682,16 @@ export namespace SessionCreateParams {
        */
       width?: number;
     }
+  }
+
+  /**
+   * Previously configured identity to be used for the authenticated session.
+   */
+  export interface Identity {
+    /**
+     * The identity ID to use for the browser session.
+     */
+    id?: string;
   }
 
   export interface Integration {

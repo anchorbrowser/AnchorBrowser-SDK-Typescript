@@ -26,7 +26,16 @@ import {
   ExtensionUploadResponse,
   Extensions,
 } from './resources/extensions';
-import { Identities, IdentityRetrieveCredentialsResponse } from './resources/identities';
+import {
+  Identities,
+  IdentityCreateParams,
+  IdentityCreateResponse,
+  IdentityDeleteResponse,
+  IdentityRetrieveCredentialsResponse,
+  IdentityRetrieveResponse,
+  IdentityUpdateParams,
+  IdentityUpdateResponse,
+} from './resources/identities';
 import {
   ProfileCreateParams,
   ProfileListResponse,
@@ -851,7 +860,13 @@ export declare namespace Anchorbrowser {
 
   export {
     Identities as Identities,
+    type IdentityCreateResponse as IdentityCreateResponse,
+    type IdentityRetrieveResponse as IdentityRetrieveResponse,
+    type IdentityUpdateResponse as IdentityUpdateResponse,
+    type IdentityDeleteResponse as IdentityDeleteResponse,
     type IdentityRetrieveCredentialsResponse as IdentityRetrieveCredentialsResponse,
+    type IdentityCreateParams as IdentityCreateParams,
+    type IdentityUpdateParams as IdentityUpdateParams,
   };
 
   export type SuccessResponse = API.SuccessResponse;

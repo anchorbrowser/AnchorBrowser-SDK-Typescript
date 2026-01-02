@@ -11,7 +11,16 @@ export {
   type ExtensionUploadResponse,
   type ExtensionUploadParams,
 } from './extensions';
-export { Identities, type IdentityRetrieveCredentialsResponse } from './identities';
+export {
+  Identities,
+  type IdentityCreateResponse,
+  type IdentityRetrieveResponse,
+  type IdentityUpdateResponse,
+  type IdentityDeleteResponse,
+  type IdentityRetrieveCredentialsResponse,
+  type IdentityCreateParams,
+  type IdentityUpdateParams,
+} from './identities';
 export {
   Profiles,
   type ProfileRetrieveResponse,
