@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.0 (2026-01-02)
+
+Full Changelog: [v0.10.3...v0.11.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.10.3...v0.11.0)
+
+### Features
+
+* added identity endpoints ([cabcbd5](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/cabcbd508005510e52bfd56cab7597a71678da67))
+
 ## 0.10.3 (2025-12-23)
 
 Full Changelog: [v0.10.2...v0.10.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.10.2...v0.10.3)
