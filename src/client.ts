@@ -51,6 +51,19 @@ import {
   Tools,
 } from './resources/tools';
 import {
+  ApplicationCreateIdentityTokenParams,
+  ApplicationCreateIdentityTokenResponse,
+  ApplicationCreateParams,
+  ApplicationCreateResponse,
+  ApplicationDeleteResponse,
+  ApplicationListIdentitiesParams,
+  ApplicationListIdentitiesResponse,
+  ApplicationListParams,
+  ApplicationListResponse,
+  ApplicationRetrieveResponse,
+  Applications,
+} from './resources/applications/applications';
+import {
   SessionCopyResponse,
   SessionCreateParams,
   SessionCreateResponse,
@@ -784,6 +797,7 @@ export class Anchorbrowser {
   events: API.Events = new API.Events(this);
   task: API.Task = new API.Task(this);
   identities: API.Identities = new API.Identities(this);
+  applications: API.Applications = new API.Applications(this);
 }
 
 Anchorbrowser.Profiles = Profiles;
@@ -793,6 +807,7 @@ Anchorbrowser.Extensions = Extensions;
 Anchorbrowser.Events = Events;
 Anchorbrowser.Task = Task;
 Anchorbrowser.Identities = Identities;
+Anchorbrowser.Applications = Applications;
 
 export declare namespace Anchorbrowser {
   export type RequestOptions = Opts.RequestOptions;
@@ -867,6 +882,20 @@ export declare namespace Anchorbrowser {
     type IdentityRetrieveCredentialsResponse as IdentityRetrieveCredentialsResponse,
     type IdentityCreateParams as IdentityCreateParams,
     type IdentityUpdateParams as IdentityUpdateParams,
+  };
+
+  export {
+    Applications as Applications,
+    type ApplicationCreateResponse as ApplicationCreateResponse,
+    type ApplicationRetrieveResponse as ApplicationRetrieveResponse,
+    type ApplicationListResponse as ApplicationListResponse,
+    type ApplicationDeleteResponse as ApplicationDeleteResponse,
+    type ApplicationCreateIdentityTokenResponse as ApplicationCreateIdentityTokenResponse,
+    type ApplicationListIdentitiesResponse as ApplicationListIdentitiesResponse,
+    type ApplicationCreateParams as ApplicationCreateParams,
+    type ApplicationListParams as ApplicationListParams,
+    type ApplicationCreateIdentityTokenParams as ApplicationCreateIdentityTokenParams,
+    type ApplicationListIdentitiesParams as ApplicationListIdentitiesParams,
   };
 
   export type SuccessResponse = API.SuccessResponse;

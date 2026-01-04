@@ -1,6 +1,19 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export * from './shared';
+export {
+  Applications,
+  type ApplicationCreateResponse,
+  type ApplicationRetrieveResponse,
+  type ApplicationListResponse,
+  type ApplicationDeleteResponse,
+  type ApplicationCreateIdentityTokenResponse,
+  type ApplicationListIdentitiesResponse,
+  type ApplicationCreateParams,
+  type ApplicationListParams,
+  type ApplicationCreateIdentityTokenParams,
+  type ApplicationListIdentitiesParams,
+} from './applications/applications';
 export { Events, type EventWaitForResponse, type EventSignalParams, type EventWaitForParams } from './events';
 export {
   Extensions,
