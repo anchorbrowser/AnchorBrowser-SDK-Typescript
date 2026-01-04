@@ -216,3 +216,39 @@ Methods:
 - <code title="put /v1/identities/{identity_id}">client.identities.<a href="./src/resources/identities.ts">update</a>(identityID, { ...params }) -> IdentityUpdateResponse</code>
 - <code title="delete /v1/identities/{identity_id}">client.identities.<a href="./src/resources/identities.ts">delete</a>(identityID) -> IdentityDeleteResponse</code>
 - <code title="get /v1/identities/{identity_id}/credentials">client.identities.<a href="./src/resources/identities.ts">retrieveCredentials</a>(identityID) -> IdentityRetrieveCredentialsResponse</code>
+
+# Applications
+
+Types:
+
+- <code><a href="./src/resources/applications/applications.ts">ApplicationCreateResponse</a></code>
+- <code><a href="./src/resources/applications/applications.ts">ApplicationRetrieveResponse</a></code>
+- <code><a href="./src/resources/applications/applications.ts">ApplicationListResponse</a></code>
+- <code><a href="./src/resources/applications/applications.ts">ApplicationDeleteResponse</a></code>
+- <code><a href="./src/resources/applications/applications.ts">ApplicationCreateIdentityTokenResponse</a></code>
+- <code><a href="./src/resources/applications/applications.ts">ApplicationListIdentitiesResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/applications">client.applications.<a href="./src/resources/applications/applications.ts">create</a>({ ...params }) -> ApplicationCreateResponse</code>
+- <code title="get /v1/applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">retrieve</a>(applicationID) -> ApplicationRetrieveResponse</code>
+- <code title="get /v1/applications">client.applications.<a href="./src/resources/applications/applications.ts">list</a>({ ...params }) -> ApplicationListResponse</code>
+- <code title="delete /v1/applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">delete</a>(applicationID) -> ApplicationDeleteResponse</code>
+- <code title="post /v1/applications/{application_id}/tokens">client.applications.<a href="./src/resources/applications/applications.ts">createIdentityToken</a>(applicationID, { ...params }) -> ApplicationCreateIdentityTokenResponse</code>
+- <code title="get /v1/applications/{application_id}/identities">client.applications.<a href="./src/resources/applications/applications.ts">listIdentities</a>(applicationID, { ...params }) -> ApplicationListIdentitiesResponse</code>
+
+## AuthFlows
+
+Types:
+
+- <code><a href="./src/resources/applications/auth-flows.ts">AuthFlowCreateResponse</a></code>
+- <code><a href="./src/resources/applications/auth-flows.ts">AuthFlowUpdateResponse</a></code>
+- <code><a href="./src/resources/applications/auth-flows.ts">AuthFlowListResponse</a></code>
+- <code><a href="./src/resources/applications/auth-flows.ts">AuthFlowDeleteResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/applications/{application_id}/auth-flows">client.applications.authFlows.<a href="./src/resources/applications/auth-flows.ts">create</a>(applicationID, { ...params }) -> AuthFlowCreateResponse</code>
+- <code title="patch /v1/applications/{application_id}/auth-flows/{auth_flow_id}">client.applications.authFlows.<a href="./src/resources/applications/auth-flows.ts">update</a>(authFlowID, { ...params }) -> AuthFlowUpdateResponse</code>
+- <code title="get /v1/applications/{application_id}/auth-flows">client.applications.authFlows.<a href="./src/resources/applications/auth-flows.ts">list</a>(applicationID) -> AuthFlowListResponse</code>
+- <code title="delete /v1/applications/{application_id}/auth-flows/{auth_flow_id}">client.applications.authFlows.<a href="./src/resources/applications/auth-flows.ts">delete</a>(authFlowID, { ...params }) -> AuthFlowDeleteResponse</code>
