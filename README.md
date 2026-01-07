@@ -178,7 +178,9 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Anchorbrowser();
 
-const response = await client.sessions.create({ session: { recording: { active: false } } }).asResponse();
+const response = await client.sessions
+  .create({ session: { recording: { active: false } } })
+  .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 

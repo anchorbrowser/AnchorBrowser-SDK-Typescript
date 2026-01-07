@@ -29,7 +29,13 @@ describe('resource run', () => {
       overrideBrowserConfiguration: {
         initial_url: 'https://example.com',
         live_view: { read_only: true },
-        proxy: { active: true, city: 'city', country_code: 'af', region: 'region', type: 'anchor_proxy' },
+        proxy: {
+          active: true,
+          city: 'city',
+          country_code: 'af',
+          region: 'region',
+          type: 'anchor_proxy',
+        },
         recording: { active: true },
         timeout: { idle_timeout: 0, max_duration: 0 },
       },
