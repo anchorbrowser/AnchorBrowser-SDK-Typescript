@@ -114,7 +114,12 @@ export class Sessions extends APIResource {
    * ```ts
    * const response = await client.sessions.dragAndDrop(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { endX: 0, endY: 0, startX: 0, startY: 0 },
+   *   {
+   *     endX: 0,
+   *     endY: 0,
+   *     startX: 0,
+   *     startY: 0,
+   *   },
    * );
    * ```
    */
@@ -224,7 +229,11 @@ export class Sessions extends APIResource {
    * ```ts
    * const response = await client.sessions.scroll(
    *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { deltaY: 0, x: 0, y: 0 },
+   *   {
+   *     deltaY: 0,
+   *     x: 0,
+   *     y: 0,
+   *   },
    * );
    * ```
    */

@@ -27,7 +27,11 @@ describe('resource identities', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.identities.create({
       credentials: [
-        { password: 'securepassword123', type: 'username_password', username: 'user@example.com' },
+        {
+          password: 'securepassword123',
+          type: 'username_password',
+          username: 'user@example.com',
+        },
       ],
       source: 'https://example.com/login',
       validateAsync: true,

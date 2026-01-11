@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.12.1 (2026-01-11)
+
+Full Changelog: [v0.12.0...v0.12.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.12.0...v0.12.1)
+
+### Features
+
+* added cleanup session ([f5c7bb0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/f5c7bb044f4497bc4098b7db08c5baa405c2ccbd))
+
+
+### Chores
+
+* break long lines in snippets into multiline ([e7b9dd3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/e7b9dd3b7c5032eb1d61be3b035a60fd56dfb5ea))
+
 ## 0.12.0 (2026-01-04)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.11.0...v0.12.0)
