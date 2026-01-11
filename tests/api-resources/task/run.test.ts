@@ -25,6 +25,7 @@ describe('resource run', () => {
     const response = await client.task.run.execute({
       taskId: '550e8400-e29b-41d4-a716-446655440000',
       async: true,
+      cleanupSessions: true,
       inputs: { ANCHOR_TARGET_URL: 'https://example.com', ANCHOR_MAX_PAGES: '10' },
       overrideBrowserConfiguration: {
         initial_url: 'https://example.com',
@@ -39,6 +40,7 @@ describe('resource run', () => {
         recording: { active: true },
         timeout: { idle_timeout: 0, max_duration: 0 },
       },
+      sessionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       version: '1',
     });
   });
