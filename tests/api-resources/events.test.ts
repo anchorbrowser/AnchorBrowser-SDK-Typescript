@@ -11,7 +11,11 @@ describe('resource events', () => {
   // Prism tests are disabled
   test.skip('signal: only required params', async () => {
     const responsePromise = client.events.signal('event_name', {
-      data: { message: 'bar', result: 'bar', timestamp: 'bar' },
+      data: {
+        message: 'bar',
+        result: 'bar',
+        timestamp: 'bar',
+      },
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -25,7 +29,11 @@ describe('resource events', () => {
   // Prism tests are disabled
   test.skip('signal: required and optional params', async () => {
     const response = await client.events.signal('event_name', {
-      data: { message: 'bar', result: 'bar', timestamp: 'bar' },
+      data: {
+        message: 'bar',
+        result: 'bar',
+        timestamp: 'bar',
+      },
     });
   });
 
