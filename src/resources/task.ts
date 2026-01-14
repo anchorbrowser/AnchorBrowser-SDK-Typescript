@@ -1241,6 +1241,11 @@ export interface RunExecuteParams {
   async?: boolean;
 
   /**
+   * Whether to cleanup browser sessions after task execution. Defaults to true.
+   */
+  cleanupSessions?: boolean;
+
+  /**
    * Environment variables for task execution (keys must start with ANCHOR\_)
    */
   inputs?: { [key: string]: string };
@@ -1249,6 +1254,11 @@ export interface RunExecuteParams {
    * Override browser configuration for this execution
    */
   overrideBrowserConfiguration?: RunExecuteParams.OverrideBrowserConfiguration;
+
+  /**
+   * Optional existing browser session ID to use for task execution
+   */
+  sessionId?: string;
 
   /**
    * Version to run (draft, latest, or version number)
