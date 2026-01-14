@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.0 (2026-01-14)
+
+Full Changelog: [v0.12.1...v0.13.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.12.1...v0.13.0)
+
+### Features
+
+* **api:** manual updates ([b1e2ed9](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/b1e2ed935369c4c29dfec6c544412c680525dc9b))
+
 ## 0.12.1 (2026-01-11)
 
 Full Changelog: [v0.12.0...v0.12.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.12.0...v0.12.1)
