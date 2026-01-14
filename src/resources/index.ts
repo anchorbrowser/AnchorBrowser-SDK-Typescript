@@ -15,15 +15,7 @@ export {
   type ApplicationListIdentitiesParams,
 } from './applications/applications';
 export { Events, type EventWaitForResponse, type EventSignalParams, type EventWaitForParams } from './events';
-export {
-  Extensions,
-  type ExtensionManifest,
-  type ExtensionRetrieveResponse,
-  type ExtensionListResponse,
-  type ExtensionDeleteResponse,
-  type ExtensionUploadResponse,
-  type ExtensionUploadParams,
-} from './extensions';
+export { Extensions, type ExtensionManifest, type ExtensionListResponse } from './extensions';
 export {
   Identities,
   type IdentityCreateResponse,
@@ -44,18 +36,14 @@ export {
   Sessions,
   type SessionCreateResponse,
   type SessionRetrieveResponse,
-  type SessionCopyResponse,
   type SessionDragAndDropResponse,
   type SessionGotoResponse,
-  type SessionListPagesResponse,
-  type SessionPasteResponse,
   type SessionRetrieveDownloadsResponse,
   type SessionScrollResponse,
   type SessionUploadFileResponse,
   type SessionCreateParams,
   type SessionDragAndDropParams,
   type SessionGotoParams,
-  type SessionPasteParams,
   type SessionScrollParams,
   type SessionUploadFileParams,
 } from './sessions/sessions';
@@ -63,10 +51,10 @@ export {
   Task,
   type TaskCreateResponse,
   type TaskListResponse,
+  type TaskRunResponse,
   type TaskCreateParams,
   type TaskListParams,
-  type RunExecuteResponse,
-  type RunExecuteParams,
+  type TaskRunParams,
 } from './task';
 export {
   Tools,

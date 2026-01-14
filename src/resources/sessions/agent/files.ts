@@ -9,22 +9,6 @@ import { path } from '../../../internal/utils/path';
 
 export class Files extends APIResource {
   /**
-   * List all resources that have been uploaded to the browser session for agent use.
-   * Returns resource metadata including name, size, type, and last modified
-   * timestamp.
-   *
-   * @example
-   * ```ts
-   * const files = await client.sessions.agent.files.list(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  list(sessionID: string, options?: RequestOptions): APIPromise<FileListResponse> {
-    return this._client.get(path`/v1/sessions/${sessionID}/agent/files`, options);
-  }
-
-  /**
    * Upload files as agent resources to a browser session using multipart/form-data.
    * If you upload a ZIP file, it will be automatically extracted and the files will
    * be made available as agent resources. If you upload a single file, it will be
@@ -51,40 +35,6 @@ export class Files extends APIResource {
   }
 }
 
-export interface FileListResponse {
-  data?: FileListResponse.Data;
-}
-
-export namespace FileListResponse {
-  export interface Data {
-    files?: Array<Data.File>;
-  }
-
-  export namespace Data {
-    export interface File {
-      /**
-       * When the resource was last modified
-       */
-      lastModified?: string;
-
-      /**
-       * The resource name
-       */
-      name?: string;
-
-      /**
-       * Resource size in bytes
-       */
-      size?: number;
-
-      /**
-       * Resource extension/type
-       */
-      type?: string;
-    }
-  }
-}
-
 export interface FileUploadResponse {
   data?: FileUploadResponse.Data;
 }
@@ -105,9 +55,5 @@ export interface FileUploadParams {
 }
 
 export declare namespace Files {
-  export {
-    type FileListResponse as FileListResponse,
-    type FileUploadResponse as FileUploadResponse,
-    type FileUploadParams as FileUploadParams,
-  };
+  export { type FileUploadResponse as FileUploadResponse, type FileUploadParams as FileUploadParams };
 }
