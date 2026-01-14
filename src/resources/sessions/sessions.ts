@@ -5,7 +5,7 @@ import * as Shared from '../shared';
 import * as AllAPI from './all';
 import { All, AllStatusResponse } from './all';
 import * as ClipboardAPI from './clipboard';
-import { Clipboard, ClipboardGetResponse, ClipboardSetParams, ClipboardSetResponse } from './clipboard';
+import { Clipboard, ClipboardSetParams, ClipboardSetResponse } from './clipboard';
 import * as KeyboardAPI from './keyboard';
 import {
   Keyboard,
@@ -15,24 +15,11 @@ import {
   KeyboardTypeResponse,
 } from './keyboard';
 import * as MouseAPI from './mouse';
-import {
-  Mouse,
-  MouseClickParams,
-  MouseClickResponse,
-  MouseDoubleClickParams,
-  MouseDoubleClickResponse,
-  MouseMoveParams,
-  MouseMoveResponse,
-} from './mouse';
+import { Mouse, MouseClickParams, MouseClickResponse, MouseMoveParams, MouseMoveResponse } from './mouse';
 import * as AgentAPI from './agent/agent';
 import { Agent } from './agent/agent';
 import * as RecordingsAPI from './recordings/recordings';
-import {
-  RecordingListResponse,
-  RecordingPauseResponse,
-  RecordingResumeResponse,
-  Recordings,
-} from './recordings/recordings';
+import { RecordingListResponse, Recordings } from './recordings/recordings';
 import { APIPromise } from '../../core/api-promise';
 import { type Uploadable } from '../../core/uploads';
 import { buildHeaders } from '../../internal/headers';
@@ -94,20 +81,6 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Copies the currently selected text to the clipboard
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.copy(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  copy(sessionID: string, options?: RequestOptions): APIPromise<SessionCopyResponse> {
-    return this._client.post(path`/v1/sessions/${sessionID}/copy`, options);
-  }
-
-  /**
    * Performs a drag and drop operation from start coordinates to end coordinates
    *
    * @example
@@ -148,39 +121,6 @@ export class Sessions extends APIResource {
     options?: RequestOptions,
   ): APIPromise<SessionGotoResponse> {
     return this._client.post(path`/v1/sessions/${sessionID}/goto`, { body, ...options });
-  }
-
-  /**
-   * Retrieves a list of pages associated with a specific browser session.
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.listPages(
-   *   'session_id',
-   * );
-   * ```
-   */
-  listPages(sessionID: string, options?: RequestOptions): APIPromise<SessionListPagesResponse> {
-    return this._client.get(path`/v1/sessions/${sessionID}/pages`, options);
-  }
-
-  /**
-   * Pastes text at the current cursor position
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.paste(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   { text: 'text' },
-   * );
-   * ```
-   */
-  paste(
-    sessionID: string,
-    body: SessionPasteParams,
-    options?: RequestOptions,
-  ): APIPromise<SessionPasteResponse> {
-    return this._client.post(path`/v1/sessions/${sessionID}/paste`, { body, ...options });
   }
 
   /**
@@ -357,48 +297,11 @@ export interface SessionRetrieveResponse {
   tokens?: unknown;
 }
 
-export interface SessionCopyResponse {
-  /**
-   * The text that was copied
-   */
-  text?: string;
-}
-
 export interface SessionDragAndDropResponse {
   status?: string;
 }
 
 export interface SessionGotoResponse {
-  status?: string;
-}
-
-export type SessionListPagesResponse = Array<SessionListPagesResponse.SessionListPagesResponseItem>;
-
-export namespace SessionListPagesResponse {
-  export interface SessionListPagesResponseItem {
-    /**
-     * The unique identifier of the page.
-     */
-    id: string;
-
-    /**
-     * The frontend URL for accessing the page.
-     */
-    frontend_url: string;
-
-    /**
-     * The title of the page.
-     */
-    title: string;
-
-    /**
-     * The URL of the page.
-     */
-    url: string;
-  }
-}
-
-export interface SessionPasteResponse {
   status?: string;
 }
 
@@ -1085,13 +988,6 @@ export interface SessionGotoParams {
   url: string;
 }
 
-export interface SessionPasteParams {
-  /**
-   * Text to paste
-   */
-  text: string;
-}
-
 export interface SessionScrollParams {
   /**
    * Vertical scroll amount (positive is down, negative is up)
@@ -1142,38 +1038,27 @@ export declare namespace Sessions {
   export {
     type SessionCreateResponse as SessionCreateResponse,
     type SessionRetrieveResponse as SessionRetrieveResponse,
-    type SessionCopyResponse as SessionCopyResponse,
     type SessionDragAndDropResponse as SessionDragAndDropResponse,
     type SessionGotoResponse as SessionGotoResponse,
-    type SessionListPagesResponse as SessionListPagesResponse,
-    type SessionPasteResponse as SessionPasteResponse,
     type SessionRetrieveDownloadsResponse as SessionRetrieveDownloadsResponse,
     type SessionScrollResponse as SessionScrollResponse,
     type SessionUploadFileResponse as SessionUploadFileResponse,
     type SessionCreateParams as SessionCreateParams,
     type SessionDragAndDropParams as SessionDragAndDropParams,
     type SessionGotoParams as SessionGotoParams,
-    type SessionPasteParams as SessionPasteParams,
     type SessionScrollParams as SessionScrollParams,
     type SessionUploadFileParams as SessionUploadFileParams,
   };
 
   export { All as All, type AllStatusResponse as AllStatusResponse };
 
-  export {
-    Recordings as Recordings,
-    type RecordingListResponse as RecordingListResponse,
-    type RecordingPauseResponse as RecordingPauseResponse,
-    type RecordingResumeResponse as RecordingResumeResponse,
-  };
+  export { Recordings as Recordings, type RecordingListResponse as RecordingListResponse };
 
   export {
     Mouse as Mouse,
     type MouseClickResponse as MouseClickResponse,
-    type MouseDoubleClickResponse as MouseDoubleClickResponse,
     type MouseMoveResponse as MouseMoveResponse,
     type MouseClickParams as MouseClickParams,
-    type MouseDoubleClickParams as MouseDoubleClickParams,
     type MouseMoveParams as MouseMoveParams,
   };
 
@@ -1187,7 +1072,6 @@ export declare namespace Sessions {
 
   export {
     Clipboard as Clipboard,
-    type ClipboardGetResponse as ClipboardGetResponse,
     type ClipboardSetResponse as ClipboardSetResponse,
     type ClipboardSetParams as ClipboardSetParams,
   };

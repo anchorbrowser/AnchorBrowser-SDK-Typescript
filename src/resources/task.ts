@@ -58,7 +58,7 @@ export class Task extends APIResource {
    * });
    * ```
    */
-  run(body: RunExecuteParams, options?: RequestOptions): APIPromise<RunExecuteResponse> {
+  run(body: TaskRunParams, options?: RequestOptions): APIPromise<TaskRunResponse> {
     return this._client.post('/v1/task/run', { body, ...options });
   }
 }
@@ -838,6 +838,44 @@ export namespace TaskListResponse {
   }
 }
 
+export interface TaskRunResponse {
+  data?: TaskRunResponse.Data;
+}
+
+export namespace TaskRunResponse {
+  export interface Data {
+    /**
+     * Execution result message
+     */
+    message: string;
+
+    /**
+     * Whether the task executed successfully
+     */
+    success: boolean;
+
+    /**
+     * Task identifier
+     */
+    taskId: string;
+
+    /**
+     * Error message if execution failed
+     */
+    error?: string;
+
+    /**
+     * Execution duration in milliseconds
+     */
+    executionTime?: number;
+
+    /**
+     * Task execution output
+     */
+    output?: string;
+  }
+}
+
 export interface TaskCreateParams {
   /**
    * Programming language for the task
@@ -1191,45 +1229,7 @@ export interface TaskListParams {
   page?: string;
 }
 
-export interface RunExecuteResponse {
-  data?: RunExecuteResponse.Data;
-}
-
-export namespace RunExecuteResponse {
-  export interface Data {
-    /**
-     * Execution result message
-     */
-    message: string;
-
-    /**
-     * Whether the task executed successfully
-     */
-    success: boolean;
-
-    /**
-     * Task identifier
-     */
-    taskId: string;
-
-    /**
-     * Error message if execution failed
-     */
-    error?: string;
-
-    /**
-     * Execution duration in milliseconds
-     */
-    executionTime?: number;
-
-    /**
-     * Task execution output
-     */
-    output?: string;
-  }
-}
-
-export interface RunExecuteParams {
+export interface TaskRunParams {
   /**
    * Task identifier
    */
@@ -1253,7 +1253,7 @@ export interface RunExecuteParams {
   /**
    * Override browser configuration for this execution
    */
-  overrideBrowserConfiguration?: RunExecuteParams.OverrideBrowserConfiguration;
+  overrideBrowserConfiguration?: TaskRunParams.OverrideBrowserConfiguration;
 
   /**
    * Optional existing browser session ID to use for task execution
@@ -1266,7 +1266,7 @@ export interface RunExecuteParams {
   version?: string;
 }
 
-export namespace RunExecuteParams {
+export namespace TaskRunParams {
   /**
    * Override browser configuration for this execution
    */
@@ -1584,9 +1584,9 @@ export declare namespace Task {
   export {
     type TaskCreateResponse as TaskCreateResponse,
     type TaskListResponse as TaskListResponse,
+    type TaskRunResponse as TaskRunResponse,
     type TaskCreateParams as TaskCreateParams,
     type TaskListParams as TaskListParams,
-    type RunExecuteResponse as RunExecuteResponse,
-    type RunExecuteParams as RunExecuteParams,
+    type TaskRunParams as TaskRunParams,
   };
 }

@@ -91,18 +91,6 @@ describe('resource sessions', () => {
   });
 
   // Prism tests are disabled
-  test.skip('copy', async () => {
-    const responsePromise = client.sessions.copy('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
   test.skip('dragAndDrop: only required params', async () => {
     const responsePromise = client.sessions.dragAndDrop('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       endX: 0,
@@ -145,35 +133,6 @@ describe('resource sessions', () => {
   // Prism tests are disabled
   test.skip('goto: required and optional params', async () => {
     const response = await client.sessions.goto('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { url: 'url' });
-  });
-
-  // Prism tests are disabled
-  test.skip('listPages', async () => {
-    const responsePromise = client.sessions.listPages('session_id');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('paste: only required params', async () => {
-    const responsePromise = client.sessions.paste('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { text: 'text' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('paste: required and optional params', async () => {
-    const response = await client.sessions.paste('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { text: 'text' });
   });
 
   // Prism tests are disabled
