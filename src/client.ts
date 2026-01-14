@@ -17,15 +17,7 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { EventSignalParams, EventWaitForParams, EventWaitForResponse, Events } from './resources/events';
-import {
-  ExtensionDeleteResponse,
-  ExtensionListResponse,
-  ExtensionManifest,
-  ExtensionRetrieveResponse,
-  ExtensionUploadParams,
-  ExtensionUploadResponse,
-  Extensions,
-} from './resources/extensions';
+import { ExtensionListResponse, ExtensionManifest, Extensions } from './resources/extensions';
 import {
   Identities,
   IdentityCreateParams,
@@ -42,6 +34,15 @@ import {
   ProfileRetrieveResponse,
   Profiles,
 } from './resources/profiles';
+import {
+  Task,
+  TaskCreateParams,
+  TaskCreateResponse,
+  TaskListParams,
+  TaskListResponse,
+  TaskRunParams,
+  TaskRunResponse,
+} from './resources/task';
 import {
   ToolFetchWebpageParams,
   ToolFetchWebpageResponse,
@@ -64,16 +65,12 @@ import {
   Applications,
 } from './resources/applications/applications';
 import {
-  SessionCopyResponse,
   SessionCreateParams,
   SessionCreateResponse,
   SessionDragAndDropParams,
   SessionDragAndDropResponse,
   SessionGotoParams,
   SessionGotoResponse,
-  SessionListPagesResponse,
-  SessionPasteParams,
-  SessionPasteResponse,
   SessionRetrieveDownloadsResponse,
   SessionRetrieveResponse,
   SessionScrollParams,
@@ -82,13 +79,6 @@ import {
   SessionUploadFileResponse,
   Sessions,
 } from './resources/sessions/sessions';
-import {
-  Task,
-  TaskCreateParams,
-  TaskCreateResponse,
-  TaskListParams,
-  TaskListResponse,
-} from './resources/task/task';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -819,18 +809,14 @@ export declare namespace Anchorbrowser {
     Sessions as Sessions,
     type SessionCreateResponse as SessionCreateResponse,
     type SessionRetrieveResponse as SessionRetrieveResponse,
-    type SessionCopyResponse as SessionCopyResponse,
     type SessionDragAndDropResponse as SessionDragAndDropResponse,
     type SessionGotoResponse as SessionGotoResponse,
-    type SessionListPagesResponse as SessionListPagesResponse,
-    type SessionPasteResponse as SessionPasteResponse,
     type SessionRetrieveDownloadsResponse as SessionRetrieveDownloadsResponse,
     type SessionScrollResponse as SessionScrollResponse,
     type SessionUploadFileResponse as SessionUploadFileResponse,
     type SessionCreateParams as SessionCreateParams,
     type SessionDragAndDropParams as SessionDragAndDropParams,
     type SessionGotoParams as SessionGotoParams,
-    type SessionPasteParams as SessionPasteParams,
     type SessionScrollParams as SessionScrollParams,
     type SessionUploadFileParams as SessionUploadFileParams,
   };
@@ -847,11 +833,7 @@ export declare namespace Anchorbrowser {
   export {
     Extensions as Extensions,
     type ExtensionManifest as ExtensionManifest,
-    type ExtensionRetrieveResponse as ExtensionRetrieveResponse,
     type ExtensionListResponse as ExtensionListResponse,
-    type ExtensionDeleteResponse as ExtensionDeleteResponse,
-    type ExtensionUploadResponse as ExtensionUploadResponse,
-    type ExtensionUploadParams as ExtensionUploadParams,
   };
 
   export {
@@ -865,8 +847,10 @@ export declare namespace Anchorbrowser {
     Task as Task,
     type TaskCreateResponse as TaskCreateResponse,
     type TaskListResponse as TaskListResponse,
+    type TaskRunResponse as TaskRunResponse,
     type TaskCreateParams as TaskCreateParams,
     type TaskListParams as TaskListParams,
+    type TaskRunParams as TaskRunParams,
   };
 
   export {

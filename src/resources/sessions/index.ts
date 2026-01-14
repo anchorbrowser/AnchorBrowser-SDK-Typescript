@@ -2,12 +2,7 @@
 
 export { Agent } from './agent/index';
 export { All, type AllStatusResponse } from './all';
-export {
-  Clipboard,
-  type ClipboardGetResponse,
-  type ClipboardSetResponse,
-  type ClipboardSetParams,
-} from './clipboard';
+export { Clipboard, type ClipboardSetResponse, type ClipboardSetParams } from './clipboard';
 export {
   Keyboard,
   type KeyboardShortcutResponse,
@@ -18,34 +13,23 @@ export {
 export {
   Mouse,
   type MouseClickResponse,
-  type MouseDoubleClickResponse,
   type MouseMoveResponse,
   type MouseClickParams,
-  type MouseDoubleClickParams,
   type MouseMoveParams,
 } from './mouse';
-export {
-  Recordings,
-  type RecordingListResponse,
-  type RecordingPauseResponse,
-  type RecordingResumeResponse,
-} from './recordings/index';
+export { Recordings, type RecordingListResponse } from './recordings/index';
 export {
   Sessions,
   type SessionCreateResponse,
   type SessionRetrieveResponse,
-  type SessionCopyResponse,
   type SessionDragAndDropResponse,
   type SessionGotoResponse,
-  type SessionListPagesResponse,
-  type SessionPasteResponse,
   type SessionRetrieveDownloadsResponse,
   type SessionScrollResponse,
   type SessionUploadFileResponse,
   type SessionCreateParams,
   type SessionDragAndDropParams,
   type SessionGotoParams,
-  type SessionPasteParams,
   type SessionScrollParams,
   type SessionUploadFileParams,
 } from './sessions';

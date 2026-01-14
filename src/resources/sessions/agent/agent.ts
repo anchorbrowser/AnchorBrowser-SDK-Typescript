@@ -3,7 +3,7 @@
 import { APIResource } from '../../../core/resource';
 import * as Shared from '../../shared';
 import * as FilesAPI from './files';
-import { FileListResponse, FileUploadParams, FileUploadResponse, Files } from './files';
+import { FileUploadParams, FileUploadResponse, Files } from './files';
 import { APIPromise } from '../../../core/api-promise';
 import { RequestOptions } from '../../../internal/request-options';
 import { path } from '../../../internal/utils/path';
@@ -45,7 +45,6 @@ Agent.Files = Files;
 export declare namespace Agent {
   export {
     Files as Files,
-    type FileListResponse as FileListResponse,
     type FileUploadResponse as FileUploadResponse,
     type FileUploadParams as FileUploadParams,
   };

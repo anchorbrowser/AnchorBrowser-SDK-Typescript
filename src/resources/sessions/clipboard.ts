@@ -7,20 +7,6 @@ import { path } from '../../internal/utils/path';
 
 export class Clipboard extends APIResource {
   /**
-   * Retrieves the current content of the clipboard
-   *
-   * @example
-   * ```ts
-   * const clipboard = await client.sessions.clipboard.get(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   * );
-   * ```
-   */
-  get(sessionID: string, options?: RequestOptions): APIPromise<ClipboardGetResponse> {
-    return this._client.get(path`/v1/sessions/${sessionID}/clipboard`, options);
-  }
-
-  /**
    * Sets the content of the clipboard
    *
    * @example
@@ -40,19 +26,6 @@ export class Clipboard extends APIResource {
   }
 }
 
-export interface ClipboardGetResponse {
-  data?: ClipboardGetResponse.Data;
-}
-
-export namespace ClipboardGetResponse {
-  export interface Data {
-    /**
-     * Text content of the clipboard
-     */
-    text?: string;
-  }
-}
-
 export interface ClipboardSetResponse {
   status?: string;
 }
@@ -65,9 +38,5 @@ export interface ClipboardSetParams {
 }
 
 export declare namespace Clipboard {
-  export {
-    type ClipboardGetResponse as ClipboardGetResponse,
-    type ClipboardSetResponse as ClipboardSetResponse,
-    type ClipboardSetParams as ClipboardSetParams,
-  };
+  export { type ClipboardSetResponse as ClipboardSetResponse, type ClipboardSetParams as ClipboardSetParams };
 }

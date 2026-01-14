@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../core/resource';
-import * as Shared from '../../shared';
 import * as PrimaryAPI from './primary';
 import { Primary } from './primary';
 import { APIPromise } from '../../../core/api-promise';
@@ -24,34 +23,6 @@ export class Recordings extends APIResource {
    */
   list(sessionID: string, options?: RequestOptions): APIPromise<RecordingListResponse> {
     return this._client.get(path`/v1/sessions/${sessionID}/recordings`, options);
-  }
-
-  /**
-   * Pauses the video recording for the specified browser session.
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.recordings.pause(
-   *   'session_id',
-   * );
-   * ```
-   */
-  pause(sessionID: string, options?: RequestOptions): APIPromise<RecordingPauseResponse> {
-    return this._client.post(path`/v1/sessions/${sessionID}/recordings/pause`, options);
-  }
-
-  /**
-   * Resumes the video recording for the specified browser session.
-   *
-   * @example
-   * ```ts
-   * const response = await client.sessions.recordings.resume(
-   *   'session_id',
-   * );
-   * ```
-   */
-  resume(sessionID: string, options?: RequestOptions): APIPromise<RecordingResumeResponse> {
-    return this._client.post(path`/v1/sessions/${sessionID}/recordings/resume`, options);
   }
 }
 
@@ -109,22 +80,10 @@ export namespace RecordingListResponse {
   }
 }
 
-export interface RecordingPauseResponse {
-  data?: Shared.SuccessResponse;
-}
-
-export interface RecordingResumeResponse {
-  data?: Shared.SuccessResponse;
-}
-
 Recordings.Primary = Primary;
 
 export declare namespace Recordings {
-  export {
-    type RecordingListResponse as RecordingListResponse,
-    type RecordingPauseResponse as RecordingPauseResponse,
-    type RecordingResumeResponse as RecordingResumeResponse,
-  };
+  export { type RecordingListResponse as RecordingListResponse };
 
   export { Primary as Primary };
 }
