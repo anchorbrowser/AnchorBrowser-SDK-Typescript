@@ -55,10 +55,11 @@ export {
   type TaskCreateParams,
   type TaskListParams,
   type TaskRunParams,
-} from './task';
+} from './task/task';
 export {
   Tools,
   type ToolFetchWebpageResponse,
+  type ToolGetPerformWebTaskStatusResponse,
   type ToolPerformWebTaskResponse,
   type ToolFetchWebpageParams,
   type ToolPerformWebTaskParams,
