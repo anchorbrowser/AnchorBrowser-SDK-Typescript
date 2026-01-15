@@ -212,13 +212,11 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/applications/auth-flows.ts">AuthFlowCreateResponse</a></code>
-- <code><a href="./src/resources/applications/auth-flows.ts">AuthFlowUpdateResponse</a></code>
 - <code><a href="./src/resources/applications/auth-flows.ts">AuthFlowListResponse</a></code>
 - <code><a href="./src/resources/applications/auth-flows.ts">AuthFlowDeleteResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/applications/{application_id}/auth-flows">client.applications.authFlows.<a href="./src/resources/applications/auth-flows.ts">create</a>(applicationID, { ...params }) -> AuthFlowCreateResponse</code>
-- <code title="patch /v1/applications/{application_id}/auth-flows/{auth_flow_id}">client.applications.authFlows.<a href="./src/resources/applications/auth-flows.ts">update</a>(authFlowID, { ...params }) -> AuthFlowUpdateResponse</code>
 - <code title="get /v1/applications/{application_id}/auth-flows">client.applications.authFlows.<a href="./src/resources/applications/auth-flows.ts">list</a>(applicationID) -> AuthFlowListResponse</code>
 - <code title="delete /v1/applications/{application_id}/auth-flows/{auth_flow_id}">client.applications.authFlows.<a href="./src/resources/applications/auth-flows.ts">delete</a>(authFlowID, { ...params }) -> AuthFlowDeleteResponse</code>
