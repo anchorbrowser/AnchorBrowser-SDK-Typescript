@@ -8,8 +8,6 @@ import {
   AuthFlowDeleteParams,
   AuthFlowDeleteResponse,
   AuthFlowListResponse,
-  AuthFlowUpdateParams,
-  AuthFlowUpdateResponse,
   AuthFlows,
 } from './auth-flows';
 import { APIPromise } from '../../core/api-promise';
@@ -389,11 +387,9 @@ export declare namespace Applications {
   export {
     AuthFlows as AuthFlows,
     type AuthFlowCreateResponse as AuthFlowCreateResponse,
-    type AuthFlowUpdateResponse as AuthFlowUpdateResponse,
     type AuthFlowListResponse as AuthFlowListResponse,
     type AuthFlowDeleteResponse as AuthFlowDeleteResponse,
     type AuthFlowCreateParams as AuthFlowCreateParams,
-    type AuthFlowUpdateParams as AuthFlowUpdateParams,
     type AuthFlowDeleteParams as AuthFlowDeleteParams,
   };
 }

@@ -16,10 +16,8 @@ export {
 export {
   AuthFlows,
   type AuthFlowCreateResponse,
-  type AuthFlowUpdateResponse,
   type AuthFlowListResponse,
   type AuthFlowDeleteResponse,
   type AuthFlowCreateParams,
-  type AuthFlowUpdateParams,
   type AuthFlowDeleteParams,
 } from './auth-flows';
