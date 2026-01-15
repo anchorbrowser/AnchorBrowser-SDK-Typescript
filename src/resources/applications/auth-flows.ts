@@ -35,36 +35,6 @@ export class AuthFlows extends APIResource {
   }
 
   /**
-   * Updates an existing authentication flow.
-   *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
-   *
-   * @example
-   * ```ts
-   * const authFlow = await client.applications.authFlows.update(
-   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   {
-   *     application_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *     methods: ['username_password', 'authenticator'],
-   *     name: 'Updated Login Flow',
-   *   },
-   * );
-   * ```
-   */
-  update(
-    authFlowID: string,
-    params: AuthFlowUpdateParams,
-    options?: RequestOptions,
-  ): APIPromise<AuthFlowUpdateResponse> {
-    const { application_id, ...body } = params;
-    return this._client.patch(path`/v1/applications/${application_id}/auth-flows/${authFlowID}`, {
-      body,
-      ...options,
-    });
-  }
-
-  /**
    * Retrieves all authentication flows for a specific application.
    *
    * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
@@ -150,57 +120,6 @@ export interface AuthFlowCreateResponse {
 }
 
 export namespace AuthFlowCreateResponse {
-  export interface CustomField {
-    /**
-     * Name of the custom field
-     */
-    name: string;
-  }
-}
-
-export interface AuthFlowUpdateResponse {
-  /**
-   * Unique identifier for the authentication flow
-   */
-  id?: string;
-
-  /**
-   * Timestamp when the authentication flow was created
-   */
-  created_at?: string;
-
-  /**
-   * Custom fields for this authentication flow
-   */
-  custom_fields?: Array<AuthFlowUpdateResponse.CustomField>;
-
-  /**
-   * Description of the authentication flow
-   */
-  description?: string | null;
-
-  /**
-   * Whether this is the recommended authentication flow
-   */
-  is_recommended?: boolean;
-
-  /**
-   * Authentication methods in this flow
-   */
-  methods?: Array<string>;
-
-  /**
-   * Name of the authentication flow
-   */
-  name?: string;
-
-  /**
-   * Timestamp when the authentication flow was last updated
-   */
-  updated_at?: string;
-}
-
-export namespace AuthFlowUpdateResponse {
   export interface CustomField {
     /**
      * Name of the custom field
@@ -309,47 +228,6 @@ export namespace AuthFlowCreateParams {
   }
 }
 
-export interface AuthFlowUpdateParams {
-  /**
-   * Path param: The ID of the application
-   */
-  application_id: string;
-
-  /**
-   * Body param: Custom fields for this authentication flow
-   */
-  custom_fields?: Array<AuthFlowUpdateParams.CustomField>;
-
-  /**
-   * Body param: Description of the authentication flow
-   */
-  description?: string;
-
-  /**
-   * Body param: Whether this is the recommended authentication flow
-   */
-  is_recommended?: boolean;
-
-  /**
-   * Body param: Authentication methods in this flow
-   */
-  methods?: Array<'username_password' | 'authenticator' | 'custom'>;
-
-  /**
-   * Body param: Name of the authentication flow
-   */
-  name?: string;
-}
-
-export namespace AuthFlowUpdateParams {
-  export interface CustomField {
-    /**
-     * Name of the custom field
-     */
-    name: string;
-  }
-}
-
 export interface AuthFlowDeleteParams {
   /**
    * The ID of the application
@@ -360,11 +238,9 @@ export interface AuthFlowDeleteParams {
 export declare namespace AuthFlows {
   export {
     type AuthFlowCreateResponse as AuthFlowCreateResponse,
-    type AuthFlowUpdateResponse as AuthFlowUpdateResponse,
     type AuthFlowListResponse as AuthFlowListResponse,
     type AuthFlowDeleteResponse as AuthFlowDeleteResponse,
     type AuthFlowCreateParams as AuthFlowCreateParams,
-    type AuthFlowUpdateParams as AuthFlowUpdateParams,
     type AuthFlowDeleteParams as AuthFlowDeleteParams,
   };
 }
