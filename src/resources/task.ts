@@ -59,7 +59,7 @@ export class Task extends APIResource {
     executionID: string,
     params: TaskRetrieveExecutionResultParams,
     options?: RequestOptions,
-  ): APIPromise<unknown> {
+  ): APIPromise<TaskRetrieveExecutionResultResponse> {
     const { taskId } = params;
     return this._client.get(path`/v1/task/${taskId}/executions/${executionID}`, options);
   }
@@ -861,7 +861,53 @@ export namespace TaskListResponse {
   }
 }
 
-export type TaskRetrieveExecutionResultResponse = unknown;
+export interface TaskRetrieveExecutionResultResponse {
+  data?: TaskRetrieveExecutionResultResponse.Data;
+}
+
+export namespace TaskRetrieveExecutionResultResponse {
+  export interface Data {
+    /**
+     * Unique identifier for the execution result
+     */
+    id: string;
+
+    /**
+     * Execution start time
+     */
+    startTime: string;
+
+    /**
+     * Execution status
+     */
+    status: 'success' | 'failure' | 'timeout' | 'cancelled';
+
+    /**
+     * Task version identifier
+     */
+    taskVersionId: string;
+
+    /**
+     * Version that was executed
+     */
+    version: string;
+
+    /**
+     * Error message if execution failed
+     */
+    errorMessage?: string | null;
+
+    /**
+     * Execution duration in milliseconds
+     */
+    executionTime?: number | null;
+
+    /**
+     * Task execution output
+     */
+    output?: string | null;
+  }
+}
 
 export interface TaskRunResponse {
   data?: TaskRunResponse.Data;
