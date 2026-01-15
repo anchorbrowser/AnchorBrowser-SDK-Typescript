@@ -4,6 +4,7 @@ import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
 import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
+import { path } from '../internal/utils/path';
 
 export class Tools extends APIResource {
   /**
@@ -18,6 +19,13 @@ export class Tools extends APIResource {
       ...options,
       headers: buildHeaders([{ Accept: 'text/plain' }, options?.headers]),
     });
+  }
+
+  /**
+   * Get the status of an asynchronous perform-web-task execution by workflow ID.
+   */
+  getPerformWebTaskStatus(workflowID: string, options?: RequestOptions): APIPromise<unknown> {
+    return this._client.get(path`/v1/tools/perform-web-task/${workflowID}/status`, options);
   }
 
   /**
@@ -51,6 +59,8 @@ export class Tools extends APIResource {
  * The rendered content of the webpage.
  */
 export type ToolFetchWebpageResponse = string;
+
+export type ToolGetPerformWebTaskStatusResponse = unknown;
 
 export interface ToolPerformWebTaskResponse {
   data?: ToolPerformWebTaskResponse.Data;
@@ -239,6 +249,7 @@ export interface ToolScreenshotWebpageParams {
 export declare namespace Tools {
   export {
     type ToolFetchWebpageResponse as ToolFetchWebpageResponse,
+    type ToolGetPerformWebTaskStatusResponse as ToolGetPerformWebTaskStatusResponse,
     type ToolPerformWebTaskResponse as ToolPerformWebTaskResponse,
     type ToolFetchWebpageParams as ToolFetchWebpageParams,
     type ToolPerformWebTaskParams as ToolPerformWebTaskParams,

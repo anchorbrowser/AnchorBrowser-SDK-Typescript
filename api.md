@@ -125,11 +125,13 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/tools.ts">ToolFetchWebpageResponse</a></code>
+- <code><a href="./src/resources/tools.ts">ToolGetPerformWebTaskStatusResponse</a></code>
 - <code><a href="./src/resources/tools.ts">ToolPerformWebTaskResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/tools/fetch-webpage">client.tools.<a href="./src/resources/tools.ts">fetchWebpage</a>({ ...params }) -> string</code>
+- <code title="get /v1/tools/perform-web-task/{workflowId}/status">client.tools.<a href="./src/resources/tools.ts">getPerformWebTaskStatus</a>(workflowID) -> unknown</code>
 - <code title="post /v1/tools/perform-web-task">client.tools.<a href="./src/resources/tools.ts">performWebTask</a>({ ...params }) -> ToolPerformWebTaskResponse</code>
 - <code title="post /v1/tools/screenshot">client.tools.<a href="./src/resources/tools.ts">screenshotWebpage</a>({ ...params }) -> Response</code>
 
@@ -159,15 +161,25 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/task.ts">TaskCreateResponse</a></code>
-- <code><a href="./src/resources/task.ts">TaskListResponse</a></code>
-- <code><a href="./src/resources/task.ts">TaskRunResponse</a></code>
+- <code><a href="./src/resources/task/task.ts">TaskCreateResponse</a></code>
+- <code><a href="./src/resources/task/task.ts">TaskListResponse</a></code>
+- <code><a href="./src/resources/task/task.ts">TaskRunResponse</a></code>
 
 Methods:
 
-- <code title="post /v1/task">client.task.<a href="./src/resources/task.ts">create</a>({ ...params }) -> TaskCreateResponse</code>
-- <code title="get /v1/task">client.task.<a href="./src/resources/task.ts">list</a>({ ...params }) -> TaskListResponse</code>
-- <code title="post /v1/task/run">client.task.<a href="./src/resources/task.ts">run</a>({ ...params }) -> TaskRunResponse</code>
+- <code title="post /v1/task">client.task.<a href="./src/resources/task/task.ts">create</a>({ ...params }) -> TaskCreateResponse</code>
+- <code title="get /v1/task">client.task.<a href="./src/resources/task/task.ts">list</a>({ ...params }) -> TaskListResponse</code>
+- <code title="post /v1/task/run">client.task.<a href="./src/resources/task/task.ts">run</a>({ ...params }) -> TaskRunResponse</code>
+
+## Executions
+
+Types:
+
+- <code><a href="./src/resources/task/executions.ts">ExecutionRetrieveResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/task/{taskId}/executions/{executionId}">client.task.executions.<a href="./src/resources/task/executions.ts">retrieve</a>(executionID, { ...params }) -> unknown</code>
 
 # Identities
 

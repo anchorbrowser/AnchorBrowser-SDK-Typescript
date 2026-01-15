@@ -21,6 +21,18 @@ describe('resource tools', () => {
   });
 
   // Prism tests are disabled
+  test.skip('getPerformWebTaskStatus', async () => {
+    const responsePromise = client.tools.getPerformWebTaskStatus('workflowId');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
   test.skip('performWebTask: only required params', async () => {
     const responsePromise = client.tools.performWebTask({ prompt: 'prompt' });
     const rawResponse = await responsePromise.asResponse();
