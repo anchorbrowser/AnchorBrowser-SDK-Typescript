@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.13.3 (2026-01-15)
+
+Full Changelog: [v0.13.2...v0.13.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.2...v0.13.3)
+
+### Features
+
+* Added missing PerformWebTaskStatusSuccessResponseData ([658ba02](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/658ba02cfdc7be27409040af5bb751b0278eb4c2))
+* **api:** manual updates ([92be554](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/92be5546301b64b8317e51fe3c8f33fc803ad663))
+* BRO-1808 added polling results routes to sdk ([6b0b0de](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/6b0b0de9e554ba86ff18d966868b7b629edef947))
+
 ## 0.13.2 (2026-01-15)
 
 Full Changelog: [v0.13.1...v0.13.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.1...v0.13.2)
