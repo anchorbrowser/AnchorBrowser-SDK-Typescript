@@ -131,7 +131,7 @@ Types:
 Methods:
 
 - <code title="post /v1/tools/fetch-webpage">client.tools.<a href="./src/resources/tools.ts">fetchWebpage</a>({ ...params }) -> string</code>
-- <code title="get /v1/tools/perform-web-task/{workflowId}/status">client.tools.<a href="./src/resources/tools.ts">getPerformWebTaskStatus</a>(workflowID) -> unknown</code>
+- <code title="get /v1/tools/perform-web-task/{workflowId}/status">client.tools.<a href="./src/resources/tools.ts">getPerformWebTaskStatus</a>(workflowID) -> ToolGetPerformWebTaskStatusResponse</code>
 - <code title="post /v1/tools/perform-web-task">client.tools.<a href="./src/resources/tools.ts">performWebTask</a>({ ...params }) -> ToolPerformWebTaskResponse</code>
 - <code title="post /v1/tools/screenshot">client.tools.<a href="./src/resources/tools.ts">screenshotWebpage</a>({ ...params }) -> Response</code>
 
@@ -170,7 +170,7 @@ Methods:
 
 - <code title="post /v1/task">client.task.<a href="./src/resources/task.ts">create</a>({ ...params }) -> TaskCreateResponse</code>
 - <code title="get /v1/task">client.task.<a href="./src/resources/task.ts">list</a>({ ...params }) -> TaskListResponse</code>
-- <code title="get /v1/task/{taskId}/executions/{executionId}">client.task.<a href="./src/resources/task.ts">retrieveExecutionResult</a>(executionID, { ...params }) -> unknown</code>
+- <code title="get /v1/task/{taskId}/executions/{executionId}">client.task.<a href="./src/resources/task.ts">retrieveExecutionResult</a>(executionID, { ...params }) -> TaskRetrieveExecutionResultResponse</code>
 - <code title="post /v1/task/run">client.task.<a href="./src/resources/task.ts">run</a>({ ...params }) -> TaskRunResponse</code>
 
 # Identities
