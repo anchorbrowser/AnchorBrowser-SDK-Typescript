@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.1 (2026-01-15)
+
+Full Changelog: [v0.13.0...v0.13.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.0...v0.13.1)
+
+### Chores
+
+* **internal:** upgrade babel, qs, js-yaml ([65debc7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/65debc757eef45657ed27381b4ee205792af8b7f))
+
 ## 0.13.0 (2026-01-14)
 
 Full Changelog: [v0.12.1...v0.13.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.12.1...v0.13.0)
