@@ -24,7 +24,10 @@ export class Tools extends APIResource {
   /**
    * Get the status of an asynchronous perform-web-task execution by workflow ID.
    */
-  getPerformWebTaskStatus(workflowID: string, options?: RequestOptions): APIPromise<unknown> {
+  getPerformWebTaskStatus(
+    workflowID: string,
+    options?: RequestOptions,
+  ): APIPromise<ToolGetPerformWebTaskStatusResponse> {
     return this._client.get(path`/v1/tools/perform-web-task/${workflowID}/status`, options);
   }
 
@@ -60,7 +63,45 @@ export class Tools extends APIResource {
  */
 export type ToolFetchWebpageResponse = string;
 
-export type ToolGetPerformWebTaskStatusResponse = unknown;
+export interface ToolGetPerformWebTaskStatusResponse {
+  data:
+    | ToolGetPerformWebTaskStatusResponse.PerformWebTaskStatusSuccessResponseData
+    | ToolGetPerformWebTaskStatusResponse.PerformWebTaskStatusRunningResponseData
+    | ToolGetPerformWebTaskStatusResponse.PerformWebTaskStatusFailedResponseData;
+}
+
+export namespace ToolGetPerformWebTaskStatusResponse {
+  export interface PerformWebTaskStatusSuccessResponseData {
+    /**
+     * The outcome or answer produced by the autonomous task.
+     */
+    result: unknown;
+
+    /**
+     * The workflow has completed successfully.
+     */
+    status: 'COMPLETED';
+  }
+
+  export interface PerformWebTaskStatusRunningResponseData {
+    /**
+     * The workflow is currently running.
+     */
+    status: 'RUNNING';
+  }
+
+  export interface PerformWebTaskStatusFailedResponseData {
+    /**
+     * Error message describing why the workflow failed.
+     */
+    error: string;
+
+    /**
+     * The workflow has failed.
+     */
+    status: 'FAILED';
+  }
+}
 
 export interface ToolPerformWebTaskResponse {
   data?: ToolPerformWebTaskResponse.Data;
