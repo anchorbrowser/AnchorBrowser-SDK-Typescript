@@ -35,6 +35,17 @@ import {
   Profiles,
 } from './resources/profiles';
 import {
+  Task,
+  TaskCreateParams,
+  TaskCreateResponse,
+  TaskListParams,
+  TaskListResponse,
+  TaskRetrieveExecutionResultParams,
+  TaskRetrieveExecutionResultResponse,
+  TaskRunParams,
+  TaskRunResponse,
+} from './resources/task';
+import {
   ToolFetchWebpageParams,
   ToolFetchWebpageResponse,
   ToolGetPerformWebTaskStatusResponse,
@@ -71,15 +82,6 @@ import {
   SessionUploadFileResponse,
   Sessions,
 } from './resources/sessions/sessions';
-import {
-  Task,
-  TaskCreateParams,
-  TaskCreateResponse,
-  TaskListParams,
-  TaskListResponse,
-  TaskRunParams,
-  TaskRunResponse,
-} from './resources/task/task';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -853,9 +855,11 @@ export declare namespace Anchorbrowser {
     Task as Task,
     type TaskCreateResponse as TaskCreateResponse,
     type TaskListResponse as TaskListResponse,
+    type TaskRetrieveExecutionResultResponse as TaskRetrieveExecutionResultResponse,
     type TaskRunResponse as TaskRunResponse,
     type TaskCreateParams as TaskCreateParams,
     type TaskListParams as TaskListParams,
+    type TaskRetrieveExecutionResultParams as TaskRetrieveExecutionResultParams,
     type TaskRunParams as TaskRunParams,
   };
 

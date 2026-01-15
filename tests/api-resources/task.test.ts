@@ -64,6 +64,27 @@ describe('resource task', () => {
   });
 
   // Prism tests are disabled
+  test.skip('retrieveExecutionResult: only required params', async () => {
+    const responsePromise = client.task.retrieveExecutionResult('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      taskId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
+  test.skip('retrieveExecutionResult: required and optional params', async () => {
+    const response = await client.task.retrieveExecutionResult('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      taskId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    });
+  });
+
+  // Prism tests are disabled
   test.skip('run: only required params', async () => {
     const responsePromise = client.task.run({ taskId: '550e8400-e29b-41d4-a716-446655440000' });
     const rawResponse = await responsePromise.asResponse();
