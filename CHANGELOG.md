@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.4 (2026-01-17)
+
+Full Changelog: [v0.13.3...v0.13.4](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.3...v0.13.4)
+
+### Chores
+
+* **internal:** update `actions/checkout` version ([198e0e9](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/198e0e97914292bcbc66972a8ee96a13739f8875))
+
 ## 0.13.3 (2026-01-15)
 
 Full Changelog: [v0.13.2...v0.13.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.2...v0.13.3)
