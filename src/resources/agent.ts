@@ -1,16 +1,7 @@
-import type { Worker } from 'playwright';
 import { WebSocket } from 'ws';
 import type { Anchorbrowser } from '../client';
 import { APIResource } from '../core/resource';
-import {
-  AgentTaskResult,
-  BrowserSetup,
-  getAgentWsUrl,
-  getAiServiceWorker,
-  getCdpUrl,
-  getPlaywrightChromiumFromCdpUrl,
-  TaskOptions,
-} from '../lib/browser';
+import { AgentTaskResult, BrowserSetup, getAgentWsUrl, getCdpUrl, TaskOptions } from '../lib/browser';
 import { SessionCreateParams } from './sessions';
 
 export class Agent extends APIResource {
@@ -61,7 +52,6 @@ export class Agent extends APIResource {
     } finally {
       // Cleanup resources
       this.cleanupWebSocket(webSocket);
-      await setup.browser.close();
     }
   }
 
@@ -86,13 +76,20 @@ export class Agent extends APIResource {
 
     try {
       // Navigate to URL if provided
-      if (taskOptions?.url && setup.page) {
-        await setup.page.goto(taskOptions.url);
+      if (taskOptions?.url && setup.session.data?.id) {
+        await this._client.sessions.goto(setup.session.data?.id!, {
+          url: taskOptions.url,
+        });
       }
 
       // Create task promise without executing it
-      const taskPayload = this.createTaskPayloadJSON(prompt, taskOptions);
-      const taskResultPromise = setup.ai?.evaluate(taskPayload);
+      const taskPayload = this.createTaskPayload(prompt, taskOptions);
+      const taskResultPromise = this.executeTaskSessionClient(
+        this._client,
+        setup.session.data?.id!,
+        prompt,
+        taskPayload,
+      );
 
       if (!taskResultPromise) {
         throw new Error('Failed to create task: AI worker not available');
@@ -101,7 +98,6 @@ export class Agent extends APIResource {
       return {
         sessionId: setup.session.data?.id,
         taskResultPromise,
-        playwrightBrowser: setup.browser,
       };
     } catch (error) {
       console.error('Error in browserTask:', error);
@@ -131,27 +127,7 @@ export class Agent extends APIResource {
       throw new Error('Failed to create session: No session ID returned');
     }
 
-    const browser = await getPlaywrightChromiumFromCdpUrl(
-      this._client.baseURL,
-      session.data.id,
-      this._client.apiKey,
-    );
-
-    const context = browser.contexts()[0];
-    if (!context) {
-      await browser.close();
-      throw new Error('No browser context available');
-    }
-
-    const ai = getAiServiceWorker(context);
-    const page = context.pages()[0];
-
-    if (!ai) {
-      await browser.close();
-      throw new Error('AI service worker not available');
-    }
-
-    return { session, browser, context, page, ai };
+    return { session };
   }
 
   /**
@@ -263,20 +239,6 @@ export class Agent extends APIResource {
     }
 
     return payload;
-  }
-
-  /**
-   * Execute task on AI worker
-   */
-  private async executeTaskAiWorker(
-    aiWorker: Worker,
-    prompt: string,
-    taskOptions?: TaskOptions,
-  ): Promise<AgentTaskResult> {
-    const taskPayload = this.createTaskPayloadJSON(prompt, taskOptions);
-    const result = await aiWorker.evaluate(taskPayload);
-
-    return result as AgentTaskResult;
   }
 
   /**
