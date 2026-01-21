@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.13.7 (2026-01-21)
+
+Full Changelog: [v0.13.6...v0.13.7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.6...v0.13.7)
+
+### Bug Fixes
+
+* bring back playwright deps ([eb27430](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/eb2743046e62c88ba05360d7788f146c7127bb2b))
+* installing packages lock file ([8759bc8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/8759bc888792d17702aba68769995b0d436047c8))
+
 ## 0.13.6 (2026-01-21)
 
 Full Changelog: [v0.13.5...v0.13.6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.5...v0.13.6)
