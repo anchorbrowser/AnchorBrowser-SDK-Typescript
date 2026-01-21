@@ -54,6 +54,7 @@
     "fix": "./scripts/format"
   },
   "dependencies": {
+    "playwright": "^1.57.0",
     "ws": "^8.18.3"
   },
   "devDependencies": {
