@@ -1,7 +1,14 @@
 import { WebSocket } from 'ws';
 import type { Anchorbrowser } from '../client';
 import { APIResource } from '../core/resource';
-import { AgentTaskResult, BrowserSetup, getAgentWsUrl, getCdpUrl, TaskOptions } from '../lib/browser';
+import {
+  AgentTaskResult,
+  BrowserSetup,
+  getAgentWsUrl,
+  getCdpUrl,
+  getPlaywrightChromiumFromCdpUrl,
+  TaskOptions,
+} from '../lib/browser';
 import { SessionCreateParams } from './sessions';
 
 export class Agent extends APIResource {
@@ -127,7 +134,19 @@ export class Agent extends APIResource {
       throw new Error('Failed to create session: No session ID returned');
     }
 
-    return { session };
+    const browser = await getPlaywrightChromiumFromCdpUrl(
+      this._client.baseURL,
+      session.data.id,
+      this._client.apiKey,
+    );
+
+    const context = browser.contexts()[0];
+    if (!context) {
+      throw new Error('No browser context available');
+    }
+    const page = context.pages()[0];
+
+    return { session, browser, context, page };
   }
 
   /**
