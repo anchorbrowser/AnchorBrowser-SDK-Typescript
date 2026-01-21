@@ -1,5 +1,6 @@
 import type { Worker } from 'playwright';
 import { WebSocket } from 'ws';
+import type { Anchorbrowser } from '../client';
 import { APIResource } from '../core/resource';
 import {
   AgentTaskResult,
@@ -37,8 +38,10 @@ export class Agent extends APIResource {
 
     try {
       // Navigate to URL if provided
-      if (taskOptions?.url && setup.page) {
-        await setup.page.goto(taskOptions.url);
+      if (taskOptions?.url && setup.session.data?.id) {
+        await this._client.sessions.goto(setup.session.data.id, {
+          url: taskOptions.url,
+        });
       }
 
       // Setup WebSocket for step notifications
@@ -47,7 +50,12 @@ export class Agent extends APIResource {
       }
 
       // Execute the task
-      const taskResult = await this.executeTask(setup.ai!, prompt, taskOptions);
+      const taskResult = await this.executeTaskSessionClient(
+        this._client,
+        setup.session.data?.id!,
+        prompt,
+        taskOptions ?? {},
+      );
 
       return taskResult;
     } finally {
@@ -83,7 +91,7 @@ export class Agent extends APIResource {
       }
 
       // Create task promise without executing it
-      const taskPayload = this.createTaskPayload(prompt, taskOptions);
+      const taskPayload = this.createTaskPayloadJSON(prompt, taskOptions);
       const taskResultPromise = setup.ai?.evaluate(taskPayload);
 
       if (!taskResultPromise) {
@@ -172,9 +180,9 @@ export class Agent extends APIResource {
   }
 
   /**
-   * Create task payload for AI execution
+   * Create task payload JSON for AI execution
    */
-  private createTaskPayload(prompt: string, taskOptions?: TaskOptions): string {
+  private createTaskPayloadJSON(prompt: string, taskOptions?: TaskOptions): string {
     if (!prompt || prompt.trim().length === 0) {
       throw new Error('Prompt cannot be empty');
     }
@@ -215,12 +223,77 @@ export class Agent extends APIResource {
   }
 
   /**
+   * Create task payload for AI execution
+   */
+  private createTaskPayload(prompt: string, taskOptions?: TaskOptions): Record<string, any> {
+    if (!prompt || prompt.trim().length === 0) {
+      throw new Error('Prompt cannot be empty');
+    }
+
+    const payload: Record<string, any> = {
+      prompt,
+      output_schema: taskOptions?.outputSchema,
+      model: taskOptions?.model,
+      provider: taskOptions?.provider,
+    };
+
+    if (taskOptions?.agent !== undefined) {
+      payload['agent'] = taskOptions.agent;
+    }
+    if (taskOptions?.highlightElements !== undefined) {
+      payload['highlight_elements'] = taskOptions.highlightElements;
+    }
+    if (taskOptions?.detectElements !== undefined) {
+      payload['detect_elements'] = taskOptions.detectElements;
+    }
+    if (taskOptions?.extendedSystemMessage !== undefined) {
+      payload['extended_system_message'] = taskOptions.extendedSystemMessage;
+    }
+    if (taskOptions?.humanIntervention !== undefined) {
+      payload['human_intervention'] = taskOptions.humanIntervention;
+    }
+    if (taskOptions?.maxSteps !== undefined) {
+      payload['max_steps'] = taskOptions.maxSteps;
+    }
+    if (taskOptions?.secretValues !== undefined) {
+      payload['secret_values'] = taskOptions.secretValues;
+    }
+    if (taskOptions?.directlyOpenUrl !== undefined) {
+      payload['directly_open_url'] = taskOptions.directlyOpenUrl;
+    }
+
+    return payload;
+  }
+
+  /**
    * Execute task on AI worker
    */
-  private async executeTask(ai: Worker, prompt: string, taskOptions?: TaskOptions): Promise<AgentTaskResult> {
-    const taskPayload = this.createTaskPayload(prompt, taskOptions);
-    const result = await ai.evaluate(taskPayload);
+  private async executeTaskAiWorker(
+    aiWorker: Worker,
+    prompt: string,
+    taskOptions?: TaskOptions,
+  ): Promise<AgentTaskResult> {
+    const taskPayload = this.createTaskPayloadJSON(prompt, taskOptions);
+    const result = await aiWorker.evaluate(taskPayload);
 
+    return result as AgentTaskResult;
+  }
+
+  /**
+   * Execute task on session client
+   */
+  private async executeTaskSessionClient(
+    anchorbrowserClient: Anchorbrowser,
+    sessionId: string,
+    prompt: string,
+    taskOptions?: any,
+  ): Promise<AgentTaskResult> {
+    const taskPayload = this.createTaskPayload(prompt, taskOptions);
+    const result = await anchorbrowserClient.tools.performWebTask({
+      prompt: prompt,
+      sessionId,
+      ...taskPayload,
+    });
     return result as AgentTaskResult;
   }
 
