@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.13.6 (2026-01-21)
+
+Full Changelog: [v0.13.5...v0.13.6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.5...v0.13.6)
+
+### Bug Fixes
+
+* cdp uri replacer ([59bf8c9](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/59bf8c975344ca778ae4041650b020104d728171))
+* remove playwright deps ([09bd4ff](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/09bd4ffc3f7b562eeabf0bc093f3b85c3595b271))
+
 ## 0.13.5 (2026-01-21)
 
 Full Changelog: [v0.13.4...v0.13.5](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.4...v0.13.5)
