@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.5 (2026-01-21)
+
+Full Changelog: [v0.13.4...v0.13.5](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.4...v0.13.5)
+
+### Bug Fixes
+
+* make ai task to be from api and not ai service worker ([52bca3d](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/52bca3d1bbe3340045f619983c4c1ada3b110279))
+
 ## 0.13.4 (2026-01-17)
 
 Full Changelog: [v0.13.3...v0.13.4](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.3...v0.13.4)
