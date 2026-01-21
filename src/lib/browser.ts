@@ -1,5 +1,11 @@
+import type { Browser, Page } from 'playwright';
+import { BrowserContext, chromium } from 'playwright';
+
 export interface BrowserSetup {
   session: { data?: { id?: string } };
+  browser: Browser;
+  context: BrowserContext;
+  page: Page | undefined;
 }
 
 export type AgentTaskResult =
@@ -33,4 +39,12 @@ export const getCdpUrl = (apiBaseURL: string, sessionId: string, apiKey: string)
 
 export const getAgentWsUrl = (apiBaseURL: string, sessionId: string) => {
   return `${apiBaseURL.replace('https://', 'wss://').replace('http://', 'ws://')}/ws?sessionId=${sessionId}`;
+};
+
+export const getPlaywrightChromiumFromCdpUrl = async (
+  apiBaseURL: string,
+  sessionId: string,
+  apiKey: string,
+) => {
+  return await chromium.connectOverCDP(getCdpUrl(apiBaseURL, sessionId, apiKey));
 };
