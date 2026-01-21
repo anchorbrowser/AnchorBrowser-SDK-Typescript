@@ -27,7 +27,8 @@ export interface TaskOptions {
 export const getCdpUrl = (apiBaseURL: string, sessionId: string, apiKey: string) => {
   return `${apiBaseURL
     .replace('https://', 'wss://')
-    .replace('http://', 'ws://')}/connect/?apiKey=${apiKey}&sessionId=${sessionId}`;
+    .replace('http://', 'ws://')
+    .replace('api.', 'connect.')}?apiKey=${apiKey}&sessionId=${sessionId}`;
 };
 
 export const getAgentWsUrl = (apiBaseURL: string, sessionId: string) => {
