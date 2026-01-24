@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.8 (2026-01-24)
+
+Full Changelog: [v0.13.7...v0.13.8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.7...v0.13.8)
+
+### Chores
+
+* **ci:** upgrade `actions/github-script` ([c03cc70](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/c03cc7050799932f9d6bcf00fed914135c236139))
+
 ## 0.13.7 (2026-01-21)
 
 Full Changelog: [v0.13.6...v0.13.7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.6...v0.13.7)
