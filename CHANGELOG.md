@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14.0 (2026-02-03)
+
+Full Changelog: [v0.13.9...v0.14.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.9...v0.14.0)
+
 ## 0.13.9 (2026-02-03)
 
 Full Changelog: [v0.13.8...v0.13.9](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.8...v0.13.9)
