@@ -59,6 +59,7 @@ export class Agent extends APIResource {
     } finally {
       // Cleanup resources
       this.cleanupWebSocket(webSocket);
+      await setup.browser.close();
     }
   }
 
