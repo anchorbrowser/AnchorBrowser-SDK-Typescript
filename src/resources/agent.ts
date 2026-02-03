@@ -119,6 +119,10 @@ export class Agent extends APIResource {
     sessionOptions?: SessionCreateParams,
     sessionId?: string,
   ): Promise<BrowserSetup> {
+    if (sessionId && sessionOptions) {
+      throw new Error('sessionId and sessionOptions cannot be provided together');
+    }
+
     const session =
       sessionId ?
         {
