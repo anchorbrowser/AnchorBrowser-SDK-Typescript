@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.1 (2026-02-05)
+
+Full Changelog: [v0.14.0...v0.14.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.14.0...v0.14.1)
+
+### Chores
+
+* **client:** restructure abort controller binding ([4bc1335](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/4bc13356606687822404412996b102b545a56462))
+
 ## 0.14.0 (2026-02-03)
 
 Full Changelog: [v0.13.9...v0.14.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.13.9...v0.14.0)
