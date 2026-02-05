@@ -236,65 +236,71 @@ export namespace SessionCreateResponse {
 }
 
 export interface SessionRetrieveResponse {
-  /**
-   * The configuration settings for the session.
-   */
-  configuration?: unknown;
+  data?: SessionRetrieveResponse.Data;
+}
 
-  /**
-   * The timestamp when the session was created.
-   */
-  created_at?: string;
+export namespace SessionRetrieveResponse {
+  export interface Data {
+    /**
+     * The configuration settings for the session.
+     */
+    configuration?: unknown;
 
-  /**
-   * The number of credits consumed by the session.
-   */
-  credits_used?: number;
+    /**
+     * The timestamp when the session was created.
+     */
+    created_at?: string;
 
-  /**
-   * The duration of the session in seconds.
-   */
-  duration?: number;
+    /**
+     * The number of credits consumed by the session.
+     */
+    credits_used?: number;
 
-  /**
-   * Whether this is a playground session.
-   */
-  playground?: boolean;
+    /**
+     * The duration of the session in seconds.
+     */
+    duration?: number;
 
-  /**
-   * The number of bytes transferred through the proxy.
-   */
-  proxy_bytes?: number;
+    /**
+     * Whether this is a playground session.
+     */
+    playground?: boolean;
 
-  /**
-   * The unique identifier of the session.
-   */
-  session_id?: string;
+    /**
+     * The number of bytes transferred through the proxy.
+     */
+    proxy_bytes?: number;
 
-  /**
-   * The current status of the session.
-   */
-  status?: string;
+    /**
+     * The unique identifier of the session.
+     */
+    session_id?: string;
 
-  /**
-   * Array of steps executed in the session.
-   */
-  steps?: Array<unknown>;
+    /**
+     * The current status of the session.
+     */
+    status?: string;
 
-  /**
-   * Tags associated with the session.
-   */
-  tags?: unknown;
+    /**
+     * Array of steps executed in the session.
+     */
+    steps?: Array<unknown>;
 
-  /**
-   * The team ID associated with the session.
-   */
-  team_id?: string;
+    /**
+     * Tags associated with the session.
+     */
+    tags?: unknown;
 
-  /**
-   * Token usage information.
-   */
-  tokens?: unknown;
+    /**
+     * The team ID associated with the session.
+     */
+    team_id?: string;
+
+    /**
+     * Token usage information.
+     */
+    tokens?: unknown;
+  }
 }
 
 export interface SessionDragAndDropResponse {
