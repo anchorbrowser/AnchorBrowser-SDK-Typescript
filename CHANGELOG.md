@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.3 (2026-02-06)
+
+Full Changelog: [v0.14.2...v0.14.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.14.2...v0.14.3)
+
+### Bug Fixes
+
+* **client:** avoid removing abort listener too early ([48ef519](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/48ef519680654306d9749b1bf221db9203831198))
+
 ## 0.14.2 (2026-02-05)
 
 Full Changelog: [v0.14.1...v0.14.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.14.1...v0.14.2)
