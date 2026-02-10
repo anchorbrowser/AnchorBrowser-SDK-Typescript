@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.15.1 (2026-02-10)
+
+Full Changelog: [v0.15.0...v0.15.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.0...v0.15.1)
+
+### Chores
+
+* update SDK settings ([b041819](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/b0418190c658810d9306c2acc93571c202e490e9))
+* update SDK settings ([ba407a1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/ba407a1c0f1865835baafdb7f9d2fcec551ace48))
+* update SDK settings ([56fc16f](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/56fc16f8d040db2ecf2a9feb21f42e6448496e9c))
+
 ## 0.15.0 (2026-02-10)
 
 Full Changelog: [v0.14.3...v0.15.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.14.3...v0.15.0)
