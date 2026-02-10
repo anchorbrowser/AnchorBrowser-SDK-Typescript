@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.15.0 (2026-02-10)
+
+Full Changelog: [v0.14.3...v0.15.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.14.3...v0.15.0)
+
+### Features
+
+* BRO-1833 Docs: Old proxy config cleanup ([77699d8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/77699d81caa0c3b4cdf009bdf8b0f8a5b05daf3a))
+
 ## 0.14.3 (2026-02-06)
 
 Full Changelog: [v0.14.2...v0.14.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.14.2...v0.14.3)
