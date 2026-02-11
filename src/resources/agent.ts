@@ -78,6 +78,7 @@ export class Agent extends APIResource {
     }: {
       sessionOptions?: SessionCreateParams;
       taskOptions?: Omit<TaskOptions, 'onAgentStep'>;
+      playwrightBrowser?: BrowserSetup;
     } = {},
   ) {
     const setup = await this.setupBrowser(sessionOptions);
@@ -106,6 +107,7 @@ export class Agent extends APIResource {
       return {
         sessionId: setup.session.data?.id,
         taskResultPromise,
+        playwrightBrowser: setup.browser,
       };
     } catch (error) {
       console.error('Error in browserTask:', error);
