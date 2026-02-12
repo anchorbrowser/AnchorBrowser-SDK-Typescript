@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.15.3 (2026-02-12)
+
+Full Changelog: [v0.15.2...v0.15.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.2...v0.15.3)
+
+### Chores
+
+* **internal:** avoid type checking errors with ts-reset ([60eaa14](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/60eaa14cfd18df40a6757f8c83ba63c175674e78))
+
 ## 0.15.2 (2026-02-11)
 
 Full Changelog: [v0.15.1...v0.15.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.1...v0.15.2)
