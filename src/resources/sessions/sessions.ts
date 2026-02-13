@@ -451,6 +451,11 @@ export namespace SessionCreateParams {
     extra_stealth?: Browser.ExtraStealth;
 
     /**
+     * Configuration for force popup as tabs.
+     */
+    force_popups_as_tabs?: Browser.ForcePopupsAsTabs;
+
+    /**
      * Configuration for fullscreen mode.
      */
     fullscreen?: Browser.Fullscreen;
@@ -522,6 +527,17 @@ export namespace SessionCreateParams {
     export interface ExtraStealth {
       /**
        * Enable or disable extra stealth mode.
+       */
+      active?: boolean;
+    }
+
+    /**
+     * Configuration for force popup as tabs.
+     */
+
+    export interface ForcePopupsAsTabs {
+      /**
+       * Enable or disable force popup as tabs.
        */
       active?: boolean;
     }

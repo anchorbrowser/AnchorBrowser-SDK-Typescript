@@ -104,7 +104,7 @@ export namespace ToolGetPerformWebTaskStatusResponse {
 }
 
 export interface ToolPerformWebTaskResponse {
-  data?: ToolPerformWebTaskResponse.Data;
+  data: ToolPerformWebTaskResponse.Data;
 }
 
 export namespace ToolPerformWebTaskResponse {
@@ -112,7 +112,7 @@ export namespace ToolPerformWebTaskResponse {
     /**
      * The outcome or answer produced by the autonomous task.
      */
-    result?: string;
+    result: Record<string, unknown>;
   }
 }
 
