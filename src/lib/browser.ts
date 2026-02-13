@@ -8,11 +8,9 @@ export interface BrowserSetup {
   page: Page | undefined;
 }
 
-export type AgentTaskResult =
-  | string
-  | {
-      result: Record<string, unknown>;
-    };
+export type AgentTaskResult = {
+  data: { result: Record<string, unknown> };
+};
 
 export interface TaskOptions {
   url?: string;
