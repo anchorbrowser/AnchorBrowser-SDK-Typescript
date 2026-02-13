@@ -676,6 +676,11 @@ export namespace SessionCreateParams {
      * Timeout configurations for the browser session.
      */
     timeout?: Session.Timeout;
+
+    /**
+     * Tags for the browser session.
+     */
+    tags?: string[];
   }
 
   export namespace Session {
@@ -907,6 +912,13 @@ export namespace SessionCreateParams {
        * Defaults to `20`.
        */
       max_duration?: number;
+    }
+
+    export interface Tags {
+      /**
+       * Tags for the browser session.
+       */
+      tags?: string[];
     }
   }
 }
