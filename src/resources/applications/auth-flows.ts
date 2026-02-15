@@ -9,9 +9,6 @@ export class AuthFlows extends APIResource {
   /**
    * Creates a new authentication flow for an application.
    *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
-   *
    * @example
    * ```ts
    * const authFlow = await client.applications.authFlows.create(
@@ -37,9 +34,6 @@ export class AuthFlows extends APIResource {
   /**
    * Retrieves all authentication flows for a specific application.
    *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
-   *
    * @example
    * ```ts
    * const authFlows = await client.applications.authFlows.list(
@@ -53,9 +47,6 @@ export class AuthFlows extends APIResource {
 
   /**
    * Deletes an existing authentication flow.
-   *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
    *
    * @example
    * ```ts

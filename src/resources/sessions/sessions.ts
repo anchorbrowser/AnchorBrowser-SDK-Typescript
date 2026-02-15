@@ -394,9 +394,6 @@ export interface SessionCreateParams {
 
   /**
    * Activates an authenticated session.
-   *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
    */
   identities?: Array<SessionCreateParams.Identity>;
 
