@@ -20,9 +20,6 @@ export class Applications extends APIResource {
   /**
    * Creates a new application for identity management.
    *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
-   *
    * @example
    * ```ts
    * const application = await client.applications.create({
@@ -39,9 +36,6 @@ export class Applications extends APIResource {
   /**
    * Retrieves details of a specific application by its ID.
    *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
-   *
    * @example
    * ```ts
    * const application = await client.applications.retrieve(
@@ -55,9 +49,6 @@ export class Applications extends APIResource {
 
   /**
    * Retrieves all applications for the authenticated team.
-   *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
    *
    * @example
    * ```ts
@@ -73,9 +64,6 @@ export class Applications extends APIResource {
 
   /**
    * Deletes an existing application.
-   *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
    *
    * @example
    * ```ts
@@ -114,9 +102,6 @@ export class Applications extends APIResource {
 
   /**
    * Retrieves all identities associated with a specific application.
-   *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
    *
    * @example
    * ```ts

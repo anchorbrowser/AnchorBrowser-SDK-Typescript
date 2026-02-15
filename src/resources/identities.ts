@@ -9,9 +9,6 @@ export class Identities extends APIResource {
   /**
    * Creates a new identity with credentials for authentication.
    *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
-   *
    * @example
    * ```ts
    * const identity = await client.identities.create({
@@ -36,9 +33,6 @@ export class Identities extends APIResource {
   /**
    * Retrieves details of a specific identity by its ID.
    *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
-   *
    * @example
    * ```ts
    * const identity = await client.identities.retrieve(
@@ -52,9 +46,6 @@ export class Identities extends APIResource {
 
   /**
    * Updates an existing identity's name, metadata, or credentials.
-   *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
    *
    * @example
    * ```ts
@@ -74,9 +65,6 @@ export class Identities extends APIResource {
 
   /**
    * Deletes an existing identity.
-   *
-   * **Beta** Capability. [Contact support](mailto:support@anchorbrowser.io) to
-   * enable.
    *
    * @example
    * ```ts
