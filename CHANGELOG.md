@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.15.6 (2026-02-15)
+
+Full Changelog: [v0.15.5...v0.15.6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.5...v0.15.6)
+
+### Features
+
+* Bro 2142 docs clarify server prefix in custom proxy docs ([6a9a3e5](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/6a9a3e5e2d6782eaacd045799836e9d396d54df0))
+* BRO-2193: Remove Early Availability labels (now GA) ([59d8c0a](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/59d8c0a9bd9e485b90a27ee02a21b40185fd97a3))
+
 ## 0.15.5 (2026-02-13)
 
 Full Changelog: [v0.15.4...v0.15.5](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.4...v0.15.5)
