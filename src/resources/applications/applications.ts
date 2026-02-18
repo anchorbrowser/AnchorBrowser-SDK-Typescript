@@ -348,6 +348,12 @@ export interface ApplicationCreateIdentityTokenParams {
 
 export interface ApplicationListIdentitiesParams {
   /**
+   * Filter identities by metadata. Pass a **JSON object** to filter identities whose
+   * metadata contains the specified key-value pairs.
+   */
+  metadata?: string;
+
+  /**
    * Search query to filter identities by name
    */
   search?: string;
