@@ -86,7 +86,9 @@ describe('resource task', () => {
 
   // Prism tests are disabled
   test.skip('run: only required params', async () => {
-    const responsePromise = client.task.run({ taskId: '550e8400-e29b-41d4-a716-446655440000' });
+    const responsePromise = client.task.run('taskId', {
+      input_params: { 'File Name': 'invoice-2026-02.pdf', Operation: 'extract_text' },
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -98,26 +100,11 @@ describe('resource task', () => {
 
   // Prism tests are disabled
   test.skip('run: required and optional params', async () => {
-    const response = await client.task.run({
-      taskId: '550e8400-e29b-41d4-a716-446655440000',
-      async: true,
-      cleanupSessions: true,
-      inputs: { ANCHOR_TARGET_URL: 'https://example.com', ANCHOR_MAX_PAGES: '10' },
-      overrideBrowserConfiguration: {
-        initial_url: 'https://example.com',
-        live_view: { read_only: true },
-        proxy: {
-          active: true,
-          city: 'city',
-          country_code: 'af',
-          region: 'region',
-          type: 'anchor_proxy',
-        },
-        recording: { active: true },
-        timeout: { idle_timeout: 0, max_duration: 0 },
-      },
-      sessionId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      version: '1',
+    const response = await client.task.run('taskId', {
+      input_params: { 'File Name': 'invoice-2026-02.pdf', Operation: 'extract_text' },
+      cleanup_sessions: true,
+      identity_id: 'identity_id',
+      session_id: 'session_id',
     });
   });
 });
