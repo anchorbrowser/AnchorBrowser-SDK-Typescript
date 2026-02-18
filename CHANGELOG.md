@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.15.7 (2026-02-18)
+
+Full Changelog: [v0.15.6...v0.15.7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.6...v0.15.7)
+
+### Features
+
+* Bro 2133 docs add identity metadata filtering ([bf0874e](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/bf0874e7d7d2f8d20bb3b3ceaa2e2c99c877be00))
+
+
+### Chores
+
+* **internal/client:** fix form-urlencoded requests ([7c517e1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/7c517e14b9c1080026b50fa113014c0e65a83003))
+
 ## 0.15.6 (2026-02-15)
 
 Full Changelog: [v0.15.5...v0.15.6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.5...v0.15.6)
