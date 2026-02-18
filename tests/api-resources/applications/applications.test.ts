@@ -112,7 +112,7 @@ describe('resource applications', () => {
     await expect(
       client.applications.listIdentities(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        { search: 'search' },
+        { metadata: 'metadata', search: 'search' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(Anchorbrowser.NotFoundError);
