@@ -35,17 +35,6 @@ import {
   Profiles,
 } from './resources/profiles';
 import {
-  Task,
-  TaskCreateParams,
-  TaskCreateResponse,
-  TaskListParams,
-  TaskListResponse,
-  TaskRetrieveExecutionResultParams,
-  TaskRetrieveExecutionResultResponse,
-  TaskRunParams,
-  TaskRunResponse,
-} from './resources/task';
-import {
   ToolFetchWebpageParams,
   ToolFetchWebpageResponse,
   ToolGetPerformWebTaskStatusResponse,
@@ -82,6 +71,17 @@ import {
   SessionUploadFileResponse,
   Sessions,
 } from './resources/sessions/sessions';
+import {
+  Task,
+  TaskCreateParams,
+  TaskCreateResponse,
+  TaskListParams,
+  TaskListResponse,
+  TaskRetrieveExecutionResultParams,
+  TaskRetrieveExecutionResultResponse,
+  TaskRunParams,
+  TaskRunResponse,
+} from './resources/task/task';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';

@@ -161,17 +161,27 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/task.ts">TaskCreateResponse</a></code>
-- <code><a href="./src/resources/task.ts">TaskListResponse</a></code>
-- <code><a href="./src/resources/task.ts">TaskRetrieveExecutionResultResponse</a></code>
-- <code><a href="./src/resources/task.ts">TaskRunResponse</a></code>
+- <code><a href="./src/resources/task/task.ts">TaskCreateResponse</a></code>
+- <code><a href="./src/resources/task/task.ts">TaskListResponse</a></code>
+- <code><a href="./src/resources/task/task.ts">TaskRetrieveExecutionResultResponse</a></code>
+- <code><a href="./src/resources/task/task.ts">TaskRunResponse</a></code>
 
 Methods:
 
-- <code title="post /v1/task">client.task.<a href="./src/resources/task.ts">create</a>({ ...params }) -> TaskCreateResponse</code>
-- <code title="get /v1/task">client.task.<a href="./src/resources/task.ts">list</a>({ ...params }) -> TaskListResponse</code>
-- <code title="get /v1/task/{taskId}/executions/{executionId}">client.task.<a href="./src/resources/task.ts">retrieveExecutionResult</a>(executionID, { ...params }) -> TaskRetrieveExecutionResultResponse</code>
-- <code title="post /v1/task/run">client.task.<a href="./src/resources/task.ts">run</a>({ ...params }) -> TaskRunResponse</code>
+- <code title="post /v1/task">client.task.<a href="./src/resources/task/task.ts">create</a>({ ...params }) -> TaskCreateResponse</code>
+- <code title="get /v1/task">client.task.<a href="./src/resources/task/task.ts">list</a>({ ...params }) -> TaskListResponse</code>
+- <code title="get /v1/task/{taskId}/executions/{executionId}">client.task.<a href="./src/resources/task/task.ts">retrieveExecutionResult</a>(executionID, { ...params }) -> TaskRetrieveExecutionResultResponse</code>
+- <code title="post /v2/tasks/{taskId}/run">client.task.<a href="./src/resources/task/task.ts">run</a>(taskID, { ...params }) -> TaskRunResponse</code>
+
+## Runs
+
+Types:
+
+- <code><a href="./src/resources/task/runs.ts">RunRetrieveStatusResponse</a></code>
+
+Methods:
+
+- <code title="get /v2/tasks/runs/{runId}/status">client.task.runs.<a href="./src/resources/task/runs.ts">retrieveStatus</a>(runID) -> RunRetrieveStatusResponse</code>
 
 # Identities
 
