@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.15.8 (2026-02-20)
+
+Full Changelog: [v0.15.7...v0.15.8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.7...v0.15.8)
+
+### Chores
+
+* **internal:** remove mock server code ([aaa1f6a](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/aaa1f6a62e98b067f6367d48bfb5066b274652eb))
+
 ## 0.15.7 (2026-02-18)
 
 Full Changelog: [v0.15.6...v0.15.7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.6...v0.15.7)
