@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource authFlows', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.applications.authFlows.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       methods: ['username_password'],
@@ -23,7 +23,7 @@ describe('resource authFlows', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.applications.authFlows.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       methods: ['username_password'],
@@ -34,7 +34,7 @@ describe('resource authFlows', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.applications.authFlows.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -46,7 +46,7 @@ describe('resource authFlows', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: only required params', async () => {
     const responsePromise = client.applications.authFlows.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       application_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -60,7 +60,7 @@ describe('resource authFlows', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete: required and optional params', async () => {
     const response = await client.applications.authFlows.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       application_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',

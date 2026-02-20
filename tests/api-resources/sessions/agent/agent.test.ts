@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource agent', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('pause', async () => {
     const responsePromise = client.sessions.agent.pause('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource agent', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('resume', async () => {
     const responsePromise = client.sessions.agent.resume('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();

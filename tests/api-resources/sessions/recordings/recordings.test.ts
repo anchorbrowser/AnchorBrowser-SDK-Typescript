@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource recordings', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.sessions.recordings.list('session_id');
     const rawResponse = await responsePromise.asResponse();

@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource runs', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieveStatus', async () => {
     const responsePromise = client.task.runs.retrieveStatus('runId');
     const rawResponse = await responsePromise.asResponse();
