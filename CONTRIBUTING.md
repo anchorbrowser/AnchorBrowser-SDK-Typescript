@@ -60,7 +60,7 @@ $ yarn link anchorbrowser
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global anchorbrowser
+$ pnpm link --global anchorbrowser
 ```
 
 ## Running tests
