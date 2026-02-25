@@ -431,6 +431,11 @@ export namespace SessionCreateParams {
     captcha_solver?: Browser.CaptchaSolver;
 
     /**
+     * Configuration for cross-origin support.
+     */
+    cross_origin_support?: Browser.CrossOriginSupport;
+
+    /**
      * Configuration for disabling web security features.
      */
     disable_web_security?: Browser.DisableWebSecurity;
@@ -501,6 +506,17 @@ export namespace SessionCreateParams {
       /**
        * Enable or disable captcha-solving. Requires proxy to be active. Defaults to
        * `false`.
+       */
+      active?: boolean;
+    }
+
+    /**
+     * Configuration for cross-origin support.
+     */
+    export interface CrossOriginSupport {
+      /**
+       * Whether to enable cross-origin support. Allows accessing iframes and resources
+       * from different origins. Defaults to `false`.
        */
       active?: boolean;
     }
