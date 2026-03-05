@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.15.8 (2026-03-05)
+
+Full Changelog: [v0.15.7...v0.15.8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.7...v0.15.8)
+
+### Features
+
+* cross_origin_support ([071fe84](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/071fe8440981ea5d8fddbe5fd4d6b312b7850d20))
+
+
+### Bug Fixes
+
+* **docs/contributing:** correct pnpm link command ([ee26d1f](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/ee26d1f378391b4c9a496ba5b9218db13cd1347d))
+
+
+### Chores
+
+* **internal:** move stringifyQuery implementation to internal function ([c4e92ef](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/c4e92efb677959a83471c60b40035018bdb3a278))
+* **internal:** remove mock server code ([aaa1f6a](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/aaa1f6a62e98b067f6367d48bfb5066b274652eb))
+* update mock server docs ([dcae24b](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/dcae24ba79b6855989ff7f79a4cfb7b7e5a2d792))
+
 ## 0.15.7 (2026-02-18)
 
 Full Changelog: [v0.15.6...v0.15.7](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.6...v0.15.7)
