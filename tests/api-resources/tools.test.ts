@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource tools', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('fetchWebpage', async () => {
     const responsePromise = client.tools.fetchWebpage({});
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource tools', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('getPerformWebTaskStatus', async () => {
     const responsePromise = client.tools.getPerformWebTaskStatus('workflowId');
     const rawResponse = await responsePromise.asResponse();
@@ -32,7 +32,7 @@ describe('resource tools', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('performWebTask: only required params', async () => {
     const responsePromise = client.tools.performWebTask({ prompt: 'prompt' });
     const rawResponse = await responsePromise.asResponse();
@@ -44,7 +44,7 @@ describe('resource tools', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('performWebTask: required and optional params', async () => {
     const response = await client.tools.performWebTask({
       prompt: 'prompt',

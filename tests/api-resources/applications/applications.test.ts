@@ -8,7 +8,7 @@ const client = new Anchorbrowser({
 });
 
 describe('resource applications', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.applications.create({ source: 'https://example.com' });
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource applications', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.applications.create({
       source: 'https://example.com',
@@ -29,7 +29,7 @@ describe('resource applications', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.applications.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -41,7 +41,7 @@ describe('resource applications', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.applications.list();
     const rawResponse = await responsePromise.asResponse();
@@ -53,7 +53,7 @@ describe('resource applications', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -61,7 +61,7 @@ describe('resource applications', () => {
     ).rejects.toThrow(Anchorbrowser.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('delete', async () => {
     const responsePromise = client.applications.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -73,7 +73,7 @@ describe('resource applications', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('createIdentityToken: only required params', async () => {
     const responsePromise = client.applications.createIdentityToken('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       callbackUrl: 'https://example.com/auth/callback',
@@ -87,14 +87,14 @@ describe('resource applications', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('createIdentityToken: required and optional params', async () => {
     const response = await client.applications.createIdentityToken('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       callbackUrl: 'https://example.com/auth/callback',
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listIdentities', async () => {
     const responsePromise = client.applications.listIdentities('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
@@ -106,7 +106,7 @@ describe('resource applications', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listIdentities: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
