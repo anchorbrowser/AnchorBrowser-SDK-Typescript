@@ -163,12 +163,14 @@ Types:
 - <code><a href="./src/resources/task.ts">TaskCreateResponse</a></code>
 - <code><a href="./src/resources/task.ts">TaskListResponse</a></code>
 - <code><a href="./src/resources/task.ts">TaskRetrieveExecutionResultResponse</a></code>
+- <code><a href="./src/resources/task.ts">TaskRunResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/task">client.task.<a href="./src/resources/task.ts">create</a>({ ...params }) -> TaskCreateResponse</code>
 - <code title="get /v1/task">client.task.<a href="./src/resources/task.ts">list</a>({ ...params }) -> TaskListResponse</code>
 - <code title="get /v1/task/{taskId}/executions/{executionId}">client.task.<a href="./src/resources/task.ts">retrieveExecutionResult</a>(executionID, { ...params }) -> TaskRetrieveExecutionResultResponse</code>
+- <code title="post /v1/task/run">client.task.<a href="./src/resources/task.ts">run</a>({ ...params }) -> TaskRunResponse</code>
 
 # Identities
 

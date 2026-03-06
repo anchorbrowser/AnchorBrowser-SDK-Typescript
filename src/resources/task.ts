@@ -69,6 +69,30 @@ export class Task extends APIResource {
     const { taskId } = params;
     return this._client.get(path`/v1/task/${taskId}/executions/${executionID}`, options);
   }
+
+  /**
+   * Executes a task in a browser session. The task can be run with a specific
+   * version or the latest version. Optionally, you can provide an existing session
+   * ID or let the system create a new one.
+   *
+   * If you are using the new Task Builder, see the Tasks V2 endpoints in this API
+   * reference.
+   *
+   * @example
+   * ```ts
+   * const response = await client.task.run({
+   *   taskId: '550e8400-e29b-41d4-a716-446655440000',
+   *   inputs: {
+   *     ANCHOR_TARGET_URL: 'https://example.com',
+   *     ANCHOR_MAX_PAGES: '10',
+   *   },
+   *   version: '1',
+   * });
+   * ```
+   */
+  run(body: TaskRunParams, options?: RequestOptions): APIPromise<TaskRunResponse> {
+    return this._client.post('/v1/task/run', { body, ...options });
+  }
 }
 
 export interface TaskCreateResponse {
@@ -798,6 +822,44 @@ export namespace TaskRetrieveExecutionResultResponse {
   }
 }
 
+export interface TaskRunResponse {
+  data?: TaskRunResponse.Data;
+}
+
+export namespace TaskRunResponse {
+  export interface Data {
+    /**
+     * Execution result message
+     */
+    message: string;
+
+    /**
+     * Whether the task executed successfully
+     */
+    success: boolean;
+
+    /**
+     * Task identifier
+     */
+    taskId: string;
+
+    /**
+     * Error message if execution failed
+     */
+    error?: string;
+
+    /**
+     * Execution duration in milliseconds
+     */
+    executionTime?: number;
+
+    /**
+     * Task execution output
+     */
+    output?: string;
+  }
+}
+
 export interface TaskCreateParams {
   /**
    * Programming language for the task
@@ -1110,13 +1172,318 @@ export interface TaskRetrieveExecutionResultParams {
   taskId: string;
 }
 
+export interface TaskRunParams {
+  /**
+   * Task identifier
+   */
+  taskId: string;
+
+  /**
+   * Whether to run the task asynchronously.
+   */
+  async?: boolean;
+
+  /**
+   * Whether to cleanup browser sessions after task execution. Defaults to true.
+   */
+  cleanupSessions?: boolean;
+
+  /**
+   * Environment variables for task execution (keys must start with ANCHOR\_)
+   */
+  inputs?: { [key: string]: string };
+
+  /**
+   * Override browser configuration for this execution
+   */
+  overrideBrowserConfiguration?: TaskRunParams.OverrideBrowserConfiguration;
+
+  /**
+   * Optional existing browser session ID to use for task execution
+   */
+  sessionId?: string;
+
+  /**
+   * Version to run (draft, latest, or version number)
+   */
+  version?: string;
+}
+
+export namespace TaskRunParams {
+  /**
+   * Override browser configuration for this execution
+   */
+  export interface OverrideBrowserConfiguration {
+    /**
+     * The URL to navigate to when the browser session starts. If not provided, the
+     * browser will load an empty page.
+     */
+    initial_url?: string;
+
+    /**
+     * Configuration for live viewing the browser session.
+     */
+    live_view?: OverrideBrowserConfiguration.LiveView;
+
+    /**
+     * Proxy Documentation available at [Proxy Documentation](/advanced/proxy)
+     */
+    proxy?: OverrideBrowserConfiguration.AnchorProxy | OverrideBrowserConfiguration.CustomProxy;
+
+    /**
+     * Configuration for session recording.
+     */
+    recording?: OverrideBrowserConfiguration.Recording;
+
+    /**
+     * Timeout configurations for the browser session.
+     */
+    timeout?: OverrideBrowserConfiguration.Timeout;
+  }
+
+  export namespace OverrideBrowserConfiguration {
+    /**
+     * Configuration for live viewing the browser session.
+     */
+    export interface LiveView {
+      /**
+       * Enable or disable read-only mode for live viewing. Defaults to `false`.
+       */
+      read_only?: boolean;
+    }
+
+    export interface AnchorProxy {
+      active: boolean;
+
+      /**
+       * City name for precise geographic targeting. Supported for anchor_proxy only. Can
+       * only be used when region is also provided.
+       */
+      city?: string;
+
+      /**
+       * Supported country codes ISO 2 lowercase
+       */
+      country_code?:
+        | 'af'
+        | 'al'
+        | 'dz'
+        | 'ad'
+        | 'ao'
+        | 'as'
+        | 'ag'
+        | 'ar'
+        | 'am'
+        | 'aw'
+        | 'au'
+        | 'at'
+        | 'az'
+        | 'bs'
+        | 'bh'
+        | 'bb'
+        | 'by'
+        | 'be'
+        | 'bz'
+        | 'bj'
+        | 'bm'
+        | 'bo'
+        | 'ba'
+        | 'br'
+        | 'bg'
+        | 'bf'
+        | 'cm'
+        | 'ca'
+        | 'cv'
+        | 'td'
+        | 'cl'
+        | 'co'
+        | 'cg'
+        | 'cr'
+        | 'ci'
+        | 'hr'
+        | 'cu'
+        | 'cy'
+        | 'cz'
+        | 'dk'
+        | 'dm'
+        | 'do'
+        | 'ec'
+        | 'eg'
+        | 'sv'
+        | 'ee'
+        | 'et'
+        | 'fo'
+        | 'fi'
+        | 'fr'
+        | 'gf'
+        | 'pf'
+        | 'ga'
+        | 'gm'
+        | 'ge'
+        | 'de'
+        | 'gh'
+        | 'gi'
+        | 'gr'
+        | 'gd'
+        | 'gp'
+        | 'gt'
+        | 'gg'
+        | 'gn'
+        | 'gw'
+        | 'gy'
+        | 'ht'
+        | 'hn'
+        | 'hu'
+        | 'is'
+        | 'in'
+        | 'ir'
+        | 'iq'
+        | 'ie'
+        | 'il'
+        | 'it'
+        | 'jm'
+        | 'jp'
+        | 'jo'
+        | 'kz'
+        | 'kw'
+        | 'kg'
+        | 'lv'
+        | 'lb'
+        | 'ly'
+        | 'li'
+        | 'lt'
+        | 'lu'
+        | 'mk'
+        | 'ml'
+        | 'mt'
+        | 'mq'
+        | 'mr'
+        | 'mx'
+        | 'md'
+        | 'mc'
+        | 'me'
+        | 'ma'
+        | 'nl'
+        | 'nz'
+        | 'ni'
+        | 'ng'
+        | 'no'
+        | 'pk'
+        | 'pa'
+        | 'py'
+        | 'pe'
+        | 'ph'
+        | 'pl'
+        | 'pt'
+        | 'pr'
+        | 'qa'
+        | 'ro'
+        | 'lc'
+        | 'sm'
+        | 'sa'
+        | 'sn'
+        | 'rs'
+        | 'sc'
+        | 'sl'
+        | 'sk'
+        | 'si'
+        | 'so'
+        | 'za'
+        | 'kr'
+        | 'es'
+        | 'sr'
+        | 'se'
+        | 'ch'
+        | 'sy'
+        | 'st'
+        | 'tw'
+        | 'tj'
+        | 'tg'
+        | 'tt'
+        | 'tn'
+        | 'tr'
+        | 'tc'
+        | 'ua'
+        | 'ae'
+        | 'us'
+        | 'uy'
+        | 'uz'
+        | 've'
+        | 'ye';
+
+      /**
+       * Region code for more specific geographic targeting. The city parameter can only
+       * be used when region is also provided.
+       */
+      region?: string;
+
+      /**
+       * Create a session with a proxy to access websites as if you're browsing from a
+       * computer in that country.
+       */
+      type?: 'anchor_proxy';
+    }
+
+    export interface CustomProxy {
+      active: boolean;
+
+      /**
+       * Proxy password
+       */
+      password: string;
+
+      /**
+       * Proxy address in **PROTOCOL://HOST:PORT** format (e.g.,
+       * https://proxy.example.com:443). See [proxy page](/advanced/proxy#custom-proxy).
+       */
+      server: string;
+
+      type: 'custom';
+
+      /**
+       * Proxy username
+       */
+      username: string;
+    }
+
+    /**
+     * Configuration for session recording.
+     */
+    export interface Recording {
+      /**
+       * Enable or disable video recording of the browser session. Defaults to `true`.
+       */
+      active?: boolean;
+    }
+
+    /**
+     * Timeout configurations for the browser session.
+     */
+    export interface Timeout {
+      /**
+       * The amount of time (in minutes) the browser session waits for new connections
+       * after all others are closed before stopping. Defaults to `5`.
+       */
+      idle_timeout?: number;
+
+      /**
+       * Maximum amount of time (in minutes) for the browser to run before terminating.
+       * Defaults to `20`.
+       */
+      max_duration?: number;
+    }
+  }
+}
+
 export declare namespace Task {
   export {
     type TaskCreateResponse as TaskCreateResponse,
     type TaskListResponse as TaskListResponse,
     type TaskRetrieveExecutionResultResponse as TaskRetrieveExecutionResultResponse,
+    type TaskRunResponse as TaskRunResponse,
     type TaskCreateParams as TaskCreateParams,
     type TaskListParams as TaskListParams,
     type TaskRetrieveExecutionResultParams as TaskRetrieveExecutionResultParams,
+    type TaskRunParams as TaskRunParams,
   };
 }
