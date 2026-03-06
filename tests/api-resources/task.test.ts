@@ -83,28 +83,4 @@ describe('resource task', () => {
       taskId: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     });
   });
-
-  // Mock server tests are disabled
-  test.skip('run: only required params', async () => {
-    const responsePromise = client.task.run('taskId', {
-      input_params: { 'File Name': 'invoice-2026-02.pdf', Operation: 'extract_text' },
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('run: required and optional params', async () => {
-    const response = await client.task.run('taskId', {
-      input_params: { 'File Name': 'invoice-2026-02.pdf', Operation: 'extract_text' },
-      cleanup_sessions: true,
-      identity_id: 'identity_id',
-      session_id: 'session_id',
-    });
-  });
 });

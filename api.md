@@ -74,11 +74,13 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/sessions/mouse.ts">MouseClickResponse</a></code>
+- <code><a href="./src/resources/sessions/mouse.ts">MouseDoubleClickResponse</a></code>
 - <code><a href="./src/resources/sessions/mouse.ts">MouseMoveResponse</a></code>
 
 Methods:
 
 - <code title="post /v1/sessions/{sessionId}/mouse/click">client.sessions.mouse.<a href="./src/resources/sessions/mouse.ts">click</a>(sessionID, { ...params }) -> MouseClickResponse</code>
+- <code title="post /v1/sessions/{sessionId}/mouse/doubleClick">client.sessions.mouse.<a href="./src/resources/sessions/mouse.ts">doubleClick</a>(sessionID, { ...params }) -> MouseDoubleClickResponse</code>
 - <code title="post /v1/sessions/{sessionId}/mouse/move">client.sessions.mouse.<a href="./src/resources/sessions/mouse.ts">move</a>(sessionID, { ...params }) -> MouseMoveResponse</code>
 
 ## Keyboard
@@ -97,18 +99,15 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/sessions/clipboard.ts">ClipboardGetResponse</a></code>
 - <code><a href="./src/resources/sessions/clipboard.ts">ClipboardSetResponse</a></code>
 
 Methods:
 
+- <code title="get /v1/sessions/{sessionId}/clipboard">client.sessions.clipboard.<a href="./src/resources/sessions/clipboard.ts">get</a>(sessionID) -> ClipboardGetResponse</code>
 - <code title="post /v1/sessions/{sessionId}/clipboard">client.sessions.clipboard.<a href="./src/resources/sessions/clipboard.ts">set</a>(sessionID, { ...params }) -> ClipboardSetResponse</code>
 
 ## Agent
-
-Methods:
-
-- <code title="post /v1/sessions/{session_id}/agent/pause">client.sessions.agent.<a href="./src/resources/sessions/agent/agent.ts">pause</a>(sessionID) -> SuccessResponse</code>
-- <code title="post /v1/sessions/{session_id}/agent/resume">client.sessions.agent.<a href="./src/resources/sessions/agent/agent.ts">resume</a>(sessionID) -> SuccessResponse</code>
 
 ### Files
 
@@ -161,27 +160,15 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/task/task.ts">TaskCreateResponse</a></code>
-- <code><a href="./src/resources/task/task.ts">TaskListResponse</a></code>
-- <code><a href="./src/resources/task/task.ts">TaskRetrieveExecutionResultResponse</a></code>
-- <code><a href="./src/resources/task/task.ts">TaskRunResponse</a></code>
+- <code><a href="./src/resources/task.ts">TaskCreateResponse</a></code>
+- <code><a href="./src/resources/task.ts">TaskListResponse</a></code>
+- <code><a href="./src/resources/task.ts">TaskRetrieveExecutionResultResponse</a></code>
 
 Methods:
 
-- <code title="post /v1/task">client.task.<a href="./src/resources/task/task.ts">create</a>({ ...params }) -> TaskCreateResponse</code>
-- <code title="get /v1/task">client.task.<a href="./src/resources/task/task.ts">list</a>({ ...params }) -> TaskListResponse</code>
-- <code title="get /v1/task/{taskId}/executions/{executionId}">client.task.<a href="./src/resources/task/task.ts">retrieveExecutionResult</a>(executionID, { ...params }) -> TaskRetrieveExecutionResultResponse</code>
-- <code title="post /v2/tasks/{taskId}/run">client.task.<a href="./src/resources/task/task.ts">run</a>(taskID, { ...params }) -> TaskRunResponse</code>
-
-## Runs
-
-Types:
-
-- <code><a href="./src/resources/task/runs.ts">RunRetrieveStatusResponse</a></code>
-
-Methods:
-
-- <code title="get /v2/tasks/runs/{runId}/status">client.task.runs.<a href="./src/resources/task/runs.ts">retrieveStatus</a>(runID) -> RunRetrieveStatusResponse</code>
+- <code title="post /v1/task">client.task.<a href="./src/resources/task.ts">create</a>({ ...params }) -> TaskCreateResponse</code>
+- <code title="get /v1/task">client.task.<a href="./src/resources/task.ts">list</a>({ ...params }) -> TaskListResponse</code>
+- <code title="get /v1/task/{taskId}/executions/{executionId}">client.task.<a href="./src/resources/task.ts">retrieveExecutionResult</a>(executionID, { ...params }) -> TaskRetrieveExecutionResultResponse</code>
 
 # Identities
 
