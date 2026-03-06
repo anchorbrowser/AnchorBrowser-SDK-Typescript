@@ -2,7 +2,12 @@
 
 export { Agent } from './agent/index';
 export { All, type AllStatusResponse } from './all';
-export { Clipboard, type ClipboardSetResponse, type ClipboardSetParams } from './clipboard';
+export {
+  Clipboard,
+  type ClipboardGetResponse,
+  type ClipboardSetResponse,
+  type ClipboardSetParams,
+} from './clipboard';
 export {
   Keyboard,
   type KeyboardShortcutResponse,
@@ -13,8 +18,10 @@ export {
 export {
   Mouse,
   type MouseClickResponse,
+  type MouseDoubleClickResponse,
   type MouseMoveResponse,
   type MouseClickParams,
+  type MouseDoubleClickParams,
   type MouseMoveParams,
 } from './mouse';
 export { Recordings, type RecordingListResponse } from './recordings/index';

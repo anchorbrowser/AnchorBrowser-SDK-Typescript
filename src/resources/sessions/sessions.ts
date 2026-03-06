@@ -5,7 +5,7 @@ import * as Shared from '../shared';
 import * as AllAPI from './all';
 import { All, AllStatusResponse } from './all';
 import * as ClipboardAPI from './clipboard';
-import { Clipboard, ClipboardSetParams, ClipboardSetResponse } from './clipboard';
+import { Clipboard, ClipboardGetResponse, ClipboardSetParams, ClipboardSetResponse } from './clipboard';
 import * as KeyboardAPI from './keyboard';
 import {
   Keyboard,
@@ -15,7 +15,15 @@ import {
   KeyboardTypeResponse,
 } from './keyboard';
 import * as MouseAPI from './mouse';
-import { Mouse, MouseClickParams, MouseClickResponse, MouseMoveParams, MouseMoveResponse } from './mouse';
+import {
+  Mouse,
+  MouseClickParams,
+  MouseClickResponse,
+  MouseDoubleClickParams,
+  MouseDoubleClickResponse,
+  MouseMoveParams,
+  MouseMoveResponse,
+} from './mouse';
 import * as AgentAPI from './agent/agent';
 import { Agent } from './agent/agent';
 import * as RecordingsAPI from './recordings/recordings';
@@ -1056,8 +1064,10 @@ export declare namespace Sessions {
   export {
     Mouse as Mouse,
     type MouseClickResponse as MouseClickResponse,
+    type MouseDoubleClickResponse as MouseDoubleClickResponse,
     type MouseMoveResponse as MouseMoveResponse,
     type MouseClickParams as MouseClickParams,
+    type MouseDoubleClickParams as MouseDoubleClickParams,
     type MouseMoveParams as MouseMoveParams,
   };
 
@@ -1071,6 +1081,7 @@ export declare namespace Sessions {
 
   export {
     Clipboard as Clipboard,
+    type ClipboardGetResponse as ClipboardGetResponse,
     type ClipboardSetResponse as ClipboardSetResponse,
     type ClipboardSetParams as ClipboardSetParams,
   };

@@ -52,11 +52,9 @@ export {
   type TaskCreateResponse,
   type TaskListResponse,
   type TaskRetrieveExecutionResultResponse,
-  type TaskRunResponse,
   type TaskCreateParams,
   type TaskListParams,
   type TaskRetrieveExecutionResultParams,
-  type TaskRunParams,
 } from './task';
 export {
   Tools,
