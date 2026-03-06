@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.16.0 (2026-03-06)
+
+Full Changelog: [v0.15.8...v0.16.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.8...v0.16.0)
+
+### Features
+
+* **api:** manual updates ([f9a97d6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/f9a97d6b8b0d3ce7fa0d5b78fd9215a23b6d64cb))
+
+
+### Chores
+
+* **internal:** codegen related update ([3898cda](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/3898cda8f0298a9d32abdd77870054ffc8dc92bf))
+
 ## 0.15.8 (2026-03-05)
 
 Full Changelog: [v0.15.7...v0.15.8](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.7...v0.15.8)
