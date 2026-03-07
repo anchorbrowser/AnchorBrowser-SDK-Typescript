@@ -43,6 +43,8 @@ import {
   TaskListResponse,
   TaskRetrieveExecutionResultParams,
   TaskRetrieveExecutionResultResponse,
+  TaskRunParams,
+  TaskRunResponse,
 } from './resources/task';
 import {
   ToolFetchWebpageParams,
@@ -857,9 +859,11 @@ export declare namespace Anchorbrowser {
     type TaskCreateResponse as TaskCreateResponse,
     type TaskListResponse as TaskListResponse,
     type TaskRetrieveExecutionResultResponse as TaskRetrieveExecutionResultResponse,
+    type TaskRunResponse as TaskRunResponse,
     type TaskCreateParams as TaskCreateParams,
     type TaskListParams as TaskListParams,
     type TaskRetrieveExecutionResultParams as TaskRetrieveExecutionResultParams,
+    type TaskRunParams as TaskRunParams,
   };
 
   export {
