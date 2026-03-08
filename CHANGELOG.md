@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.16.1 (2026-03-08)
+
+Full Changelog: [v0.16.0...v0.16.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.16.0...v0.16.1)
+
+### Features
+
+* **api:** manual updates ([5570bbf](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/5570bbfbf06e34344558f96bb6e6f91e150daaf2))
+
+
+### Bug Fixes
+
+* **client:** preserve URL params already embedded in path ([f67c404](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/f67c404a948d7f183797ffef1be9efbbd761cb88))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([4ee45b9](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/4ee45b9a3f44389565e8510aa0ce82c4551c12eb))
+* update placeholder string ([4067324](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/4067324645233c6f74764bc27265c796ec5e207c))
+
 ## 0.16.0 (2026-03-06)
 
 Full Changelog: [v0.15.8...v0.16.0](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.15.8...v0.16.0)
