@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.2 (2026-03-11)
+
+Full Changelog: [v0.16.1...v0.16.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.16.1...v0.16.2)
+
+### Chores
+
+* **internal:** update dependencies to address dependabot vulnerabilities ([a73c2ee](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/a73c2ee3e04aa2453321eab7cb2b0634defc122d))
+
 ## 0.16.1 (2026-03-08)
 
 Full Changelog: [v0.16.0...v0.16.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.16.0...v0.16.1)
