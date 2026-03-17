@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.16.3 (2026-03-17)
+
+Full Changelog: [v0.16.2...v0.16.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.16.2...v0.16.3)
+
+### Chores
+
+* **internal:** tweak CI branches ([656af81](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/656af8149a26aa93bf1a46c19979716e823eae88))
+
 ## 0.16.2 (2026-03-11)
 
 Full Changelog: [v0.16.1...v0.16.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v0.16.1...v0.16.2)
