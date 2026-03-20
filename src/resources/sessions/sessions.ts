@@ -491,6 +491,13 @@ export namespace SessionCreateParams {
     profile?: Browser.Profile;
 
     /**
+     * Automatically detects and masks sensitive data (passwords, emails, phone
+     * numbers, credit card fields, tokens) in web pages. Supports custom CSS selectors
+     * globally or per site, and custom regex patterns.
+     */
+    sensitive_data_mask?: Browser.SensitiveDataMask;
+
+    /**
      * Configuration for the browser's viewport size.
      */
     viewport?: Browser.Viewport;
@@ -621,6 +628,50 @@ export namespace SessionCreateParams {
        * browser session ends. Defaults to `false`.
        */
       persist?: boolean;
+    }
+
+    /**
+     * Automatically detects and masks sensitive data (passwords, emails, phone
+     * numbers, credit card fields, tokens) in web pages. Supports custom CSS selectors
+     * globally or per site, and custom regex patterns.
+     */
+    export interface SensitiveDataMask {
+      /**
+       * Enable or disable sensitive data masking. Defaults to `false`.
+       */
+      active?: boolean;
+
+      /**
+       * Custom regex patterns to detect and mask additional sensitive data types.
+       */
+      custom_patterns?: Array<SensitiveDataMask.CustomPattern>;
+
+      /**
+       * Additional CSS selectors to mask globally across all sites. Matched elements
+       * will be blurred.
+       */
+      custom_selectors?: Array<string>;
+
+      /**
+       * Per-site CSS selectors. Keys are hostnames (supports wildcard prefix like
+       * `*.bank.com`), values are arrays of CSS selectors. Matched elements will be
+       * blurred.
+       */
+      site_selectors?: { [key: string]: Array<string> };
+    }
+
+    export namespace SensitiveDataMask {
+      export interface CustomPattern {
+        /**
+         * Replacement string for matched text. Defaults to `****`.
+         */
+        mask?: string;
+
+        /**
+         * Regular expression pattern to match sensitive data.
+         */
+        regex?: string;
+      }
     }
 
     /**

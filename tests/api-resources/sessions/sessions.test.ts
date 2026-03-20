@@ -38,6 +38,12 @@ describe('resource sessions', () => {
             p2p_download: { active: true },
             popup_blocker: { active: true },
             profile: { name: 'name', persist: true },
+            sensitive_data_mask: {
+              active: true,
+              custom_patterns: [{ mask: 'mask', regex: 'regex' }],
+              custom_selectors: ['string'],
+              site_selectors: { foo: ['string'] },
+            },
             viewport: { height: 0, width: 0 },
           },
           identities: [{ id: '123e4567-e89b-12d3-a456-426614174000' }],
