@@ -35,17 +35,7 @@ import {
   ProfileRetrieveResponse,
   Profiles,
 } from './resources/profiles';
-import {
-  Task,
-  TaskCreateParams,
-  TaskCreateResponse,
-  TaskListParams,
-  TaskListResponse,
-  TaskRetrieveExecutionResultParams,
-  TaskRetrieveExecutionResultResponse,
-  TaskRunParams,
-  TaskRunResponse,
-} from './resources/task';
+import { Task } from './resources/task';
 import {
   ToolFetchWebpageParams,
   ToolFetchWebpageResponse,
@@ -851,17 +841,7 @@ export declare namespace Anchorbrowser {
     type EventWaitForParams as EventWaitForParams,
   };
 
-  export {
-    Task as Task,
-    type TaskCreateResponse as TaskCreateResponse,
-    type TaskListResponse as TaskListResponse,
-    type TaskRetrieveExecutionResultResponse as TaskRetrieveExecutionResultResponse,
-    type TaskRunResponse as TaskRunResponse,
-    type TaskCreateParams as TaskCreateParams,
-    type TaskListParams as TaskListParams,
-    type TaskRetrieveExecutionResultParams as TaskRetrieveExecutionResultParams,
-    type TaskRunParams as TaskRunParams,
-  };
+  export { Task as Task };
 
   export {
     Identities as Identities,
