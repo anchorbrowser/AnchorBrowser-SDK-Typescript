@@ -35,7 +35,6 @@ import {
   ProfileRetrieveResponse,
   Profiles,
 } from './resources/profiles';
-import { Task } from './resources/task';
 import {
   ToolFetchWebpageParams,
   ToolFetchWebpageResponse,
@@ -73,6 +72,13 @@ import {
   SessionUploadFileResponse,
   Sessions,
 } from './resources/sessions/sessions';
+import {
+  TaskGenerateParams,
+  TaskGenerateResponse,
+  TaskRunParams,
+  TaskRunResponse,
+  Tasks,
+} from './resources/tasks/tasks';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -782,7 +788,7 @@ export class Anchorbrowser {
   browser: API.Browser = new API.Browser(this);
   agent: API.Agent = new API.Agent(this);
   events: API.Events = new API.Events(this);
-  task: API.Task = new API.Task(this);
+  tasks: API.Tasks = new API.Tasks(this);
   identities: API.Identities = new API.Identities(this);
   applications: API.Applications = new API.Applications(this);
 }
@@ -792,7 +798,7 @@ Anchorbrowser.Sessions = Sessions;
 Anchorbrowser.Tools = Tools;
 Anchorbrowser.Extensions = Extensions;
 Anchorbrowser.Events = Events;
-Anchorbrowser.Task = Task;
+Anchorbrowser.Tasks = Tasks;
 Anchorbrowser.Identities = Identities;
 Anchorbrowser.Applications = Applications;
 
@@ -845,7 +851,13 @@ export declare namespace Anchorbrowser {
     type EventWaitForParams as EventWaitForParams,
   };
 
-  export { Task as Task };
+  export {
+    Tasks as Tasks,
+    type TaskGenerateResponse as TaskGenerateResponse,
+    type TaskRunResponse as TaskRunResponse,
+    type TaskGenerateParams as TaskGenerateParams,
+    type TaskRunParams as TaskRunParams,
+  };
 
   export {
     Identities as Identities,

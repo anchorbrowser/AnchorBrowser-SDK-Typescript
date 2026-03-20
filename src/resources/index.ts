@@ -47,7 +47,13 @@ export {
   type SessionScrollParams,
   type SessionUploadFileParams,
 } from './sessions/sessions';
-export { Task } from './task';
+export {
+  Tasks,
+  type TaskGenerateResponse,
+  type TaskRunResponse,
+  type TaskGenerateParams,
+  type TaskRunParams,
+} from './tasks/tasks';
 export {
   Tools,
   type ToolFetchWebpageResponse,

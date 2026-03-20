@@ -156,7 +156,37 @@ Methods:
 - <code title="post /v1/events/{event_name}">client.events.<a href="./src/resources/events.ts">signal</a>(eventName, { ...params }) -> SuccessResponse</code>
 - <code title="post /v1/events/{event_name}/wait">client.events.<a href="./src/resources/events.ts">waitFor</a>(eventName, { ...params }) -> EventWaitForResponse</code>
 
-# Task
+# Tasks
+
+Types:
+
+- <code><a href="./src/resources/tasks/tasks.ts">TaskGenerateResponse</a></code>
+- <code><a href="./src/resources/tasks/tasks.ts">TaskRunResponse</a></code>
+
+Methods:
+
+- <code title="post /v2/tasks/generate">client.tasks.<a href="./src/resources/tasks/tasks.ts">generate</a>({ ...params }) -> TaskGenerateResponse</code>
+- <code title="post /v2/tasks/{taskId}/run">client.tasks.<a href="./src/resources/tasks/tasks.ts">run</a>(taskID, { ...params }) -> TaskRunResponse</code>
+
+## Runs
+
+Types:
+
+- <code><a href="./src/resources/tasks/runs.ts">RunGetStatusResponse</a></code>
+
+Methods:
+
+- <code title="get /v2/tasks/runs/{runId}/status">client.tasks.runs.<a href="./src/resources/tasks/runs.ts">getStatus</a>(runID) -> RunGetStatusResponse</code>
+
+## Generations
+
+Types:
+
+- <code><a href="./src/resources/tasks/generations.ts">GenerationGetStatusResponse</a></code>
+
+Methods:
+
+- <code title="get /v2/tasks/{taskId}/generation-status">client.tasks.generations.<a href="./src/resources/tasks/generations.ts">getStatus</a>(taskID) -> GenerationGetStatusResponse</code>
 
 # Identities
 
