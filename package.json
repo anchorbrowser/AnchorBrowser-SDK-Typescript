@@ -1,6 +1,6 @@
 {
   "name": "anchorbrowser",
-  "version": "0.16.3",
+  "version": "1.0.0-dev.0",
   "description": "The official TypeScript library for the Anchorbrowser API",
   "author": "Anchorbrowser <support@anchorbrowser.io>",
   "types": "dist/index.d.ts",
