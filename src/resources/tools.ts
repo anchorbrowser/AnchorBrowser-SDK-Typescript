@@ -174,7 +174,7 @@ export interface ToolPerformWebTaskParams {
   /**
    * Body param: The AI agent to use for task completion. Defaults to browser-use.
    */
-  agent?: 'browser-use' | 'openai-cua';
+  agent?: 'browser-use' | 'openai-cua' | 'yutori';
 
   /**
    * Body param: Enable element detection for better interaction accuracy. Improves
