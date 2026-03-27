@@ -285,9 +285,9 @@ export interface SessionRetrieveResponse {
   status?: string;
 
   /**
-   * Array of steps executed in the session.
+   * Number of AI agent steps executed in the session.
    */
-  steps?: Array<unknown>;
+  steps?: number;
 
   /**
    * Tags associated with the session.
