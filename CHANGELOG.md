@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.0.0-dev.2 (2026-04-01)
+
+Full Changelog: [v1.0.0-dev.1...v1.0.0-dev.2](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v1.0.0-dev.1...v1.0.0-dev.2)
+
+### Features
+
+* sync: 648d9964e6be653fefb4a30fa97f643270cbef48 ([0ed9139](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/0ed9139e26ce74eaeaeda99b395a3308de51a452))
+* sync: dcc9987533645b7dccb0a400f6fcc3b120770ee0 ([06a2598](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/06a2598a4128bb4eaa19dca14b7e38a37c17f322))
+
+
+### Bug Fixes
+
+* **internal:** gitignore generated `oidc` dir ([3832e09](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/3832e09f5d76f39f6e79fde1e23e32e145017852))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([c5d8e8e](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/c5d8e8e9650ef4fb4bb4823878fd8d499228344b))
+* **internal:** update gitignore ([73e8f75](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/73e8f754d5ecab2a1b1b65fa44e5a45ff3886413))
+
 ## 1.0.0-dev.1 (2026-03-20)
 
 Full Changelog: [v1.0.0-dev.0...v1.0.0-dev.1](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v1.0.0-dev.0...v1.0.0-dev.1)
