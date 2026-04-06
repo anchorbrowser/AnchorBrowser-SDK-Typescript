@@ -253,57 +253,57 @@ export namespace SessionRetrieveResponse {
      * The configuration settings for the session.
      */
     configuration?: unknown;
-  
+
     /**
      * The timestamp when the session was created.
      */
     created_at?: string;
-  
+
     /**
      * The number of credits consumed by the session.
      */
     credits_used?: number;
-  
+
     /**
      * The duration of the session in seconds.
      */
     duration?: number;
-  
+
     /**
      * Whether this is a playground session.
      */
     playground?: boolean;
-  
+
     /**
      * The number of bytes transferred through the proxy.
      */
     proxy_bytes?: number;
-  
+
     /**
      * The unique identifier of the session.
      */
     session_id?: string;
-  
+
     /**
      * The current status of the session.
      */
     status?: string;
-  
+
     /**
      * Number of AI agent steps executed in the session.
      */
     steps?: number;
-  
+
     /**
      * Tags associated with the session.
      */
     tags?: unknown;
-  
+
     /**
      * The team ID associated with the session.
      */
     team_id?: string;
-  
+
     /**
      * Token usage information.
      */
