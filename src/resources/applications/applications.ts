@@ -153,11 +153,6 @@ export interface ApplicationRetrieveResponse {
   id?: string;
 
   /**
-   * List of allowed domains for this application
-   */
-  allowed_domains?: Array<string>;
-
-  /**
    * Authentication methods available for this application
    */
   auth_methods?: Array<string>;
@@ -203,11 +198,6 @@ export namespace ApplicationListResponse {
      * Unique identifier for the application
      */
     id?: string;
-
-    /**
-     * List of allowed domains for this application
-     */
-    allowed_domains?: Array<string>;
 
     /**
      * Authentication methods available for this application
