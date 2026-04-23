@@ -486,7 +486,7 @@ export interface TaskRunParams {
   input_params: { [key: string]: string };
 
   /**
-   * Whether to clean up sessions after execution
+   * Whether to clean up sessions after execution (default: true)
    */
   cleanup_sessions?: boolean;
 
