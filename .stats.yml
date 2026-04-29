@@ -1,4 +1,4 @@
 configured_endpoints: 50
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/anchor-browser%2Fanchorbrowser-5d2f7ab256a48e0d7e0791c79b634d434775d290022e565cc50e26020d1b3bf0.yml
-openapi_spec_hash: 04f142c8b9644e927ef5431c0afe7b9a
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/anchor-browser%2Fanchorbrowser-d0f5aa64f9f449cfc9eab4997233581f2c8ac7604e1a0231e48fa2f818823b64.yml
+openapi_spec_hash: e849af227557c164482d3fb847b48387
 config_hash: ce27b9bcc143844bacd050568818f29f
