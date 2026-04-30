@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.0.0-dev.4 (2026-04-30)
+
+Full Changelog: [v1.0.0-dev.3...v1.0.0-dev.4](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v1.0.0-dev.3...v1.0.0-dev.4)
+
+### Features
+
+* support setting headers via env ([cb4903b](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/cb4903bb12a4bf90f0434c4766edac23ec32d75d))
+* sync: d02def6b953ce36e95f51a56df9153053fb4ef71 ([344aad6](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/344aad6fa376014bd7e356ec6f2d26888cd34616))
+
+
+### Chores
+
+* **format:** run eslint and prettier separately ([4bcab1b](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/4bcab1b2459edbd7bf266cf11d93fc17e9cc1b3b))
+* **internal:** codegen related update ([69958bc](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/69958bc938358a8256c33072edbce1699ebeaee8))
+* **internal:** codegen related update ([5a067fc](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/5a067fc07628a175a59099ae1205e59f4b7039ce))
+* **internal:** codegen related update ([8051486](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/80514861f07bcf3d77d222c63c6f2f95fafcaa31))
+* **internal:** more robust bootstrap script ([45e8de4](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/45e8de40f4bbd171baf5bd944dba82d9700156e3))
+
 ## 1.0.0-dev.3 (2026-04-07)
 
 Full Changelog: [v1.0.0-dev.2...v1.0.0-dev.3](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v1.0.0-dev.2...v1.0.0-dev.3)
