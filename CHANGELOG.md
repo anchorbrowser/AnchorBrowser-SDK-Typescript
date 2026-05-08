@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0-dev.5 (2026-05-08)
+
+Full Changelog: [v1.0.0-dev.4...v1.0.0-dev.5](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v1.0.0-dev.4...v1.0.0-dev.5)
+
+### Chores
+
+* redact api-key headers in debug logs ([da85323](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/commit/da8532365a4242eeb3cbcc4ff313dd8366c5efd4))
+
 ## 1.0.0-dev.4 (2026-05-01)
 
 Full Changelog: [v1.0.0-dev.3...v1.0.0-dev.4](https://github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/compare/v1.0.0-dev.3...v1.0.0-dev.4)
