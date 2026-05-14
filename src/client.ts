@@ -24,7 +24,6 @@ import {
   IdentityCreateParams,
   IdentityCreateResponse,
   IdentityDeleteResponse,
-  IdentityRetrieveCredentialsResponse,
   IdentityRetrieveResponse,
   IdentityUpdateParams,
   IdentityUpdateResponse,
@@ -873,7 +872,6 @@ export declare namespace Anchorbrowser {
     type IdentityRetrieveResponse as IdentityRetrieveResponse,
     type IdentityUpdateResponse as IdentityUpdateResponse,
     type IdentityDeleteResponse as IdentityDeleteResponse,
-    type IdentityRetrieveCredentialsResponse as IdentityRetrieveCredentialsResponse,
     type IdentityCreateParams as IdentityCreateParams,
     type IdentityUpdateParams as IdentityUpdateParams,
   };

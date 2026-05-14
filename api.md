@@ -196,7 +196,6 @@ Types:
 - <code><a href="./src/resources/identities.ts">IdentityRetrieveResponse</a></code>
 - <code><a href="./src/resources/identities.ts">IdentityUpdateResponse</a></code>
 - <code><a href="./src/resources/identities.ts">IdentityDeleteResponse</a></code>
-- <code><a href="./src/resources/identities.ts">IdentityRetrieveCredentialsResponse</a></code>
 
 Methods:
 
@@ -204,7 +203,6 @@ Methods:
 - <code title="get /v1/identities/{identity_id}">client.identities.<a href="./src/resources/identities.ts">retrieve</a>(identityID) -> IdentityRetrieveResponse</code>
 - <code title="put /v1/identities/{identity_id}">client.identities.<a href="./src/resources/identities.ts">update</a>(identityID, { ...params }) -> IdentityUpdateResponse</code>
 - <code title="delete /v1/identities/{identity_id}">client.identities.<a href="./src/resources/identities.ts">delete</a>(identityID) -> IdentityDeleteResponse</code>
-- <code title="get /v1/identities/{identity_id}/credentials">client.identities.<a href="./src/resources/identities.ts">retrieveCredentials</a>(identityID) -> IdentityRetrieveCredentialsResponse</code>
 
 # Applications
 

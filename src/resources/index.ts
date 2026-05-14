@@ -22,7 +22,6 @@ export {
   type IdentityRetrieveResponse,
   type IdentityUpdateResponse,
   type IdentityDeleteResponse,
-  type IdentityRetrieveCredentialsResponse,
   type IdentityCreateParams,
   type IdentityUpdateParams,
 } from './identities';

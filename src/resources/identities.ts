@@ -76,24 +76,6 @@ export class Identities extends APIResource {
   delete(identityID: string, options?: RequestOptions): APIPromise<IdentityDeleteResponse> {
     return this._client.delete(path`/v1/identities/${identityID}`, options);
   }
-
-  /**
-   * Retrieves the credentials for a specific identity.
-   *
-   * @example
-   * ```ts
-   * const response =
-   *   await client.identities.retrieveCredentials(
-   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-   *   );
-   * ```
-   */
-  retrieveCredentials(
-    identityID: string,
-    options?: RequestOptions,
-  ): APIPromise<IdentityRetrieveCredentialsResponse> {
-    return this._client.get(path`/v1/identities/${identityID}/credentials`, options);
-  }
 }
 
 export interface IdentityCreateResponse {
@@ -187,88 +169,6 @@ export interface IdentityDeleteResponse {
    * Deletion result message
    */
   message?: string;
-}
-
-export interface IdentityRetrieveCredentialsResponse {
-  /**
-   * The ID of the identity
-   */
-  id?: string;
-
-  credentials?: Array<
-    | IdentityRetrieveCredentialsResponse.UsernamePasswordCredentialSchema
-    | IdentityRetrieveCredentialsResponse.AuthenticatorCredentialSchema
-    | IdentityRetrieveCredentialsResponse.CustomCredentialSchema
-  >;
-
-  /**
-   * The name of the identity
-   */
-  name?: string;
-
-  /**
-   * The url related to the identity
-   */
-  source?: string;
-}
-
-export namespace IdentityRetrieveCredentialsResponse {
-  export interface UsernamePasswordCredentialSchema {
-    /**
-     * The password of the credential
-     */
-    password?: string;
-
-    /**
-     * The type of credential
-     */
-    type?: 'username_password';
-
-    /**
-     * The username of the credential
-     */
-    username?: string;
-  }
-
-  export interface AuthenticatorCredentialSchema {
-    /**
-     * The OTP of the credential
-     */
-    otp?: string;
-
-    /**
-     * The secret of the credential
-     */
-    secret?: string;
-
-    /**
-     * The type of credential
-     */
-    type?: 'authenticator';
-  }
-
-  export interface CustomCredentialSchema {
-    fields?: Array<CustomCredentialSchema.Field>;
-
-    /**
-     * The type of credential
-     */
-    type?: 'custom';
-  }
-
-  export namespace CustomCredentialSchema {
-    export interface Field {
-      /**
-       * The name of the field
-       */
-      name?: string;
-
-      /**
-       * The value of the field
-       */
-      value?: string;
-    }
-  }
 }
 
 export interface IdentityCreateParams {
@@ -458,7 +358,6 @@ export declare namespace Identities {
     type IdentityRetrieveResponse as IdentityRetrieveResponse,
     type IdentityUpdateResponse as IdentityUpdateResponse,
     type IdentityDeleteResponse as IdentityDeleteResponse,
-    type IdentityRetrieveCredentialsResponse as IdentityRetrieveCredentialsResponse,
     type IdentityCreateParams as IdentityCreateParams,
     type IdentityUpdateParams as IdentityUpdateParams,
   };
