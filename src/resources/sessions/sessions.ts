@@ -314,67 +314,56 @@ export interface SessionGotoResponse {
 }
 
 export interface SessionRetrieveDownloadsResponse {
-  data?: SessionRetrieveDownloadsResponse.Data;
+  data?: Array<SessionRetrieveDownloadsResponse.Data>;
 }
 
 export namespace SessionRetrieveDownloadsResponse {
   export interface Data {
     /**
-     * Total number of downloads
+     * The unique ID of the download record.
      */
-    count?: number;
+    id?: string;
 
-    items?: Array<Data.Item>;
-  }
+    /**
+     * The timestamp when the file record was created.
+     */
+    created_at?: string;
 
-  export namespace Data {
-    export interface Item {
-      /**
-       * The unique ID of the download record.
-       */
-      id?: string;
+    /**
+     * The time it took to process or download the file, in milliseconds.
+     */
+    duration?: number;
 
-      /**
-       * The timestamp when the file record was created.
-       */
-      created_at?: string;
+    /**
+     * The URL to download the file from anchorbrowser servers. Requires api key
+     * authentication.
+     */
+    file_link?: string;
 
-      /**
-       * The time it took to process or download the file, in milliseconds.
-       */
-      duration?: number;
+    /**
+     * The original URL where the file was found.
+     */
+    origin_url?: string;
 
-      /**
-       * The URL to download the file from anchorbrowser servers. Requires api key
-       * authentication.
-       */
-      file_link?: string;
+    /**
+     * The URL used to download the file.
+     */
+    original_download_url?: string;
 
-      /**
-       * The original URL where the file was found.
-       */
-      origin_url?: string;
+    /**
+     * The original file name before any modification.
+     */
+    original_file_name?: string;
 
-      /**
-       * The URL used to download the file.
-       */
-      original_download_url?: string;
+    /**
+     * The size of the file in bytes.
+     */
+    size?: number;
 
-      /**
-       * The original file name before any modification.
-       */
-      original_file_name?: string;
-
-      /**
-       * The size of the file in bytes.
-       */
-      size?: number;
-
-      /**
-       * The suggested file name for saving the file.
-       */
-      suggested_file_name?: string;
-    }
+    /**
+     * The suggested file name for saving the file.
+     */
+    suggested_file_name?: string;
   }
 }
 

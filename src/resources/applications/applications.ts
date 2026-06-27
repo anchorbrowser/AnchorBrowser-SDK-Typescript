@@ -244,26 +244,20 @@ export interface ApplicationDeleteResponse {
 }
 
 export interface ApplicationCreateIdentityTokenResponse {
-  data?: ApplicationCreateIdentityTokenResponse.Data;
-}
+  /**
+   * The generated identity token for authentication
+   */
+  token: string;
 
-export namespace ApplicationCreateIdentityTokenResponse {
-  export interface Data {
-    /**
-     * The generated identity token for authentication
-     */
-    token?: string;
+  /**
+   * The timestamp when the token expires
+   */
+  expiresAt: string;
 
-    /**
-     * The timestamp when the token expires
-     */
-    expires_at?: string;
-
-    /**
-     * A hash of the token for verification purposes
-     */
-    token_hash?: string;
-  }
+  /**
+   * A hash of the token for verification purposes
+   */
+  tokenHash: string;
 }
 
 export interface ApplicationListIdentitiesResponse {
