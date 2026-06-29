@@ -314,56 +314,67 @@ export interface SessionGotoResponse {
 }
 
 export interface SessionRetrieveDownloadsResponse {
-  data?: Array<SessionRetrieveDownloadsResponse.Data>;
+  data?: SessionRetrieveDownloadsResponse.Data;
 }
 
 export namespace SessionRetrieveDownloadsResponse {
   export interface Data {
     /**
-     * The unique ID of the download record.
+     * Number of downloads in the session.
      */
-    id?: string;
+    count?: number;
 
-    /**
-     * The timestamp when the file record was created.
-     */
-    created_at?: string;
+    items?: Array<Data.Item>;
+  }
 
-    /**
-     * The time it took to process or download the file, in milliseconds.
-     */
-    duration?: number;
+  export namespace Data {
+    export interface Item {
+      /**
+       * The unique ID of the download record.
+       */
+      id?: string;
 
-    /**
-     * The URL to download the file from anchorbrowser servers. Requires api key
-     * authentication.
-     */
-    file_link?: string;
+      /**
+       * The timestamp when the file record was created.
+       */
+      created_at?: string;
 
-    /**
-     * The original URL where the file was found.
-     */
-    origin_url?: string;
+      /**
+       * The time it took to process or download the file, in milliseconds.
+       */
+      duration?: number;
 
-    /**
-     * The URL used to download the file.
-     */
-    original_download_url?: string;
+      /**
+       * The URL to download the file from anchorbrowser servers. Requires api key
+       * authentication.
+       */
+      file_link?: string;
 
-    /**
-     * The original file name before any modification.
-     */
-    original_file_name?: string;
+      /**
+       * The original URL where the file was found.
+       */
+      origin_url?: string;
 
-    /**
-     * The size of the file in bytes.
-     */
-    size?: number;
+      /**
+       * The URL used to download the file.
+       */
+      original_download_url?: string;
 
-    /**
-     * The suggested file name for saving the file.
-     */
-    suggested_file_name?: string;
+      /**
+       * The original file name before any modification.
+       */
+      original_file_name?: string;
+
+      /**
+       * The size of the file in bytes.
+       */
+      size?: number;
+
+      /**
+       * The suggested file name for saving the file.
+       */
+      suggested_file_name?: string;
+    }
   }
 }
 
