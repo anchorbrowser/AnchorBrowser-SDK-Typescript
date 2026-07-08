@@ -937,7 +937,8 @@ export namespace SessionCreateParams {
 
       /**
        * Proxy address in **PROTOCOL://HOST:PORT** format (e.g.,
-       * https://proxy.example.com:443). See [proxy page](/advanced/proxy#custom-proxy).
+       * https://proxy.example.com:443). See
+       * [Bring Your Own Proxy](/advanced/bring-your-own-proxy).
        */
       server: string;
 
