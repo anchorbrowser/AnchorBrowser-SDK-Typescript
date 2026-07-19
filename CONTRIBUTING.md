@@ -14,9 +14,24 @@ This will install all the required dependencies and build output files to `dist/
 
 ## Modifying/Adding code
 
-Most of the SDK is generated code. Modifications to code will be persisted between generations, but may
-result in merge conflicts between manual patches and changes from the generator. The generator will never
-modify the contents of the `src/lib/` and `examples/` directories.
+This SDK is hand-maintained. The resource classes under `src/resources/` were originally
+generated from our OpenAPI spec and are kept in sync with `spec/openapi.yaml` by hand;
+`spec/sdk-manifest.yaml` maps every exposed operation to its resource/method name.
+
+To add or change an endpoint:
+
+1. Update `spec/openapi.yaml` and `spec/sdk-manifest.yaml` (canonical copies live in the
+   anchorbrowser monorepo under `docs/` and are synced here by the spec-sync pipeline).
+2. Run `yarn generate` to refresh the reference types in `src/generated/`.
+3. Add/update the method in the matching `src/resources/` file and the parity call in
+   `tests/parity/calls.ts`.
+4. Run `yarn test` — the spec-coverage suite fails until manifest, spec, client methods,
+   and parity calls all agree.
+5. Run `yarn build && yarn api:update` to refresh the public API surface baseline, and
+   review the diff of `etc/` — it is the reviewable record of every surface change.
+
+The `src/lib/` and `examples/` directories are free-form hand-written code (Playwright
+and agent helpers live in `src/lib/`).
 
 ## Adding and running examples
 
@@ -88,14 +103,13 @@ $ yarn fix
 
 ## Publishing and releases
 
-Changes made to this repository via the automated release PR pipeline should publish to npm automatically. If
-the changes aren't made through the automated pipeline, you may want to make releases manually.
+Releases are cut with [the `Release` GitHub action](https://www.github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/actions/workflows/release.yml):
+run it with the new semver version as input. It bumps the version, updates the changelog,
+tags, creates a GitHub release, and publishes to npm (via OIDC trusted publishing).
 
-### Publish with a GitHub workflow
-
-You can release to package managers by using [the `Publish NPM` GitHub action](https://www.github.com/anchorbrowser/AnchorBrowser-SDK-Typescript/actions/workflows/publish-npm.yml). This requires a setup organization or repository secret to be set up.
+To validate a build locally before releasing, see [LOCAL_TESTING.md](LOCAL_TESTING.md).
 
 ### Publish manually
 
-If you need to manually release a package, you can run the `bin/publish-npm` script with an `NPM_TOKEN` set on
+If you need to manually publish a package, you can run the `bin/publish-npm` script with an `NPM_TOKEN` set on
 the environment.

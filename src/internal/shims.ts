@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// Spec-derived file. Keep in sync with spec/openapi.yaml — see CONTRIBUTING.md.
 
 /**
  * This module provides internal shims and utility functions for environments where certain Node.js or global types may not be available.

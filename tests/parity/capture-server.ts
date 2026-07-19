@@ -29,9 +29,7 @@ export class CaptureServer {
   }
 
   async stop(): Promise<void> {
-    await new Promise<void>((resolve, reject) =>
-      this.server.close((err) => (err ? reject(err) : resolve())),
-    );
+    await new Promise<void>((resolve, reject) => this.server.close((err) => (err ? reject(err) : resolve())));
   }
 
   reset(): void {

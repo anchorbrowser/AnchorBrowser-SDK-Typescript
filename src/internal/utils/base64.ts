@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// Spec-derived file. Keep in sync with spec/openapi.yaml — see CONTRIBUTING.md.
 
 import { AnchorbrowserError } from '../../core/error';
 import { encodeUTF8 } from './bytes';
