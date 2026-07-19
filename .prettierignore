@@ -7,3 +7,4 @@ CHANGELOG.md
 /dist
 /tmp
 etc/api-surface.d.ts.snapshot
+etc/anchorbrowser.api.md
