@@ -1,22 +1,52 @@
-import Anchorbrowser from 'anchorbrowser';
-import { CaptureServer, CapturedRequest } from './capture-server';
-import { parityCalls } from './calls';
+import fs from 'fs';
+import path from 'path';
+import YAML from 'yaml';
+import { createClient, createConfig } from '../../src/generated/client';
+import * as sdk from '../../src/generated/sdk.gen';
+import { CaptureServer, CapturedRequest, RouteSpec } from './capture-server';
+import { Synthesizer } from './synthesize';
 
 /**
- * Wire-parity suite: every SDK method is invoked with fixed parameters
- * against a local capture server, and the exact request (method, path,
- * query, auth/content headers, body) is snapshot-tested.
+ * Wire-parity suite, spec-driven: every operation in spec/openapi-sdk.yaml is
+ * invoked through its generated class method with deterministic synthesized
+ * arguments, and the exact HTTP request (method, path, query, auth/content
+ * headers, body) is snapshot-tested.
  *
- * These snapshots are the 1:1 behavioral baseline frozen from the last
- * Stainless-generated build. Any change to what the SDK puts on the wire
- * fails this suite; if a change is intentional, update snapshots with
- * `yarn test tests/parity -u` and call it out in review.
+ * The snapshots are the SDK's behavioral baseline. Any change to what goes
+ * on the wire fails this suite; if intentional, update with
+ * `yarn test tests/parity -u` and review the snapshot diff.
  */
 
-// Headers whose values are stable and meaningful to API behavior. Everything
-// else (user-agent, x-stainless-* telemetry, host, content-length, ...) is
-// snapshotted by name only, so presence changes are caught without version
-// churn.
+const HTTP_METHODS = new Set(['get', 'post', 'put', 'patch', 'delete']);
+
+const specPath = path.resolve(__dirname, '..', '..', 'spec', 'openapi-sdk.yaml');
+const spec = YAML.parse(fs.readFileSync(specPath, 'utf8'));
+const synth = new Synthesizer(spec);
+
+interface Op {
+  name: string; // Class.method
+  className: string;
+  methodName: string;
+  method: string;
+  template: string;
+}
+
+const ops: Op[] = [];
+for (const [template, pathItem] of Object.entries<any>(spec.paths ?? {})) {
+  for (const [method, op] of Object.entries<any>(pathItem)) {
+    if (!HTTP_METHODS.has(method)) continue;
+    const className = op.tags?.[0];
+    const methodName = op.operationId;
+    ops.push({ name: `${className}.${methodName}`, className, methodName, method, template });
+  }
+}
+
+const routes: RouteSpec[] = ops.map((op) => ({
+  method: op.method,
+  template: op.template,
+  contentType: synth.successContentType(op.template, op.method),
+}));
+
 const VALUE_HEADERS = new Set(['anchor-api-key', 'accept', 'content-type']);
 const IGNORED_HEADERS = new Set(['host', 'connection', 'content-length', 'accept-encoding']);
 
@@ -42,47 +72,47 @@ function normalize(req: CapturedRequest) {
   let body: unknown = req.body;
   if (typeof body === 'string') {
     if (boundary) {
-      body = body.split(boundary).join('<boundary>');
+      body = body.split(boundary).join('<boundary>').replace(/\r\n/g, '\n');
     } else if (contentType?.includes('application/json')) {
       body = JSON.parse(body);
     }
   }
 
-  return {
-    method: req.method,
-    path: req.path,
-    query: req.query,
-    headers,
-    headerNames,
-    body,
-  };
+  return { method: req.method, path: req.path, query: req.query, headers, headerNames, body };
 }
 
 describe('wire parity', () => {
-  const server = new CaptureServer();
-  let client: Anchorbrowser;
+  const server = new CaptureServer(routes);
+  let client: ReturnType<typeof createClient>;
 
   beforeAll(async () => {
-    const baseURL = await server.start();
-    client = new Anchorbrowser({ apiKey: 'test-api-key', baseURL, maxRetries: 0 });
+    const baseUrl = await server.start();
+    client = createClient(
+      createConfig({ baseUrl, auth: () => 'test-api-key', throwOnError: true, responseStyle: 'data' }),
+    );
   });
 
   afterAll(async () => {
     await server.stop();
   });
 
-  it('covers every method exactly once', () => {
-    const names = parityCalls.map((c) => c.name);
+  it('covers every operation exactly once', () => {
+    const names = ops.map((o) => o.name);
     expect(new Set(names).size).toBe(names.length);
-    expect(names.length).toMatchSnapshot('parity call count');
+    expect(names.length).toMatchSnapshot('operation count');
   });
 
-  for (const call of parityCalls) {
-    it(call.name, async () => {
+  for (const op of ops) {
+    it(op.name, async () => {
+      const cls = (sdk as Record<string, any>)[op.className];
+      expect(typeof cls?.[op.methodName]).toBe('function');
+
+      const options = synth.buildOptions(op.template, op.method);
       server.reset();
-      await call.invoke(client);
+      await cls[op.methodName]({ ...options, client });
+
       expect(server.requests).toHaveLength(1);
-      expect(normalize(server.requests[0]!)).toMatchSnapshot(call.name);
+      expect(normalize(server.requests[0]!)).toMatchSnapshot(op.name);
     });
   }
 });

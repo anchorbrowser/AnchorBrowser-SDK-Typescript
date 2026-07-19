@@ -17,8 +17,8 @@ echo "==> Checking types"
 ./node_modules/typescript/bin/tsc
 
 echo "==> Running Are The Types Wrong?"
-./node_modules/.bin/attw --pack dist -f json >.attw.json || true
+./node_modules/.bin/attw --pack . -f json >.attw.json || true
 node scripts/utils/attw-report.cjs
 
 echo "==> Running publint"
-./node_modules/.bin/publint dist
+./node_modules/.bin/publint

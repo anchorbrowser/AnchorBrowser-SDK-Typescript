@@ -1,22 +1,28 @@
-// Spec-derived file. Keep in sync with spec/openapi.yaml — see CONTRIBUTING.md.
+/**
+ * Anchorbrowser TypeScript SDK — generated from the public OpenAPI spec.
+ *
+ * Usage:
+ * ```ts
+ * import { client, Sessions } from 'anchorbrowser';
+ *
+ * client.setConfig({ auth: () => process.env['ANCHORBROWSER_API_KEY'] });
+ * const session = await Sessions.createSession({ body: {} });
+ * ```
+ *
+ * The resource classes, request/response types and HTTP client under
+ * ./generated are fully regenerated from spec/openapi-sdk.yaml by
+ * `yarn generate` — see CONTRIBUTING.md.
+ */
 
-export { Anchorbrowser as default } from './client';
+// Generated resource classes and every request/response type
+export * from './generated';
 
-export { type Uploadable, toFile } from './core/uploads';
-export { APIPromise } from './core/api-promise';
-export { Anchorbrowser, type ClientOptions } from './client';
-export {
-  AnchorbrowserError,
-  APIError,
-  APIConnectionError,
-  APIConnectionTimeoutError,
-  APIUserAbortError,
-  NotFoundError,
-  ConflictError,
-  RateLimitError,
-  BadRequestError,
-  AuthenticationError,
-  InternalServerError,
-  PermissionDeniedError,
-  UnprocessableEntityError,
-} from './core/error';
+// The shared, configurable HTTP client (auth, baseUrl, interceptors, ...)
+export { client } from './generated/client.gen';
+export type { CreateClientConfig } from './generated/client.gen';
+export { createClient, createConfig } from './generated/client';
+export type { Client, Config, ClientOptions as ClientConfigOptions } from './generated/client';
+
+// Hand-written Playwright and AI-agent helpers
+export * from './lib/browser';
+export * from './lib/agent';

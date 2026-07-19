@@ -1,16 +1,20 @@
 {
   "name": "anchorbrowser",
-  "version": "1.0.0-dev.5",
+  "version": "2.0.0-dev.0",
   "description": "The official TypeScript library for the Anchorbrowser API",
   "author": "Anchorbrowser <support@anchorbrowser.io>",
-  "types": "dist/index.d.ts",
-  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "type": "commonjs",
   "repository": "github:anchorbrowser/AnchorBrowser-SDK-Typescript",
   "license": "Apache-2.0",
   "packageManager": "yarn@1.22.22",
   "files": [
-    "**/*"
+    "dist",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "keywords": [
     "anchorbrowser",
@@ -46,16 +50,13 @@
   "scripts": {
     "test": "./scripts/test",
     "build": "./scripts/build",
-    "prepublishOnly": "echo 'to publish, run yarn build && (cd dist; yarn publish)' && exit 1",
     "format": "./scripts/format",
-    "prepare": "if ./scripts/utils/check-is-in-git-install.sh; then ./scripts/build && ./scripts/utils/git-swap.sh; fi",
-    "tsn": "ts-node -r tsconfig-paths/register",
     "lint": "./scripts/lint",
     "fix": "./scripts/format",
     "api:update": "node scripts/utils/api-surface.cjs --update && api-extractor run --local",
     "api:check": "node scripts/utils/api-surface.cjs --check && api-extractor run",
-    "generate": "openapi-ts && prettier --write generated/",
-    "generate:check": "yarn generate && git diff --exit-code -- generated/"
+    "generate": "node scripts/utils/prepare-spec.cjs && openapi-ts && prettier --write src/generated/ spec/openapi-sdk.yaml",
+    "generate:check": "yarn generate && git diff --exit-code -- src/generated/ spec/openapi-sdk.yaml"
   },
   "dependencies": {
     "playwright": "^1.57.0",
@@ -74,15 +75,11 @@
     "@typescript-eslint/parser": "8.31.1",
     "eslint": "^9.39.1",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "iconv-lite": "^0.6.3",
     "jest": "^29.4.0",
     "prettier": "^3.0.0",
     "publint": "^0.2.12",
     "ts-jest": "^29.1.0",
-    "ts-node": "^10.5.0",
-    "tsc-multi": "https://github.com/stainless-api/tsc-multi/releases/download/v1.1.9/tsc-multi.tgz",
-    "tsconfig-paths": "^4.0.0",
-    "tslib": "^2.8.1",
+    "tsup": "^8.3.5",
     "typescript": "5.8.3",
     "typescript-eslint": "8.31.1",
     "yaml": "^2.9.0"
@@ -100,18 +97,14 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./*.mjs": {
-      "default": "./dist/*.mjs"
-    },
-    "./*.js": {
-      "default": "./dist/*.js"
-    },
-    "./*": {
-      "import": "./dist/*.mjs",
-      "require": "./dist/*.js"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
     }
   }
 }

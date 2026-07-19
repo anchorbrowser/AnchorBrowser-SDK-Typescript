@@ -1,12 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`wire parity applications.auth_flows.create: applications.auth_flows.create 1`] = `
+exports[`wire parity Agent.getRequestedHumanIntervention: Agent.getRequestedHumanIntervention 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/agent/requested-human-intervention",
+  "query": {},
+}
+`;
+
+exports[`wire parity Agent.listAgentFiles: Agent.listAgentFiles 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/agent/files",
+  "query": {},
+}
+`;
+
+exports[`wire parity Agent.listPendingInterventions: Agent.listPendingInterventions 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/pending-interventions",
+  "query": {},
+}
+`;
+
+exports[`wire parity Agent.pauseAgent: Agent.pauseAgent 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/agent/pause",
+  "query": {},
+}
+`;
+
+exports[`wire parity Agent.respondToHumanIntervention: Agent.respondToHumanIntervention 1`] = `
 {
   "body": {
-    "methods": [
-      "username_password",
-    ],
-    "name": "Standard Login",
+    "response": "string",
   },
   "headerNames": [
     "accept",
@@ -15,27 +92,19 @@ exports[`wire parity applications.auth_flows.create: applications.auth_flows.cre
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
   "method": "POST",
-  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/agent/respond-to-human-intervention",
   "query": {},
 }
 `;
 
-exports[`wire parity applications.auth_flows.delete: applications.auth_flows.delete 1`] = `
+exports[`wire parity Agent.resumeAgent: Agent.resumeAgent 1`] = `
 {
   "body": null,
   "headerNames": [
@@ -44,54 +113,46 @@ exports[`wire parity applications.auth_flows.delete: applications.auth_flows.del
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
   },
-  "method": "DELETE",
-  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/agent/resume",
   "query": {},
 }
 `;
 
-exports[`wire parity applications.auth_flows.list: applications.auth_flows.list 1`] = `
+exports[`wire parity Agent.uploadAgentFiles: Agent.uploadAgentFiles 1`] = `
 {
-  "body": null,
+  "body": "--<boundary>
+Content-Disposition: form-data; name="file"; filename="example.txt"
+Content-Type: application/octet-stream
+
+Example data
+--<boundary>--
+",
   "headerNames": [
     "accept",
     "accept-language",
     "anchor-api-key",
+    "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
+    "content-type": "multipart/form-data; boundary=<boundary>",
   },
-  "method": "GET",
-  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows",
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/agent/files",
   "query": {},
 }
 `;
 
-exports[`wire parity applications.create: applications.create 1`] = `
+exports[`wire parity Applications.createApplication: Applications.createApplication 1`] = `
 {
   "body": {
     "source": "https://example.com",
@@ -103,17 +164,9 @@ exports[`wire parity applications.create: applications.create 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -123,10 +176,13 @@ exports[`wire parity applications.create: applications.create 1`] = `
 }
 `;
 
-exports[`wire parity applications.create_identity_token: applications.create_identity_token 1`] = `
+exports[`wire parity Applications.createAuthFlow: Applications.createAuthFlow 1`] = `
 {
   "body": {
-    "callbackUrl": "https://example.com/auth/callback",
+    "methods": [
+      "username_password",
+    ],
+    "name": "string",
   },
   "headerNames": [
     "accept",
@@ -135,17 +191,33 @@ exports[`wire parity applications.create_identity_token: applications.create_ide
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows",
+  "query": {},
+}
+`;
+
+exports[`wire parity Applications.createIdentityToken: Applications.createIdentityToken 1`] = `
+{
+  "body": {
+    "callbackUrl": "https://example.com/callback",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -155,7 +227,7 @@ exports[`wire parity applications.create_identity_token: applications.create_ide
 }
 `;
 
-exports[`wire parity applications.delete: applications.delete 1`] = `
+exports[`wire parity Applications.deleteApplication: Applications.deleteApplication 1`] = `
 {
   "body": null,
   "headerNames": [
@@ -164,17 +236,9 @@ exports[`wire parity applications.delete: applications.delete 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
   },
   "method": "DELETE",
@@ -183,7 +247,7 @@ exports[`wire parity applications.delete: applications.delete 1`] = `
 }
 `;
 
-exports[`wire parity applications.list: applications.list 1`] = `
+exports[`wire parity Applications.deleteAuthFlow: Applications.deleteAuthFlow 1`] = `
 {
   "body": null,
   "headerNames": [
@@ -192,26 +256,18 @@ exports[`wire parity applications.list: applications.list 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
   },
-  "method": "GET",
-  "path": "/v1/applications",
+  "method": "DELETE",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
   "query": {},
 }
 `;
 
-exports[`wire parity applications.list_identities: applications.list_identities 1`] = `
+exports[`wire parity Applications.getApplication: Applications.getApplication 1`] = `
 {
   "body": null,
   "headerNames": [
@@ -220,45 +276,9 @@ exports[`wire parity applications.list_identities: applications.list_identities 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/identities",
-  "query": {},
-}
-`;
-
-exports[`wire parity applications.retrieve: applications.retrieve 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
   },
   "method": "GET",
@@ -267,43 +287,67 @@ exports[`wire parity applications.retrieve: applications.retrieve 1`] = `
 }
 `;
 
-exports[`wire parity covers every method exactly once: parity call count 1`] = `50`;
-
-exports[`wire parity events.signal: events.signal 1`] = `
+exports[`wire parity Applications.listApplicationIdentities: Applications.listApplicationIdentities 1`] = `
 {
-  "body": {
-    "data": {
-      "message": "bar",
-    },
-  },
+  "body": null,
   "headerNames": [
     "accept",
     "accept-language",
     "anchor-api-key",
-    "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
-    "content-type": "application/json",
   },
-  "method": "POST",
-  "path": "/v1/events/event_name",
+  "method": "GET",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/identities",
   "query": {},
 }
 `;
 
-exports[`wire parity events.wait_for: events.wait_for 1`] = `
+exports[`wire parity Applications.listApplications: Applications.listApplications 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/applications",
+  "query": {},
+}
+`;
+
+exports[`wire parity Applications.listAuthFlows: Applications.listAuthFlows 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows",
+  "query": {},
+}
+`;
+
+exports[`wire parity Applications.updateAuthFlow: Applications.updateAuthFlow 1`] = `
 {
   "body": {},
   "headerNames": [
@@ -313,65 +357,22 @@ exports[`wire parity events.wait_for: events.wait_for 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
-  "method": "POST",
-  "path": "/v1/events/event_name/wait",
+  "method": "PATCH",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
   "query": {},
 }
 `;
 
-exports[`wire parity extensions.list: extensions.list 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/extensions",
-  "query": {},
-}
-`;
-
-exports[`wire parity identities.create: identities.create 1`] = `
+exports[`wire parity BatchSessions.createBatchSession: BatchSessions.createBatchSession 1`] = `
 {
   "body": {
-    "credentials": [
-      {
-        "password": "pass",
-        "type": "username_password",
-        "username": "user",
-      },
-    ],
-    "source": "https://example.com/login",
+    "count": 1,
   },
   "headerNames": [
     "accept",
@@ -380,17 +381,371 @@ exports[`wire parity identities.create: identities.create 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/batch-sessions",
+  "query": {},
+}
+`;
+
+exports[`wire parity BatchSessions.deleteBatchSession: BatchSessions.deleteBatchSession 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/batch-sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity BatchSessions.getBatchSession: BatchSessions.getBatchSession 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/batch-sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity BatchSessions.listBatchSessions: BatchSessions.listBatchSessions 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/batch-sessions",
+  "query": {},
+}
+`;
+
+exports[`wire parity BatchSessions.retryBatchSession: BatchSessions.retryBatchSession 1`] = `
+{
+  "body": {},
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/batch-sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/retry",
+  "query": {},
+}
+`;
+
+exports[`wire parity BatchSessions.updateBatchSession: BatchSessions.updateBatchSession 1`] = `
+{
+  "body": {
+    "status": "cancelled",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "PATCH",
+  "path": "/v1/batch-sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Billing.getBilling: Billing.getBilling 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/billing",
+  "query": {},
+}
+`;
+
+exports[`wire parity Certificates.createCertificate: Certificates.createCertificate 1`] = `
+{
+  "body": "--<boundary>
+Content-Disposition: form-data; name="name"
+
+string
+--<boundary>
+Content-Disposition: form-data; name="file"; filename="example.txt"
+Content-Type: application/octet-stream
+
+Example data
+--<boundary>--
+",
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "multipart/form-data; boundary=<boundary>",
+  },
+  "method": "POST",
+  "path": "/v1/certificates",
+  "query": {},
+}
+`;
+
+exports[`wire parity Certificates.deleteCertificate: Certificates.deleteCertificate 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/certificates/string",
+  "query": {},
+}
+`;
+
+exports[`wire parity Certificates.listCertificates: Certificates.listCertificates 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/certificates",
+  "query": {},
+}
+`;
+
+exports[`wire parity Events.signalEvent: Events.signalEvent 1`] = `
+{
+  "body": {
+    "data": {
+      "message": "Task completed",
+      "result": "success",
+      "timestamp": "2024-01-01T12:00:00Z",
+    },
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/events/string",
+  "query": {},
+}
+`;
+
+exports[`wire parity Events.waitForEvent: Events.waitForEvent 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "POST",
+  "path": "/v1/events/string/wait",
+  "query": {},
+}
+`;
+
+exports[`wire parity Extensions.deleteExtension: Extensions.deleteExtension 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/extensions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Extensions.getExtension: Extensions.getExtension 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/extensions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Extensions.listExtensions: Extensions.listExtensions 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/extensions",
+  "query": {},
+}
+`;
+
+exports[`wire parity Extensions.uploadExtension: Extensions.uploadExtension 1`] = `
+{
+  "body": "--<boundary>
+Content-Disposition: form-data; name="name"
+
+string
+--<boundary>
+Content-Disposition: form-data; name="file"; filename="example.txt"
+Content-Type: application/octet-stream
+
+Example data
+--<boundary>--
+",
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "multipart/form-data; boundary=<boundary>",
+  },
+  "method": "POST",
+  "path": "/v1/extensions",
+  "query": {},
+}
+`;
+
+exports[`wire parity Identities.createIdentity: Identities.createIdentity 1`] = `
+{
+  "body": {
+    "source": "https://example.com",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -400,7 +755,7 @@ exports[`wire parity identities.create: identities.create 1`] = `
 }
 `;
 
-exports[`wire parity identities.delete: identities.delete 1`] = `
+exports[`wire parity Identities.deleteIdentity: Identities.deleteIdentity 1`] = `
 {
   "body": null,
   "headerNames": [
@@ -409,17 +764,9 @@ exports[`wire parity identities.delete: identities.delete 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
   },
   "method": "DELETE",
@@ -428,7 +775,7 @@ exports[`wire parity identities.delete: identities.delete 1`] = `
 }
 `;
 
-exports[`wire parity identities.retrieve: identities.retrieve 1`] = `
+exports[`wire parity Identities.getIdentity: Identities.getIdentity 1`] = `
 {
   "body": null,
   "headerNames": [
@@ -437,17 +784,9 @@ exports[`wire parity identities.retrieve: identities.retrieve 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
   },
   "method": "GET",
@@ -456,335 +795,7 @@ exports[`wire parity identities.retrieve: identities.retrieve 1`] = `
 }
 `;
 
-exports[`wire parity identities.retrieve_credentials: identities.retrieve_credentials 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/identities/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/credentials",
-  "query": {},
-}
-`;
-
-exports[`wire parity identities.update: identities.update 1`] = `
-{
-  "body": {
-    "name": "name",
-  },
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "content-type",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-    "content-type": "application/json",
-  },
-  "method": "PUT",
-  "path": "/v1/identities/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-  "query": {},
-}
-`;
-
-exports[`wire parity profiles.create: profiles.create 1`] = `
-{
-  "body": {
-    "name": "name",
-  },
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "content-type",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-    "content-type": "application/json",
-  },
-  "method": "POST",
-  "path": "/v1/profiles",
-  "query": {},
-}
-`;
-
-exports[`wire parity profiles.delete: profiles.delete 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "DELETE",
-  "path": "/v1/profiles/name",
-  "query": {},
-}
-`;
-
-exports[`wire parity profiles.list: profiles.list 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/profiles",
-  "query": {},
-}
-`;
-
-exports[`wire parity profiles.retrieve: profiles.retrieve 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/profiles/name",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.agent.files.upload: sessions.agent.files.upload 1`] = `
-{
-  "body": "--<boundary>
-Content-Disposition: form-data; name="file"; filename="README.md"
-Content-Type: application/octet-stream
-
-Example data
---<boundary>--
-",
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "content-type",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-    "content-type": "multipart/form-data; boundary=<boundary>",
-  },
-  "method": "POST",
-  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/agent/files",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.all.delete: sessions.all.delete 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "DELETE",
-  "path": "/v1/sessions/all",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.all.status: sessions.all.status 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/sessions/all/status",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.clipboard.get: sessions.clipboard.get 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/clipboard",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.clipboard.set: sessions.clipboard.set 1`] = `
-{
-  "body": {
-    "text": "text",
-  },
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "content-type",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-    "content-type": "application/json",
-  },
-  "method": "POST",
-  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/clipboard",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.create: sessions.create 1`] = `
+exports[`wire parity Identities.updateIdentity: Identities.updateIdentity 1`] = `
 {
   "body": {},
   "headerNames": [
@@ -794,61 +805,29 @@ exports[`wire parity sessions.create: sessions.create 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
-  "method": "POST",
-  "path": "/v1/sessions",
+  "method": "PUT",
+  "path": "/v1/identities/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
   "query": {},
 }
 `;
 
-exports[`wire parity sessions.delete: sessions.delete 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "DELETE",
-  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.drag_and_drop: sessions.drag_and_drop 1`] = `
+exports[`wire parity Integrations.createIntegration: Integrations.createIntegration 1`] = `
 {
   "body": {
-    "endX": 0,
-    "endY": 0,
-    "startX": 0,
-    "startY": 0,
+    "credentials": {
+      "data": {
+        "serviceAccount": "ops_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      },
+      "type": "serviceAccount",
+    },
+    "name": "My 1Password Integration",
+    "type": "1PASSWORD",
   },
   "headerNames": [
     "accept",
@@ -857,17 +836,360 @@ exports[`wire parity sessions.drag_and_drop: sessions.drag_and_drop 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/integrations",
+  "query": {},
+}
+`;
+
+exports[`wire parity Integrations.deleteIntegration: Integrations.deleteIntegration 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/integrations/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Integrations.listIntegrations: Integrations.listIntegrations 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/integrations",
+  "query": {},
+}
+`;
+
+exports[`wire parity Profiles.createProfile: Profiles.createProfile 1`] = `
+{
+  "body": {
+    "name": "string",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/profiles",
+  "query": {},
+}
+`;
+
+exports[`wire parity Profiles.deleteProfile: Profiles.deleteProfile 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/profiles/string",
+  "query": {},
+}
+`;
+
+exports[`wire parity Profiles.getProfile: Profiles.getProfile 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/profiles/string",
+  "query": {},
+}
+`;
+
+exports[`wire parity Profiles.listProfiles: Profiles.listProfiles 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/profiles",
+  "query": {},
+}
+`;
+
+exports[`wire parity Recordings.deleteRecording: Recordings.deleteRecording 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/recordings/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Recordings.fetchPrimaryRecording: Recordings.fetchPrimaryRecording 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/recordings/primary/fetch",
+  "query": {},
+}
+`;
+
+exports[`wire parity Recordings.listRecordings: Recordings.listRecordings 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/recordings",
+  "query": {},
+}
+`;
+
+exports[`wire parity Recordings.pauseRecording: Recordings.pauseRecording 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/recordings/pause",
+  "query": {},
+}
+`;
+
+exports[`wire parity Recordings.resumeRecording: Recordings.resumeRecording 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/recordings/resume",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.copy: Sessions.copy 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/copy",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.createSession: Sessions.createSession 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "POST",
+  "path": "/v1/sessions",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.createSessionAsync: Sessions.createSessionAsync 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/async",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.deleteAllSessions: Sessions.deleteAllSessions 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/sessions/all",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.deleteSession: Sessions.deleteSession 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.dragAndDrop: Sessions.dragAndDrop 1`] = `
+{
+  "body": {
+    "endX": 1,
+    "endY": 1,
+    "startX": 1,
+    "startY": 1,
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -877,10 +1199,170 @@ exports[`wire parity sessions.drag_and_drop: sessions.drag_and_drop 1`] = `
 }
 `;
 
-exports[`wire parity sessions.goto: sessions.goto 1`] = `
+exports[`wire parity Sessions.getAllSessionsStatus: Sessions.getAllSessionsStatus 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/all/status",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.getAsyncSessionStatus: Sessions.getAsyncSessionStatus 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/async/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/status",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.getClipboard: Sessions.getClipboard 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/clipboard",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.getSession: Sessions.getSession 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.getSessionDownloads: Sessions.getSessionDownloads 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/downloads",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.getSessionPages: Sessions.getSessionPages 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/pages",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.getSessionScreenshot: Sessions.getSessionScreenshot 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/screenshot",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.getSessionsHistory: Sessions.getSessionsHistory 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/history",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.goto: Sessions.goto 1`] = `
 {
   "body": {
-    "url": "https://example.com",
+    "url": "string",
   },
   "headerNames": [
     "accept",
@@ -889,17 +1371,9 @@ exports[`wire parity sessions.goto: sessions.goto 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -909,11 +1383,11 @@ exports[`wire parity sessions.goto: sessions.goto 1`] = `
 }
 `;
 
-exports[`wire parity sessions.keyboard.shortcut: sessions.keyboard.shortcut 1`] = `
+exports[`wire parity Sessions.keyboardShortcut: Sessions.keyboardShortcut 1`] = `
 {
   "body": {
     "keys": [
-      "a",
+      "string",
     ],
   },
   "headerNames": [
@@ -923,17 +1397,9 @@ exports[`wire parity sessions.keyboard.shortcut: sessions.keyboard.shortcut 1`] 
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -943,10 +1409,10 @@ exports[`wire parity sessions.keyboard.shortcut: sessions.keyboard.shortcut 1`] 
 }
 `;
 
-exports[`wire parity sessions.keyboard.type: sessions.keyboard.type 1`] = `
+exports[`wire parity Sessions.keyboardType: Sessions.keyboardType 1`] = `
 {
   "body": {
-    "text": "text",
+    "text": "string",
   },
   "headerNames": [
     "accept",
@@ -955,17 +1421,9 @@ exports[`wire parity sessions.keyboard.type: sessions.keyboard.type 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -975,12 +1433,29 @@ exports[`wire parity sessions.keyboard.type: sessions.keyboard.type 1`] = `
 }
 `;
 
-exports[`wire parity sessions.mouse.click: sessions.mouse.click 1`] = `
+exports[`wire parity Sessions.listSessions: Sessions.listSessions 1`] = `
 {
-  "body": {
-    "x": 0,
-    "y": 0,
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
   },
+  "method": "GET",
+  "path": "/v1/sessions",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.mouseClick: Sessions.mouseClick 1`] = `
+{
+  "body": {},
   "headerNames": [
     "accept",
     "accept-language",
@@ -988,17 +1463,9 @@ exports[`wire parity sessions.mouse.click: sessions.mouse.click 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -1008,11 +1475,11 @@ exports[`wire parity sessions.mouse.click: sessions.mouse.click 1`] = `
 }
 `;
 
-exports[`wire parity sessions.mouse.double_click: sessions.mouse.double_click 1`] = `
+exports[`wire parity Sessions.mouseDoubleClick: Sessions.mouseDoubleClick 1`] = `
 {
   "body": {
-    "x": 0,
-    "y": 0,
+    "x": 1,
+    "y": 1,
   },
   "headerNames": [
     "accept",
@@ -1021,17 +1488,9 @@ exports[`wire parity sessions.mouse.double_click: sessions.mouse.double_click 1`
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -1041,11 +1500,11 @@ exports[`wire parity sessions.mouse.double_click: sessions.mouse.double_click 1`
 }
 `;
 
-exports[`wire parity sessions.mouse.move: sessions.mouse.move 1`] = `
+exports[`wire parity Sessions.mouseDown: Sessions.mouseDown 1`] = `
 {
   "body": {
-    "x": 0,
-    "y": 0,
+    "x": 1,
+    "y": 1,
   },
   "headerNames": [
     "accept",
@@ -1054,17 +1513,34 @@ exports[`wire parity sessions.mouse.move: sessions.mouse.move 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/mouse/down",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.mouseMove: Sessions.mouseMove 1`] = `
+{
+  "body": {
+    "x": 1,
+    "y": 1,
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -1074,152 +1550,11 @@ exports[`wire parity sessions.mouse.move: sessions.mouse.move 1`] = `
 }
 `;
 
-exports[`wire parity sessions.recordings.list: sessions.recordings.list 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/recordings",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.recordings.primary.get: sessions.recordings.primary.get 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "video/mp4",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/recordings/primary/fetch",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.retrieve: sessions.retrieve 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.retrieve_downloads: sessions.retrieve_downloads 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/downloads",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.retrieve_screenshot: sessions.retrieve_screenshot 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "image/png",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/screenshot",
-  "query": {},
-}
-`;
-
-exports[`wire parity sessions.scroll: sessions.scroll 1`] = `
+exports[`wire parity Sessions.mouseUp: Sessions.mouseUp 1`] = `
 {
   "body": {
-    "deltaY": 0,
-    "x": 0,
-    "y": 0,
+    "x": 1,
+    "y": 1,
   },
   "headerNames": [
     "accept",
@@ -1228,17 +1563,59 @@ exports[`wire parity sessions.scroll: sessions.scroll 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/mouse/up",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.paste: Sessions.paste 1`] = `
+{
+  "body": {
+    "text": "string",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/paste",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.scroll: Sessions.scroll 1`] = `
+{
+  "body": {
+    "deltaY": 1,
+    "x": 1,
+    "y": 1,
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -1248,10 +1625,34 @@ exports[`wire parity sessions.scroll: sessions.scroll 1`] = `
 }
 `;
 
-exports[`wire parity sessions.upload_file: sessions.upload_file 1`] = `
+exports[`wire parity Sessions.setClipboard: Sessions.setClipboard 1`] = `
+{
+  "body": {
+    "text": "string",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/clipboard",
+  "query": {},
+}
+`;
+
+exports[`wire parity Sessions.uploadFile: Sessions.uploadFile 1`] = `
 {
   "body": "--<boundary>
-Content-Disposition: form-data; name="file"; filename="README.md"
+Content-Disposition: form-data; name="file"; filename="example.txt"
 Content-Type: application/octet-stream
 
 Example data
@@ -1264,17 +1665,9 @@ Example data
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "multipart/form-data; boundary=<boundary>",
   },
@@ -1284,41 +1677,7 @@ Example data
 }
 `;
 
-exports[`wire parity tasks.generate: tasks.generate 1`] = `
-{
-  "body": {
-    "description": "Download a specific file from a URL",
-    "name": "file-downloader",
-    "user_task": "Create a task that downloads a specific file from a given URL.",
-  },
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "content-type",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-    "content-type": "application/json",
-  },
-  "method": "POST",
-  "path": "/v2/tasks/generate",
-  "query": {},
-}
-`;
-
-exports[`wire parity tasks.generations.get_status: tasks.generations.get_status 1`] = `
+exports[`wire parity Tasks.getTaskRunStatus: Tasks.getTaskRunStatus 1`] = `
 {
   "body": null,
   "headerNames": [
@@ -1327,31 +1686,21 @@ exports[`wire parity tasks.generations.get_status: tasks.generations.get_status 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
   },
   "method": "GET",
-  "path": "/v2/tasks/taskId/generation-status",
+  "path": "/v2/tasks/runs/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/status",
   "query": {},
 }
 `;
 
-exports[`wire parity tasks.run: tasks.run 1`] = `
+exports[`wire parity Tasks.runTask: Tasks.runTask 1`] = `
 {
   "body": {
-    "input_params": {
-      "File Name": "invoice-2026-02.pdf",
-    },
+    "input_params": {},
   },
   "headerNames": [
     "accept",
@@ -1360,27 +1709,44 @@ exports[`wire parity tasks.run: tasks.run 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
   "method": "POST",
-  "path": "/v2/tasks/taskId/run",
+  "path": "/v2/tasks/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/run",
   "query": {},
 }
 `;
 
-exports[`wire parity tasks.runs.get_status: tasks.runs.get_status 1`] = `
+exports[`wire parity TasksLegacy.createTask: TasksLegacy.createTask 1`] = `
+{
+  "body": {
+    "language": "typescript",
+    "name": "string",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/task",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.deleteTask: TasksLegacy.deleteTask 1`] = `
 {
   "body": null,
   "headerNames": [
@@ -1389,26 +1755,334 @@ exports[`wire parity tasks.runs.get_status: tasks.runs.get_status 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
   },
-  "method": "GET",
-  "path": "/v2/tasks/runs/runId/status",
+  "method": "DELETE",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
   "query": {},
 }
 `;
 
-exports[`wire parity tools.fetch_webpage: tools.fetch_webpage 1`] = `
+exports[`wire parity TasksLegacy.deleteTaskVersion: TasksLegacy.deleteTaskVersion 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/string",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.deployTask: TasksLegacy.deployTask 1`] = `
+{
+  "body": {},
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/deploy",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.getLatestTaskVersion: TasksLegacy.getLatestTaskVersion 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/latest",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.getTask: TasksLegacy.getTask 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.getTaskDraft: TasksLegacy.getTaskDraft 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/draft",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.getTaskExecution: TasksLegacy.getTaskExecution 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/executions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.getTaskVersion: TasksLegacy.getTaskVersion 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/string",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.listTaskExecutions: TasksLegacy.listTaskExecutions 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/executions",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.listTaskVersions: TasksLegacy.listTaskVersions 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/versions",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.listTasks: TasksLegacy.listTasks 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/task",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.publishTaskVersion: TasksLegacy.publishTaskVersion 1`] = `
+{
+  "body": {},
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/string",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.runAdhocTask: TasksLegacy.runAdhocTask 1`] = `
+{
+  "body": {
+    "taskId": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/task/run",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.runTaskByName: TasksLegacy.runTaskByName 1`] = `
+{
+  "body": {},
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/task/run/web-scraper",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.saveTaskDraft: TasksLegacy.saveTaskDraft 1`] = `
+{
+  "body": {
+    "code": "string",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/draft",
+  "query": {},
+}
+`;
+
+exports[`wire parity TasksLegacy.updateTask: TasksLegacy.updateTask 1`] = `
+{
+  "body": {},
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "PUT",
+  "path": "/v1/task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Tools.createPagePdf: Tools.createPagePdf 1`] = `
 {
   "body": {
     "url": "https://example.com",
@@ -1420,58 +2094,22 @@ exports[`wire parity tools.fetch_webpage: tools.fetch_webpage 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "text/plain",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
   "method": "POST",
-  "path": "/v1/tools/fetch-webpage",
+  "path": "/v1/tools/page-pdf",
   "query": {},
 }
 `;
 
-exports[`wire parity tools.get_perform_web_task_status: tools.get_perform_web_task_status 1`] = `
-{
-  "body": null,
-  "headerNames": [
-    "accept",
-    "accept-language",
-    "anchor-api-key",
-    "sec-fetch-mode",
-    "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
-  ],
-  "headers": {
-    "accept": "application/json",
-    "anchor-api-key": "test-api-key",
-  },
-  "method": "GET",
-  "path": "/v1/tools/perform-web-task/workflowId/status",
-  "query": {},
-}
-`;
-
-exports[`wire parity tools.perform_web_task: tools.perform_web_task 1`] = `
+exports[`wire parity Tools.executeCode: Tools.executeCode 1`] = `
 {
   "body": {
-    "prompt": "prompt",
+    "code": "string",
   },
   "headerNames": [
     "accept",
@@ -1480,17 +2118,79 @@ exports[`wire parity tools.perform_web_task: tools.perform_web_task 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "application/json",
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/tools/execute-code",
+  "query": {
+    "sessionId": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  },
+}
+`;
+
+exports[`wire parity Tools.fetchWebpage: Tools.fetchWebpage 1`] = `
+{
+  "body": {
+    "url": "string",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/tools/fetch/webpage",
+  "query": {},
+}
+`;
+
+exports[`wire parity Tools.getPerformWebTaskStatus: Tools.getPerformWebTaskStatus 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/tools/perform-web-task/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/status",
+  "query": {},
+}
+`;
+
+exports[`wire parity Tools.performWebTask: Tools.performWebTask 1`] = `
+{
+  "body": {
+    "prompt": "string",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -1500,11 +2200,9 @@ exports[`wire parity tools.perform_web_task: tools.perform_web_task 1`] = `
 }
 `;
 
-exports[`wire parity tools.screenshot_webpage: tools.screenshot_webpage 1`] = `
+exports[`wire parity Tools.screenshotWebpage: Tools.screenshotWebpage 1`] = `
 {
-  "body": {
-    "url": "https://example.com",
-  },
+  "body": {},
   "headerNames": [
     "accept",
     "accept-language",
@@ -1512,17 +2210,9 @@ exports[`wire parity tools.screenshot_webpage: tools.screenshot_webpage 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
-    "x-stainless-arch",
-    "x-stainless-lang",
-    "x-stainless-os",
-    "x-stainless-package-version",
-    "x-stainless-retry-count",
-    "x-stainless-runtime",
-    "x-stainless-runtime-version",
-    "x-stainless-timeout",
   ],
   "headers": {
-    "accept": "image/png",
+    "accept": "*/*",
     "anchor-api-key": "test-api-key",
     "content-type": "application/json",
   },
@@ -1531,3 +2221,178 @@ exports[`wire parity tools.screenshot_webpage: tools.screenshot_webpage 1`] = `
   "query": {},
 }
 `;
+
+exports[`wire parity Webhooks.createWebhook: Webhooks.createWebhook 1`] = `
+{
+  "body": {
+    "subscribed_events": [
+      "task.completed",
+    ],
+    "url": "https://your-app.example.com/anchor/webhooks",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/webhooks",
+  "query": {},
+}
+`;
+
+exports[`wire parity Webhooks.deleteWebhook: Webhooks.deleteWebhook 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/webhooks/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Webhooks.getWebhook: Webhooks.getWebhook 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/webhooks/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity Webhooks.listWebhookEvents: Webhooks.listWebhookEvents 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/webhooks/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/events",
+  "query": {},
+}
+`;
+
+exports[`wire parity Webhooks.listWebhooks: Webhooks.listWebhooks 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/webhooks",
+  "query": {},
+}
+`;
+
+exports[`wire parity Webhooks.rotateWebhookSecret: Webhooks.rotateWebhookSecret 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "POST",
+  "path": "/v1/webhooks/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/rotate-secret",
+  "query": {},
+}
+`;
+
+exports[`wire parity Webhooks.sendWebhookTestEvent: Webhooks.sendWebhookTestEvent 1`] = `
+{
+  "body": {
+    "event_type": "task.completed",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/webhooks/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/test",
+  "query": {},
+}
+`;
+
+exports[`wire parity Webhooks.updateWebhook: Webhooks.updateWebhook 1`] = `
+{
+  "body": {},
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "PATCH",
+  "path": "/v1/webhooks/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity covers every operation exactly once: operation count 1`] = `109`;
