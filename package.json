@@ -53,7 +53,9 @@
     "lint": "./scripts/lint",
     "fix": "./scripts/format",
     "api:update": "node scripts/utils/api-surface.cjs --update && api-extractor run --local",
-    "api:check": "node scripts/utils/api-surface.cjs --check && api-extractor run"
+    "api:check": "node scripts/utils/api-surface.cjs --check && api-extractor run",
+    "generate": "openapi-ts && prettier --write generated/",
+    "generate:check": "yarn generate && git diff --exit-code -- generated/"
   },
   "dependencies": {
     "playwright": "^1.57.0",

@@ -24,6 +24,9 @@ jobs:
       - name: Check types
         run: ./scripts/lint
 
+      - name: Check generated types are in sync with the spec
+        run: yarn generate:check
+
   build:
     timeout-minutes: 10
     name: build

@@ -22,7 +22,8 @@ To add or change an endpoint:
 
 1. Update `spec/openapi.yaml` and `spec/sdk-manifest.yaml` (canonical copies live in the
    anchorbrowser monorepo under `docs/` and are synced here by the spec-sync pipeline).
-2. Run `yarn generate` to refresh the reference types in `src/generated/`.
+2. Run `yarn generate` to refresh the reference types in `generated/` (not shipped;
+   used to see exactly which shapes changed).
 3. Add/update the method in the matching `src/resources/` file and the parity call in
    `tests/parity/calls.ts`.
 4. Run `yarn test` — the spec-coverage suite fails until manifest, spec, client methods,
