@@ -11,9 +11,7 @@ cd "$(dirname "$0")/.."
 
 ./scripts/build
 
-cd dist
-TARBALL="$(npm pack --pack-destination .. | tail -1)"
-cd ..
+TARBALL="$(npm pack | tail -1)"
 
 echo
 echo "==> Local tarball ready: $(pwd)/$TARBALL"

@@ -15,7 +15,7 @@ This is the same gate CI and the Release workflow run:
 
 ```sh
 yarn lint              # eslint + prettier + type checks
-yarn generate:check    # generated/ types are in sync with spec/openapi.yaml
+yarn generate:check    # src/generated/ matches spec/openapi.yaml + sdk-manifest.yaml
 yarn build             # publishable output into dist/
 yarn api:check         # public API surface matches etc/ baselines
 yarn test              # unit + spec-coverage + wire-parity suites
@@ -27,8 +27,8 @@ What each safety net covers:
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `yarn api:check`         | the public type surface (every exported type in the built d.ts) differs from `etc/api-surface.d.ts.snapshot` / `etc/anchorbrowser.api.md` |
 | `yarn test tests/parity` | any SDK method sends a different HTTP request (method, path, query, headers, body) than the frozen baseline snapshots                     |
-| `yarn test tests/spec`   | spec, `spec/sdk-manifest.yaml`, client methods, and parity calls disagree (e.g. a spec operation nobody mapped or excluded)               |
-| `yarn generate:check`    | `generated/` reference types don't match `spec/openapi.yaml`                                                                              |
+| `yarn test tests/spec`   | spec, `spec/sdk-manifest.yaml`, and generated classes disagree (e.g. a new spec operation without a naming entry)                         |
+| `yarn generate:check`    | `src/generated/` doesn't match `spec/openapi.yaml` + `spec/sdk-manifest.yaml`                                                             |
 
 ## Trying the SDK in another project
 
@@ -47,10 +47,10 @@ npm install /path/to/AnchorBrowser-SDK-Typescript/anchorbrowser-<version>.tgz
 ```
 
 ```ts
-import Anchorbrowser from 'anchorbrowser';
+import { client, Sessions } from 'anchorbrowser';
 
-const client = new Anchorbrowser({ apiKey: process.env['ANCHORBROWSER_API_KEY']! });
-const session = await client.sessions.create();
+// reads ANCHORBROWSER_API_KEY from the environment by default
+const session = await Sessions.createSession({ body: {} });
 console.log(session.data?.id);
 ```
 
@@ -75,9 +75,9 @@ The client reads `ANCHORBROWSER_API_KEY` from the environment; pass
 `baseURL` to target something other than production:
 
 ```ts
-const client = new Anchorbrowser({
-  baseURL: 'https://api.dev.anchorbrowser.io', // staging
-});
+import { client } from 'anchorbrowser';
+
+client.setConfig({ baseUrl: 'https://api.dev.anchorbrowser.io' }); // staging
 ```
 
 The monorepo's `scripts/` sanity scripts (e.g. `sanity_simple_session.js`)
@@ -102,10 +102,9 @@ Everything the Release workflow does can be rehearsed locally without
 publishing:
 
 ```sh
-npm version 1.2.3 --no-git-tag-version   # bump (revert afterwards)
-node scripts/utils/check-version.cjs      # sync src/version.ts
-./scripts/pack-local                      # build + pack the exact artifact
-git checkout package.json src/version.ts  # undo the rehearsal bump
+npm version 2.0.1 --no-git-tag-version   # bump (revert afterwards)
+./scripts/pack-local                     # build + pack the exact artifact
+git checkout package.json                # undo the rehearsal bump
 ```
 
 The real release is cut from the Actions tab: **Release** workflow → enter

@@ -1,106 +1,55 @@
 ## Setting up the environment
 
 This repository uses [`yarn@v1`](https://classic.yarnpkg.com/lang/en/docs/install).
-Other package managers may work but are not officially supported for development.
-
-To set up the repository, run:
 
 ```sh
 $ yarn
 $ yarn build
 ```
 
-This will install all the required dependencies and build output files to `dist/`.
+## How this SDK is built
 
-## Modifying/Adding code
+The SDK is **fully generated** from the public OpenAPI spec:
 
-This SDK is hand-maintained. The resource classes under `src/resources/` were originally
-generated from our OpenAPI spec and are kept in sync with `spec/openapi.yaml` by hand;
-`spec/sdk-manifest.yaml` maps every exposed operation to its resource/method name.
-
-To add or change an endpoint:
-
-1. Update `spec/openapi.yaml` and `spec/sdk-manifest.yaml` (canonical copies live in the
-   anchorbrowser monorepo under `docs/` and are synced here by the spec-sync pipeline).
-2. Run `yarn generate` to refresh the reference types in `generated/` (not shipped;
-   used to see exactly which shapes changed).
-3. Add/update the method in the matching `src/resources/` file and the parity call in
-   `tests/parity/calls.ts`.
-4. Run `yarn test` — the spec-coverage suite fails until manifest, spec, client methods,
-   and parity calls all agree.
-5. Run `yarn build && yarn api:update` to refresh the public API surface baseline, and
-   review the diff of `etc/` — it is the reviewable record of every surface change.
-
-The `src/lib/` and `examples/` directories are free-form hand-written code (Playwright
-and agent helpers live in `src/lib/`).
-
-## Adding and running examples
-
-All files in the `examples/` directory are not modified by the generator and can be freely edited or added to.
-
-```ts
-// add an example to examples/<your-example>.ts
-
-#!/usr/bin/env -S npm run tsn -T
-…
+```
+spec/openapi.yaml          verbatim copy of the monorepo's docs/openapi.yaml (the source of truth)
+spec/sdk-manifest.yaml     operation -> Class.method naming map
+spec/openapi-sdk.yaml      generated: openapi.yaml + naming injected (operationId/tags)
+src/generated/             generated: resource classes, types, HTTP client — never edit
+src/hey-api.ts             hand-written: runtime defaults (baseUrl, env auth, throwOnError)
+src/lib/                   hand-written: Playwright + AI-agent helpers
+src/index.ts               hand-written: public entry point
 ```
 
+`yarn generate` runs the whole chain: `prepare-spec.cjs` → `@hey-api/openapi-ts` → prettier.
+
+### Changing the API surface
+
+1. Change `docs/openapi.yaml` in the anchorbrowser monorepo — that's the source of truth.
+   The spec-sync pipeline copies it here and opens a regeneration PR automatically
+   (or copy it to `spec/openapi.yaml` manually for local work).
+2. Add a naming entry for any new operation in `spec/sdk-manifest.yaml`
+   (`"post /v1/foo": { class: Foo, method: createFoo }`). Without one, the
+   operation still generates with a deterministic auto-derived name — CI's
+   coverage test fails until the naming is made explicit.
+3. Run `yarn generate`.
+4. Run `yarn build && yarn api:update` and `yarn test tests/parity -u` to refresh
+   the baselines — their diffs are the reviewable record of the surface change.
+5. `yarn lint && yarn test`.
+
+## Running tests & checks
+
 ```sh
-$ chmod +x examples/<your-example>.ts
-# run the example against your api
-$ yarn tsn -T examples/<your-example>.ts
+$ yarn lint              # prettier, eslint, build, tsc, attw, publint
+$ yarn generate:check    # generated output matches the spec
+$ yarn api:check         # public type surface matches etc/ baselines
+$ yarn test              # spec-coverage + wire-parity suites
 ```
 
 ## Using the repository from source
 
-If you’d like to use the repository from source, you can either install from git or link to a cloned repository:
-
-To install via git:
-
-```sh
-$ npm install git+ssh://git@github.com:anchorbrowser/AnchorBrowser-SDK-Typescript.git
-```
-
-Alternatively, to link a local copy of the repo:
-
-```sh
-# Clone
-$ git clone https://www.github.com/anchorbrowser/AnchorBrowser-SDK-Typescript
-$ cd AnchorBrowser-SDK-Typescript
-
-# With yarn
-$ yarn link
-$ cd ../my-package
-$ yarn link anchorbrowser
-
-# With pnpm
-$ pnpm link --global
-$ cd ../my-package
-$ pnpm link --global anchorbrowser
-```
-
-## Running tests
-
-```sh
-$ yarn run test
-```
-
-## Linting and formatting
-
-This repository uses [prettier](https://www.npmjs.com/package/prettier) and
-[eslint](https://www.npmjs.com/package/eslint) to format the code in the repository.
-
-To lint:
-
-```sh
-$ yarn lint
-```
-
-To format and fix all lint issues automatically:
-
-```sh
-$ yarn fix
-```
+See [LOCAL_TESTING.md](LOCAL_TESTING.md) — `./scripts/pack-local` builds the exact
+publishable tarball for installing in another project.
 
 ## Publishing and releases
 
@@ -108,9 +57,4 @@ Releases are cut with [the `Release` GitHub action](https://www.github.com/ancho
 run it with the new semver version as input. It bumps the version, updates the changelog,
 tags, creates a GitHub release, and publishes to npm (via OIDC trusted publishing).
 
-To validate a build locally before releasing, see [LOCAL_TESTING.md](LOCAL_TESTING.md).
-
-### Publish manually
-
-If you need to manually publish a package, you can run the `bin/publish-npm` script with an `NPM_TOKEN` set on
-the environment.
+To publish manually, run `bin/publish-npm` with an `NPM_TOKEN` set in the environment.
