@@ -1,0 +1,160 @@
+# sdk-manifest.yaml — vendor-neutral SDK surface map.
+#
+# Single source of truth for which API operations the SDKs expose and under
+# which resource/method names. Method keys are snake_case; each language
+# derives its own casing (TypeScript: camelCase, Python: snake_case).
+#
+# Consumed by:
+#   - tests/spec/coverage.test.ts  (manifest <-> spec <-> client method parity)
+#   - the docs x-codeSamples generator (planned)
+#
+# The canonical copy lives in the anchorbrowser monorepo at
+# docs/sdk-manifest.yaml and is synced here together with spec/openapi.yaml.
+
+package:
+  npm: anchorbrowser
+  pypi: anchorbrowser
+
+client:
+  base_url: https://api.anchorbrowser.io
+  auth:
+    header: anchor-api-key
+    env: ANCHORBROWSER_API_KEY
+
+resources:
+  profiles:
+    methods:
+      create: post /v1/profiles
+      list: get /v1/profiles
+      retrieve: get /v1/profiles/{name}
+      delete: delete /v1/profiles/{name}
+
+  sessions:
+    methods:
+      create: post /v1/sessions
+      delete: delete /v1/sessions/{session_id}
+      retrieve_downloads: get /v1/sessions/{session_id}/downloads
+      retrieve_screenshot: get /v1/sessions/{sessionId}/screenshot
+      drag_and_drop: post /v1/sessions/{sessionId}/drag-and-drop
+      scroll: post /v1/sessions/{sessionId}/scroll
+      goto: post /v1/sessions/{sessionId}/goto
+      retrieve: get /v1/sessions/{session_id}
+      upload_file: post /v1/sessions/{sessionId}/uploads
+    subresources:
+      all:
+        methods:
+          delete: delete /v1/sessions/all
+          status: get /v1/sessions/all/status
+      recordings:
+        methods:
+          list: get /v1/sessions/{session_id}/recordings
+        subresources:
+          primary:
+            methods:
+              get: get /v1/sessions/{session_id}/recordings/primary/fetch
+      mouse:
+        methods:
+          click: post /v1/sessions/{sessionId}/mouse/click
+          double_click: post /v1/sessions/{sessionId}/mouse/doubleClick
+          move: post /v1/sessions/{sessionId}/mouse/move
+      keyboard:
+        methods:
+          type: post /v1/sessions/{sessionId}/keyboard/type
+          shortcut: post /v1/sessions/{sessionId}/keyboard/shortcut
+      clipboard:
+        methods:
+          get: get /v1/sessions/{sessionId}/clipboard
+          set: post /v1/sessions/{sessionId}/clipboard
+      agent:
+        subresources:
+          files:
+            methods:
+              upload: post /v1/sessions/{sessionId}/agent/files
+
+  tools:
+    methods:
+      fetch_webpage: post /v1/tools/fetch-webpage
+      perform_web_task: post /v1/tools/perform-web-task
+      screenshot_webpage: post /v1/tools/screenshot
+      get_perform_web_task_status: get /v1/tools/perform-web-task/{workflowId}/status
+
+  extensions:
+    methods:
+      list: get /v1/extensions
+
+  events:
+    methods:
+      wait_for: post /v1/events/{event_name}/wait
+      signal: post /v1/events/{event_name}
+
+  tasks:
+    methods:
+      generate: post /v2/tasks/generate
+      run: post /v2/tasks/{taskId}/run
+    subresources:
+      runs:
+        methods:
+          get_status: get /v2/tasks/runs/{runId}/status
+      generations:
+        methods:
+          get_status: get /v2/tasks/{taskId}/generation-status
+
+  identities:
+    methods:
+      retrieve_credentials: get /v1/identities/{identity_id}/credentials
+      create: post /v1/identities
+      retrieve: get /v1/identities/{identity_id}
+      update: put /v1/identities/{identity_id}
+      delete: delete /v1/identities/{identity_id}
+
+  applications:
+    methods:
+      create: post /v1/applications
+      list: get /v1/applications
+      retrieve: get /v1/applications/{application_id}
+      delete: delete /v1/applications/{application_id}
+      list_identities: get /v1/applications/{application_id}/identities
+      create_identity_token: post /v1/applications/{application_id}/tokens
+    subresources:
+      auth_flows:
+        methods:
+          list: get /v1/applications/{application_id}/auth-flows
+          create: post /v1/applications/{application_id}/auth-flows
+          delete: delete /v1/applications/{application_id}/auth-flows/{auth_flow_id}
+
+# Operations present in the OpenAPI spec but intentionally NOT exposed by the
+# SDKs. The coverage test fails when a spec operation is neither mapped above
+# nor listed here — add new operations to one of the two.
+excluded:
+  - get /v1/billing
+  - get /v1/sessions
+  - get /v1/sessions/history
+  - get /v1/sessions/{session_id}/pages
+  - delete /v1/sessions/{session_id}/recordings/{recording_id}
+  - post /v1/tools/page-pdf
+  - post /v1/sessions/{sessionId}/mouse/down
+  - post /v1/sessions/{sessionId}/mouse/up
+  - post /v1/sessions/{sessionId}/copy
+  - post /v1/sessions/{sessionId}/paste
+  - post /v1/sessions/{session_id}/recordings/pause
+  - post /v1/sessions/{session_id}/recordings/resume
+  - get /v1/sessions/{sessionId}/agent/files
+  - post /v1/extensions
+  - get /v1/extensions/{id}
+  - delete /v1/extensions/{id}
+  - post /v1/integrations
+  - get /v1/integrations
+  - delete /v1/integrations/{integrationId}
+  - patch /v1/applications/{application_id}/auth-flows/{auth_flow_id}
+  - post /v1/sessions/{session_id}/agent/pause
+  - post /v1/sessions/{session_id}/agent/resume
+
+# Operations the SDK exposes that are MISSING from the current OpenAPI spec.
+# Each entry here is known drift that should eventually be resolved (either
+# restore the operation in the spec or remove the SDK method in a breaking
+# release). The coverage test tolerates these but nothing else.
+spec_exceptions:
+  # Present in the published SDK (identities.retrieveCredentials) but the
+  # path was removed from openapi-stainless.yaml at some point after the
+  # last Stainless generation.
+  - get /v1/identities/{identity_id}/credentials

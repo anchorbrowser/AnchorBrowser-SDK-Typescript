@@ -1,0 +1,50 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+
+  // Public API surface baseline. `yarn api:check` fails when the built
+  // dist/index.d.ts surface differs from etc/anchorbrowser.api.md;
+  // `yarn api:update` regenerates the baseline after an intentional change.
+  "projectFolder": ".",
+  "mainEntryPointFilePath": "<projectFolder>/dist/index.d.ts",
+
+  "compiler": {
+    "overrideTsconfig": {
+      "compilerOptions": {
+        "target": "es2020",
+        "lib": ["es2020", "dom"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "types": ["node"]
+      },
+      "include": ["dist/**/*.d.ts"]
+    }
+  },
+
+  "apiReport": {
+    "enabled": true,
+    "reportFileName": "anchorbrowser.api.md",
+    "reportFolder": "<projectFolder>/etc/",
+    "reportTempFolder": "<projectFolder>/tmp/api-extractor/"
+  },
+
+  "docModel": { "enabled": false },
+  "dtsRollup": { "enabled": false },
+  "tsdocMetadata": { "enabled": false },
+
+  "messages": {
+    "compilerMessageReporting": {
+      "default": { "logLevel": "warning" }
+    },
+    "extractorMessageReporting": {
+      "default": { "logLevel": "warning" },
+      "ae-forgotten-export": { "logLevel": "none" },
+      "ae-missing-release-tag": { "logLevel": "none" },
+      "ae-unresolved-link": { "logLevel": "none" }
+    },
+    "tsdocMessageReporting": {
+      "default": { "logLevel": "none" }
+    }
+  }
+}

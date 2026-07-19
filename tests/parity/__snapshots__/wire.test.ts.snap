@@ -1,0 +1,1533 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`wire parity applications.auth_flows.create: applications.auth_flows.create 1`] = `
+{
+  "body": {
+    "methods": [
+      "username_password",
+    ],
+    "name": "Standard Login",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows",
+  "query": {},
+}
+`;
+
+exports[`wire parity applications.auth_flows.delete: applications.auth_flows.delete 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity applications.auth_flows.list: applications.auth_flows.list 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/auth-flows",
+  "query": {},
+}
+`;
+
+exports[`wire parity applications.create: applications.create 1`] = `
+{
+  "body": {
+    "source": "https://example.com",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/applications",
+  "query": {},
+}
+`;
+
+exports[`wire parity applications.create_identity_token: applications.create_identity_token 1`] = `
+{
+  "body": {
+    "callbackUrl": "https://example.com/auth/callback",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/tokens",
+  "query": {},
+}
+`;
+
+exports[`wire parity applications.delete: applications.delete 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity applications.list: applications.list 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/applications",
+  "query": {},
+}
+`;
+
+exports[`wire parity applications.list_identities: applications.list_identities 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/identities",
+  "query": {},
+}
+`;
+
+exports[`wire parity applications.retrieve: applications.retrieve 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/applications/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity covers every method exactly once: parity call count 1`] = `50`;
+
+exports[`wire parity events.signal: events.signal 1`] = `
+{
+  "body": {
+    "data": {
+      "message": "bar",
+    },
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/events/event_name",
+  "query": {},
+}
+`;
+
+exports[`wire parity events.wait_for: events.wait_for 1`] = `
+{
+  "body": {},
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/events/event_name/wait",
+  "query": {},
+}
+`;
+
+exports[`wire parity extensions.list: extensions.list 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/extensions",
+  "query": {},
+}
+`;
+
+exports[`wire parity identities.create: identities.create 1`] = `
+{
+  "body": {
+    "credentials": [
+      {
+        "password": "pass",
+        "type": "username_password",
+        "username": "user",
+      },
+    ],
+    "source": "https://example.com/login",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/identities",
+  "query": {},
+}
+`;
+
+exports[`wire parity identities.delete: identities.delete 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/identities/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity identities.retrieve: identities.retrieve 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/identities/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity identities.retrieve_credentials: identities.retrieve_credentials 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/identities/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/credentials",
+  "query": {},
+}
+`;
+
+exports[`wire parity identities.update: identities.update 1`] = `
+{
+  "body": {
+    "name": "name",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "PUT",
+  "path": "/v1/identities/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity profiles.create: profiles.create 1`] = `
+{
+  "body": {
+    "name": "name",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/profiles",
+  "query": {},
+}
+`;
+
+exports[`wire parity profiles.delete: profiles.delete 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/profiles/name",
+  "query": {},
+}
+`;
+
+exports[`wire parity profiles.list: profiles.list 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/profiles",
+  "query": {},
+}
+`;
+
+exports[`wire parity profiles.retrieve: profiles.retrieve 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/profiles/name",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.agent.files.upload: sessions.agent.files.upload 1`] = `
+{
+  "body": "--<boundary>
+Content-Disposition: form-data; name="file"; filename="README.md"
+Content-Type: application/octet-stream
+
+Example data
+--<boundary>--
+",
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "multipart/form-data; boundary=<boundary>",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/agent/files",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.all.delete: sessions.all.delete 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/sessions/all",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.all.status: sessions.all.status 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/all/status",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.clipboard.get: sessions.clipboard.get 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/clipboard",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.clipboard.set: sessions.clipboard.set 1`] = `
+{
+  "body": {
+    "text": "text",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/clipboard",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.create: sessions.create 1`] = `
+{
+  "body": {},
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.delete: sessions.delete 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "DELETE",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.drag_and_drop: sessions.drag_and_drop 1`] = `
+{
+  "body": {
+    "endX": 0,
+    "endY": 0,
+    "startX": 0,
+    "startY": 0,
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/drag-and-drop",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.goto: sessions.goto 1`] = `
+{
+  "body": {
+    "url": "https://example.com",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/goto",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.keyboard.shortcut: sessions.keyboard.shortcut 1`] = `
+{
+  "body": {
+    "keys": [
+      "a",
+    ],
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/keyboard/shortcut",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.keyboard.type: sessions.keyboard.type 1`] = `
+{
+  "body": {
+    "text": "text",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/keyboard/type",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.mouse.click: sessions.mouse.click 1`] = `
+{
+  "body": {
+    "x": 0,
+    "y": 0,
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/mouse/click",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.mouse.double_click: sessions.mouse.double_click 1`] = `
+{
+  "body": {
+    "x": 0,
+    "y": 0,
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/mouse/doubleClick",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.mouse.move: sessions.mouse.move 1`] = `
+{
+  "body": {
+    "x": 0,
+    "y": 0,
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/mouse/move",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.recordings.list: sessions.recordings.list 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/recordings",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.recordings.primary.get: sessions.recordings.primary.get 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "video/mp4",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/recordings/primary/fetch",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.retrieve: sessions.retrieve 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.retrieve_downloads: sessions.retrieve_downloads 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/downloads",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.retrieve_screenshot: sessions.retrieve_screenshot 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "image/png",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/screenshot",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.scroll: sessions.scroll 1`] = `
+{
+  "body": {
+    "deltaY": 0,
+    "x": 0,
+    "y": 0,
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/scroll",
+  "query": {},
+}
+`;
+
+exports[`wire parity sessions.upload_file: sessions.upload_file 1`] = `
+{
+  "body": "--<boundary>
+Content-Disposition: form-data; name="file"; filename="README.md"
+Content-Type: application/octet-stream
+
+Example data
+--<boundary>--
+",
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "multipart/form-data; boundary=<boundary>",
+  },
+  "method": "POST",
+  "path": "/v1/sessions/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/uploads",
+  "query": {},
+}
+`;
+
+exports[`wire parity tasks.generate: tasks.generate 1`] = `
+{
+  "body": {
+    "description": "Download a specific file from a URL",
+    "name": "file-downloader",
+    "user_task": "Create a task that downloads a specific file from a given URL.",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v2/tasks/generate",
+  "query": {},
+}
+`;
+
+exports[`wire parity tasks.generations.get_status: tasks.generations.get_status 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v2/tasks/taskId/generation-status",
+  "query": {},
+}
+`;
+
+exports[`wire parity tasks.run: tasks.run 1`] = `
+{
+  "body": {
+    "input_params": {
+      "File Name": "invoice-2026-02.pdf",
+    },
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v2/tasks/taskId/run",
+  "query": {},
+}
+`;
+
+exports[`wire parity tasks.runs.get_status: tasks.runs.get_status 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v2/tasks/runs/runId/status",
+  "query": {},
+}
+`;
+
+exports[`wire parity tools.fetch_webpage: tools.fetch_webpage 1`] = `
+{
+  "body": {
+    "url": "https://example.com",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "text/plain",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/tools/fetch-webpage",
+  "query": {},
+}
+`;
+
+exports[`wire parity tools.get_perform_web_task_status: tools.get_perform_web_task_status 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v1/tools/perform-web-task/workflowId/status",
+  "query": {},
+}
+`;
+
+exports[`wire parity tools.perform_web_task: tools.perform_web_task 1`] = `
+{
+  "body": {
+    "prompt": "prompt",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "application/json",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/tools/perform-web-task",
+  "query": {},
+}
+`;
+
+exports[`wire parity tools.screenshot_webpage: tools.screenshot_webpage 1`] = `
+{
+  "body": {
+    "url": "https://example.com",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-stainless-arch",
+    "x-stainless-lang",
+    "x-stainless-os",
+    "x-stainless-package-version",
+    "x-stainless-retry-count",
+    "x-stainless-runtime",
+    "x-stainless-runtime-version",
+    "x-stainless-timeout",
+  ],
+  "headers": {
+    "accept": "image/png",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v1/tools/screenshot",
+  "query": {},
+}
+`;

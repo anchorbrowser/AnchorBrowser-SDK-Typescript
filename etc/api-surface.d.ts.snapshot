@@ -1,0 +1,3887 @@
+// ===== api-promise.d.ts =====
+export * from "./core/api-promise.js";
+//# sourceMappingURL=api-promise.d.ts.map
+// ===== client.d.ts =====
+import type { RequestInit, RequestInfo } from "./internal/builtin-types.js";
+import type { PromiseOrValue, MergedRequestInit, FinalizedRequestInit } from "./internal/types.js";
+export type { Logger, LogLevel } from "./internal/utils/log.js";
+import * as Opts from "./internal/request-options.js";
+import * as Errors from "./core/error.js";
+import * as Uploads from "./core/uploads.js";
+import * as API from "./resources/index.js";
+import { APIPromise } from "./core/api-promise.js";
+import { EventSignalParams, EventWaitForParams, EventWaitForResponse, Events } from "./resources/events.js";
+import { ExtensionListResponse, ExtensionManifest, Extensions } from "./resources/extensions.js";
+import { Identities, IdentityCreateParams, IdentityCreateResponse, IdentityDeleteResponse, IdentityRetrieveCredentialsResponse, IdentityRetrieveResponse, IdentityUpdateParams, IdentityUpdateResponse } from "./resources/identities.js";
+import { ProfileCreateParams, ProfileListResponse, ProfileRetrieveResponse, Profiles } from "./resources/profiles.js";
+import { ToolFetchWebpageParams, ToolFetchWebpageResponse, ToolGetPerformWebTaskStatusResponse, ToolPerformWebTaskParams, ToolPerformWebTaskResponse, ToolScreenshotWebpageParams, Tools } from "./resources/tools.js";
+import { ApplicationCreateIdentityTokenParams, ApplicationCreateIdentityTokenResponse, ApplicationCreateParams, ApplicationCreateResponse, ApplicationDeleteResponse, ApplicationListIdentitiesParams, ApplicationListIdentitiesResponse, ApplicationListParams, ApplicationListResponse, ApplicationRetrieveResponse, Applications } from "./resources/applications/applications.js";
+import { SessionCreateParams, SessionCreateResponse, SessionDragAndDropParams, SessionDragAndDropResponse, SessionGotoParams, SessionGotoResponse, SessionRetrieveDownloadsResponse, SessionRetrieveResponse, SessionScrollParams, SessionScrollResponse, SessionUploadFileParams, SessionUploadFileResponse, Sessions } from "./resources/sessions/sessions.js";
+import { TaskGenerateParams, TaskGenerateResponse, TaskRunParams, TaskRunResponse, Tasks } from "./resources/tasks/tasks.js";
+import { type Fetch } from "./internal/builtin-types.js";
+import { HeadersLike, NullableHeaders } from "./internal/headers.js";
+import { FinalRequestOptions, RequestOptions } from "./internal/request-options.js";
+import { type LogLevel, type Logger } from "./internal/utils/log.js";
+export interface ClientOptions {
+    /**
+     * API key passed in the header
+     */
+    apiKey?: string | undefined;
+    /**
+     * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
+     *
+     * Defaults to process.env['ANCHORBROWSER_BASE_URL'].
+     */
+    baseURL?: string | null | undefined;
+    /**
+     * The maximum amount of time (in milliseconds) that the client should wait for a response
+     * from the server before timing out a single request.
+     *
+     * Note that request timeouts are retried by default, so in a worst-case scenario you may wait
+     * much longer than this timeout before the promise succeeds or fails.
+     *
+     * @unit milliseconds
+     */
+    timeout?: number | undefined;
+    /**
+     * Additional `RequestInit` options to be passed to `fetch` calls.
+     * Properties will be overridden by per-request `fetchOptions`.
+     */
+    fetchOptions?: MergedRequestInit | undefined;
+    /**
+     * Specify a custom `fetch` function implementation.
+     *
+     * If not provided, we expect that `fetch` is defined globally.
+     */
+    fetch?: Fetch | undefined;
+    /**
+     * The maximum number of times that the client will retry a request in case of a
+     * temporary failure, like a network error or a 5XX error from the server.
+     *
+     * @default 2
+     */
+    maxRetries?: number | undefined;
+    /**
+     * Default headers to include with every request to the API.
+     *
+     * These can be removed in individual requests by explicitly setting the
+     * header to `null` in request options.
+     */
+    defaultHeaders?: HeadersLike | undefined;
+    /**
+     * Default query parameters to include with every request to the API.
+     *
+     * These can be removed in individual requests by explicitly setting the
+     * param to `undefined` in request options.
+     */
+    defaultQuery?: Record<string, string | undefined> | undefined;
+    /**
+     * Set the log level.
+     *
+     * Defaults to process.env['ANCHORBROWSER_LOG'] or 'warn' if it isn't set.
+     */
+    logLevel?: LogLevel | undefined;
+    /**
+     * Set the logger.
+     *
+     * Defaults to globalThis.console.
+     */
+    logger?: Logger | undefined;
+}
+/**
+ * API Client for interfacing with the Anchorbrowser API.
+ */
+export declare class Anchorbrowser {
+    #private;
+    apiKey: string;
+    baseURL: string;
+    maxRetries: number;
+    timeout: number;
+    logger: Logger;
+    logLevel: LogLevel | undefined;
+    fetchOptions: MergedRequestInit | undefined;
+    private fetch;
+    protected idempotencyHeader?: string;
+    private _options;
+    /**
+     * API Client for interfacing with the Anchorbrowser API.
+     *
+     * @param {string | undefined} [opts.apiKey=process.env['ANCHORBROWSER_API_KEY'] ?? undefined]
+     * @param {string} [opts.baseURL=process.env['ANCHORBROWSER_BASE_URL'] ?? https://api.anchorbrowser.io] - Override the default base URL for the API.
+     * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
+     * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
+     * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
+     * @param {number} [opts.maxRetries=2] - The maximum number of times the client will retry a request.
+     * @param {HeadersLike} opts.defaultHeaders - Default headers to include with every request to the API.
+     * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
+     */
+    constructor({ baseURL, apiKey, ...opts }?: ClientOptions);
+    /**
+     * Create a new client instance re-using the same options given to the current client with optional overriding.
+     */
+    withOptions(options: Partial<ClientOptions>): this;
+    protected defaultQuery(): Record<string, string | undefined> | undefined;
+    protected validateHeaders({ values, nulls }: NullableHeaders): void;
+    protected authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined>;
+    /**
+     * Basic re-implementation of `qs.stringify` for primitive types.
+     */
+    protected stringifyQuery(query: object | Record<string, unknown>): string;
+    private getUserAgent;
+    protected defaultIdempotencyKey(): string;
+    protected makeStatusError(status: number, error: Object, message: string | undefined, headers: Headers): Errors.APIError;
+    buildURL(path: string, query: Record<string, unknown> | null | undefined, defaultBaseURL?: string | undefined): string;
+    /**
+     * Used as a callback for mutating the given `FinalRequestOptions` object.
+     */
+    protected prepareOptions(options: FinalRequestOptions): Promise<void>;
+    /**
+     * Used as a callback for mutating the given `RequestInit` object.
+     *
+     * This is useful for cases where you want to add certain headers based off of
+     * the request properties, e.g. `method` or `url`.
+     */
+    protected prepareRequest(request: RequestInit, { url, options }: {
+        url: string;
+        options: FinalRequestOptions;
+    }): Promise<void>;
+    get<Rsp>(path: string, opts?: PromiseOrValue<RequestOptions>): APIPromise<Rsp>;
+    post<Rsp>(path: string, opts?: PromiseOrValue<RequestOptions>): APIPromise<Rsp>;
+    patch<Rsp>(path: string, opts?: PromiseOrValue<RequestOptions>): APIPromise<Rsp>;
+    put<Rsp>(path: string, opts?: PromiseOrValue<RequestOptions>): APIPromise<Rsp>;
+    delete<Rsp>(path: string, opts?: PromiseOrValue<RequestOptions>): APIPromise<Rsp>;
+    private methodRequest;
+    request<Rsp>(options: PromiseOrValue<FinalRequestOptions>, remainingRetries?: number | null): APIPromise<Rsp>;
+    private makeRequest;
+    fetchWithTimeout(url: RequestInfo, init: RequestInit | undefined, ms: number, controller: AbortController): Promise<Response>;
+    private shouldRetry;
+    private retryRequest;
+    private calculateDefaultRetryTimeoutMillis;
+    buildRequest(inputOptions: FinalRequestOptions, { retryCount }?: {
+        retryCount?: number;
+    }): Promise<{
+        req: FinalizedRequestInit;
+        url: string;
+        timeout: number;
+    }>;
+    private buildHeaders;
+    private _makeAbort;
+    private buildBody;
+    static Anchorbrowser: typeof Anchorbrowser;
+    static DEFAULT_TIMEOUT: number;
+    static AnchorbrowserError: typeof Errors.AnchorbrowserError;
+    static APIError: typeof Errors.APIError;
+    static APIConnectionError: typeof Errors.APIConnectionError;
+    static APIConnectionTimeoutError: typeof Errors.APIConnectionTimeoutError;
+    static APIUserAbortError: typeof Errors.APIUserAbortError;
+    static NotFoundError: typeof Errors.NotFoundError;
+    static ConflictError: typeof Errors.ConflictError;
+    static RateLimitError: typeof Errors.RateLimitError;
+    static BadRequestError: typeof Errors.BadRequestError;
+    static AuthenticationError: typeof Errors.AuthenticationError;
+    static InternalServerError: typeof Errors.InternalServerError;
+    static PermissionDeniedError: typeof Errors.PermissionDeniedError;
+    static UnprocessableEntityError: typeof Errors.UnprocessableEntityError;
+    static toFile: typeof Uploads.toFile;
+    profiles: API.Profiles;
+    sessions: API.Sessions;
+    tools: API.Tools;
+    extensions: API.Extensions;
+    browser: API.Browser;
+    agent: API.Agent;
+    events: API.Events;
+    tasks: API.Tasks;
+    identities: API.Identities;
+    applications: API.Applications;
+}
+export declare namespace Anchorbrowser {
+    export type RequestOptions = Opts.RequestOptions;
+    export { Profiles as Profiles, type ProfileRetrieveResponse as ProfileRetrieveResponse, type ProfileListResponse as ProfileListResponse, type ProfileCreateParams as ProfileCreateParams, };
+    export { Sessions as Sessions, type SessionCreateResponse as SessionCreateResponse, type SessionRetrieveResponse as SessionRetrieveResponse, type SessionDragAndDropResponse as SessionDragAndDropResponse, type SessionGotoResponse as SessionGotoResponse, type SessionRetrieveDownloadsResponse as SessionRetrieveDownloadsResponse, type SessionScrollResponse as SessionScrollResponse, type SessionUploadFileResponse as SessionUploadFileResponse, type SessionCreateParams as SessionCreateParams, type SessionDragAndDropParams as SessionDragAndDropParams, type SessionGotoParams as SessionGotoParams, type SessionScrollParams as SessionScrollParams, type SessionUploadFileParams as SessionUploadFileParams, };
+    export { Tools as Tools, type ToolFetchWebpageResponse as ToolFetchWebpageResponse, type ToolGetPerformWebTaskStatusResponse as ToolGetPerformWebTaskStatusResponse, type ToolPerformWebTaskResponse as ToolPerformWebTaskResponse, type ToolFetchWebpageParams as ToolFetchWebpageParams, type ToolPerformWebTaskParams as ToolPerformWebTaskParams, type ToolScreenshotWebpageParams as ToolScreenshotWebpageParams, };
+    export { Extensions as Extensions, type ExtensionManifest as ExtensionManifest, type ExtensionListResponse as ExtensionListResponse, };
+    export { Events as Events, type EventWaitForResponse as EventWaitForResponse, type EventSignalParams as EventSignalParams, type EventWaitForParams as EventWaitForParams, };
+    export { Tasks as Tasks, type TaskGenerateResponse as TaskGenerateResponse, type TaskRunResponse as TaskRunResponse, type TaskGenerateParams as TaskGenerateParams, type TaskRunParams as TaskRunParams, };
+    export { Identities as Identities, type IdentityCreateResponse as IdentityCreateResponse, type IdentityRetrieveResponse as IdentityRetrieveResponse, type IdentityUpdateResponse as IdentityUpdateResponse, type IdentityDeleteResponse as IdentityDeleteResponse, type IdentityRetrieveCredentialsResponse as IdentityRetrieveCredentialsResponse, type IdentityCreateParams as IdentityCreateParams, type IdentityUpdateParams as IdentityUpdateParams, };
+    export { Applications as Applications, type ApplicationCreateResponse as ApplicationCreateResponse, type ApplicationRetrieveResponse as ApplicationRetrieveResponse, type ApplicationListResponse as ApplicationListResponse, type ApplicationDeleteResponse as ApplicationDeleteResponse, type ApplicationCreateIdentityTokenResponse as ApplicationCreateIdentityTokenResponse, type ApplicationListIdentitiesResponse as ApplicationListIdentitiesResponse, type ApplicationCreateParams as ApplicationCreateParams, type ApplicationListParams as ApplicationListParams, type ApplicationCreateIdentityTokenParams as ApplicationCreateIdentityTokenParams, type ApplicationListIdentitiesParams as ApplicationListIdentitiesParams, };
+    export type SuccessResponse = API.SuccessResponse;
+}
+//# sourceMappingURL=client.d.ts.map
+// ===== core/api-promise.d.ts =====
+import { type Anchorbrowser } from "../client.js";
+import { type PromiseOrValue } from "../internal/types.js";
+import { APIResponseProps } from "../internal/parse.js";
+/**
+ * A subclass of `Promise` providing additional helper methods
+ * for interacting with the SDK.
+ */
+export declare class APIPromise<T> extends Promise<T> {
+    #private;
+    private responsePromise;
+    private parseResponse;
+    private parsedPromise;
+    constructor(client: Anchorbrowser, responsePromise: Promise<APIResponseProps>, parseResponse?: (client: Anchorbrowser, props: APIResponseProps) => PromiseOrValue<T>);
+    _thenUnwrap<U>(transform: (data: T, props: APIResponseProps) => U): APIPromise<U>;
+    /**
+     * Gets the raw `Response` instance instead of parsing the response
+     * data.
+     *
+     * If you want to parse the response body but still get the `Response`
+     * instance, you can use {@link withResponse()}.
+     *
+     * 👋 Getting the wrong TypeScript type for `Response`?
+     * Try setting `"moduleResolution": "NodeNext"` or add `"lib": ["DOM"]`
+     * to your `tsconfig.json`.
+     */
+    asResponse(): Promise<Response>;
+    /**
+     * Gets the parsed response data and the raw `Response` instance.
+     *
+     * If you just want to get the raw `Response` instance without parsing it,
+     * you can use {@link asResponse()}.
+     *
+     * 👋 Getting the wrong TypeScript type for `Response`?
+     * Try setting `"moduleResolution": "NodeNext"` or add `"lib": ["DOM"]`
+     * to your `tsconfig.json`.
+     */
+    withResponse(): Promise<{
+        data: T;
+        response: Response;
+    }>;
+    private parse;
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+}
+//# sourceMappingURL=api-promise.d.ts.map
+// ===== core/error.d.ts =====
+export declare class AnchorbrowserError extends Error {
+}
+export declare class APIError<TStatus extends number | undefined = number | undefined, THeaders extends Headers | undefined = Headers | undefined, TError extends Object | undefined = Object | undefined> extends AnchorbrowserError {
+    /** HTTP status for the response that caused the error */
+    readonly status: TStatus;
+    /** HTTP headers for the response that caused the error */
+    readonly headers: THeaders;
+    /** JSON body of the response that caused the error */
+    readonly error: TError;
+    constructor(status: TStatus, error: TError, message: string | undefined, headers: THeaders);
+    private static makeMessage;
+    static generate(status: number | undefined, errorResponse: Object | undefined, message: string | undefined, headers: Headers | undefined): APIError;
+}
+export declare class APIUserAbortError extends APIError<undefined, undefined, undefined> {
+    constructor({ message }?: {
+        message?: string;
+    });
+}
+export declare class APIConnectionError extends APIError<undefined, undefined, undefined> {
+    constructor({ message, cause }: {
+        message?: string | undefined;
+        cause?: Error | undefined;
+    });
+}
+export declare class APIConnectionTimeoutError extends APIConnectionError {
+    constructor({ message }?: {
+        message?: string;
+    });
+}
+export declare class BadRequestError extends APIError<400, Headers> {
+}
+export declare class AuthenticationError extends APIError<401, Headers> {
+}
+export declare class PermissionDeniedError extends APIError<403, Headers> {
+}
+export declare class NotFoundError extends APIError<404, Headers> {
+}
+export declare class ConflictError extends APIError<409, Headers> {
+}
+export declare class UnprocessableEntityError extends APIError<422, Headers> {
+}
+export declare class RateLimitError extends APIError<429, Headers> {
+}
+export declare class InternalServerError extends APIError<number, Headers> {
+}
+//# sourceMappingURL=error.d.ts.map
+// ===== core/resource.d.ts =====
+import type { Anchorbrowser } from "../client.js";
+export declare abstract class APIResource {
+    protected _client: Anchorbrowser;
+    constructor(client: Anchorbrowser);
+}
+//# sourceMappingURL=resource.d.ts.map
+// ===== core/uploads.d.ts =====
+export { type Uploadable } from "../internal/uploads.js";
+export { toFile, type ToFileInput } from "../internal/to-file.js";
+//# sourceMappingURL=uploads.d.ts.map
+// ===== error.d.ts =====
+export * from "./core/error.js";
+//# sourceMappingURL=error.d.ts.map
+// ===== index.d.ts =====
+export { Anchorbrowser as default } from "./client.js";
+export { type Uploadable, toFile } from "./core/uploads.js";
+export { APIPromise } from "./core/api-promise.js";
+export { Anchorbrowser, type ClientOptions } from "./client.js";
+export { AnchorbrowserError, APIError, APIConnectionError, APIConnectionTimeoutError, APIUserAbortError, NotFoundError, ConflictError, RateLimitError, BadRequestError, AuthenticationError, InternalServerError, PermissionDeniedError, UnprocessableEntityError, } from "./core/error.js";
+//# sourceMappingURL=index.d.ts.map
+// ===== internal/builtin-types.d.ts =====
+export type Fetch = (input: string | URL | Request, init?: RequestInit) => Promise<Response>;
+/**
+ * An alias to the builtin `RequestInit` type so we can
+ * easily alias it in import statements if there are name clashes.
+ *
+ * https://developer.mozilla.org/docs/Web/API/RequestInit
+ */
+type _RequestInit = RequestInit;
+/**
+ * An alias to the builtin `Response` type so we can
+ * easily alias it in import statements if there are name clashes.
+ *
+ * https://developer.mozilla.org/docs/Web/API/Response
+ */
+type _Response = Response;
+/**
+ * The type for the first argument to `fetch`.
+ *
+ * https://developer.mozilla.org/docs/Web/API/Window/fetch#resource
+ */
+type _RequestInfo = Request | URL | string;
+/**
+ * The type for constructing `RequestInit` Headers.
+ *
+ * https://developer.mozilla.org/docs/Web/API/RequestInit#setting_headers
+ */
+type _HeadersInit = RequestInit['headers'];
+/**
+ * The type for constructing `RequestInit` body.
+ *
+ * https://developer.mozilla.org/docs/Web/API/RequestInit#body
+ */
+type _BodyInit = RequestInit['body'];
+/**
+ * An alias to the builtin `Array<T>` type so we can
+ * easily alias it in import statements if there are name clashes.
+ */
+type _Array<T> = Array<T>;
+/**
+ * An alias to the builtin `Record<K, T>` type so we can
+ * easily alias it in import statements if there are name clashes.
+ */
+type _Record<K extends keyof any, T> = Record<K, T>;
+export type { _Array as Array, _BodyInit as BodyInit, _HeadersInit as HeadersInit, _Record as Record, _RequestInfo as RequestInfo, _RequestInit as RequestInit, _Response as Response, };
+/**
+ * A copy of the builtin `EndingType` type as it isn't fully supported in certain
+ * environments and attempting to reference the global version will error.
+ *
+ * https://github.com/microsoft/TypeScript/blob/49ad1a3917a0ea57f5ff248159256e12bb1cb705/src/lib/dom.generated.d.ts#L27941
+ */
+type EndingType = 'native' | 'transparent';
+/**
+ * A copy of the builtin `BlobPropertyBag` type as it isn't fully supported in certain
+ * environments and attempting to reference the global version will error.
+ *
+ * https://github.com/microsoft/TypeScript/blob/49ad1a3917a0ea57f5ff248159256e12bb1cb705/src/lib/dom.generated.d.ts#L154
+ * https://developer.mozilla.org/en-US/docs/Web/API/Blob/Blob#options
+ */
+export interface BlobPropertyBag {
+    endings?: EndingType;
+    type?: string;
+}
+/**
+ * A copy of the builtin `FilePropertyBag` type as it isn't fully supported in certain
+ * environments and attempting to reference the global version will error.
+ *
+ * https://github.com/microsoft/TypeScript/blob/49ad1a3917a0ea57f5ff248159256e12bb1cb705/src/lib/dom.generated.d.ts#L503
+ * https://developer.mozilla.org/en-US/docs/Web/API/File/File#options
+ */
+export interface FilePropertyBag extends BlobPropertyBag {
+    lastModified?: number;
+}
+//# sourceMappingURL=builtin-types.d.ts.map
+// ===== internal/detect-platform.d.ts =====
+export declare const isRunningInBrowser: () => boolean;
+type Arch = 'x32' | 'x64' | 'arm' | 'arm64' | `other:${string}` | 'unknown';
+type PlatformName = 'MacOS' | 'Linux' | 'Windows' | 'FreeBSD' | 'OpenBSD' | 'iOS' | 'Android' | `Other:${string}` | 'Unknown';
+type Browser = 'ie' | 'edge' | 'chrome' | 'firefox' | 'safari';
+type PlatformProperties = {
+    'X-Stainless-Lang': 'js';
+    'X-Stainless-Package-Version': string;
+    'X-Stainless-OS': PlatformName;
+    'X-Stainless-Arch': Arch;
+    'X-Stainless-Runtime': 'node' | 'deno' | 'edge' | `browser:${Browser}` | 'unknown';
+    'X-Stainless-Runtime-Version': string;
+};
+export declare const getPlatformHeaders: () => PlatformProperties;
+export {};
+//# sourceMappingURL=detect-platform.d.ts.map
+// ===== internal/errors.d.ts =====
+export declare function isAbortError(err: unknown): boolean;
+export declare const castToError: (err: any) => Error;
+//# sourceMappingURL=errors.d.ts.map
+// ===== internal/headers.d.ts =====
+type HeaderValue = string | undefined | null;
+export type HeadersLike = Headers | readonly HeaderValue[][] | Record<string, HeaderValue | readonly HeaderValue[]> | undefined | null | NullableHeaders;
+declare const brand_privateNullableHeaders: unique symbol;
+/**
+ * @internal
+ * Users can pass explicit nulls to unset default headers. When we parse them
+ * into a standard headers type we need to preserve that information.
+ */
+export type NullableHeaders = {
+    /** Brand check, prevent users from creating a NullableHeaders. */
+    [brand_privateNullableHeaders]: true;
+    /** Parsed headers. */
+    values: Headers;
+    /** Set of lowercase header names explicitly set to null. */
+    nulls: Set<string>;
+};
+export declare const buildHeaders: (newHeaders: HeadersLike[]) => NullableHeaders;
+export declare const isEmptyHeaders: (headers: HeadersLike) => boolean;
+export {};
+//# sourceMappingURL=headers.d.ts.map
+// ===== internal/parse.d.ts =====
+import type { FinalRequestOptions } from "./request-options.js";
+import { type Anchorbrowser } from "../client.js";
+export type APIResponseProps = {
+    response: Response;
+    options: FinalRequestOptions;
+    controller: AbortController;
+    requestLogID: string;
+    retryOfRequestLogID: string | undefined;
+    startTime: number;
+};
+export declare function defaultParseResponse<T>(client: Anchorbrowser, props: APIResponseProps): Promise<T>;
+//# sourceMappingURL=parse.d.ts.map
+// ===== internal/request-options.d.ts =====
+import { NullableHeaders } from "./headers.js";
+import type { BodyInit } from "./builtin-types.js";
+import type { HTTPMethod, MergedRequestInit } from "./types.js";
+import { type HeadersLike } from "./headers.js";
+export type FinalRequestOptions = RequestOptions & {
+    method: HTTPMethod;
+    path: string;
+};
+export type RequestOptions = {
+    /**
+     * The HTTP method for the request (e.g., 'get', 'post', 'put', 'delete').
+     */
+    method?: HTTPMethod;
+    /**
+     * The URL path for the request.
+     *
+     * @example "/v1/foo"
+     */
+    path?: string;
+    /**
+     * Query parameters to include in the request URL.
+     */
+    query?: object | undefined | null;
+    /**
+     * The request body. Can be a string, JSON object, FormData, or other supported types.
+     */
+    body?: unknown;
+    /**
+     * HTTP headers to include with the request. Can be a Headers object, plain object, or array of tuples.
+     */
+    headers?: HeadersLike;
+    /**
+     * The maximum number of times that the client will retry a request in case of a
+     * temporary failure, like a network error or a 5XX error from the server.
+     *
+     * @default 2
+     */
+    maxRetries?: number;
+    stream?: boolean | undefined;
+    /**
+     * The maximum amount of time (in milliseconds) that the client should wait for a response
+     * from the server before timing out a single request.
+     *
+     * @unit milliseconds
+     */
+    timeout?: number;
+    /**
+     * Additional `RequestInit` options to be passed to the underlying `fetch` call.
+     * These options will be merged with the client's default fetch options.
+     */
+    fetchOptions?: MergedRequestInit;
+    /**
+     * An AbortSignal that can be used to cancel the request.
+     */
+    signal?: AbortSignal | undefined | null;
+    /**
+     * A unique key for this request to enable idempotency.
+     */
+    idempotencyKey?: string;
+    /**
+     * Override the default base URL for this specific request.
+     */
+    defaultBaseURL?: string | undefined;
+    __binaryResponse?: boolean | undefined;
+};
+export type EncodedContent = {
+    bodyHeaders: HeadersLike;
+    body: BodyInit;
+};
+export type RequestEncoder = (request: {
+    headers: NullableHeaders;
+    body: unknown;
+}) => EncodedContent;
+export declare const FallbackEncoder: RequestEncoder;
+//# sourceMappingURL=request-options.d.ts.map
+// ===== internal/shim-types.d.ts =====
+/**
+ * Shims for types that we can't always rely on being available globally.
+ *
+ * Note: these only exist at the type-level, there is no corresponding runtime
+ * version for any of these symbols.
+ */
+type NeverToAny<T> = T extends never ? any : T;
+/** @ts-ignore */
+type _DOMReadableStream<R = any> = globalThis.ReadableStream<R>;
+/** @ts-ignore */
+type _NodeReadableStream<R = any> = import('stream/web').ReadableStream<R>;
+type _ConditionalNodeReadableStream<R = any> = typeof globalThis extends {
+    ReadableStream: any;
+} ? never : _NodeReadableStream<R>;
+type _ReadableStream<R = any> = NeverToAny<([0] extends [1 & _DOMReadableStream<R>] ? never : _DOMReadableStream<R>) | ([0] extends [1 & _ConditionalNodeReadableStream<R>] ? never : _ConditionalNodeReadableStream<R>)>;
+export type { _ReadableStream as ReadableStream };
+//# sourceMappingURL=shim-types.d.ts.map
+// ===== internal/shims.d.ts =====
+import type { Fetch } from "./builtin-types.js";
+import type { ReadableStream } from "./shim-types.js";
+export declare function getDefaultFetch(): Fetch;
+type ReadableStreamArgs = ConstructorParameters<typeof ReadableStream>;
+export declare function makeReadableStream(...args: ReadableStreamArgs): ReadableStream;
+export declare function ReadableStreamFrom<T>(iterable: Iterable<T> | AsyncIterable<T>): ReadableStream<T>;
+/**
+ * Most browsers don't yet have async iterable support for ReadableStream,
+ * and Node has a very different way of reading bytes from its "ReadableStream".
+ *
+ * This polyfill was pulled from https://github.com/MattiasBuelens/web-streams-polyfill/pull/122#issuecomment-1627354490
+ */
+export declare function ReadableStreamToAsyncIterable<T>(stream: any): AsyncIterableIterator<T>;
+/**
+ * Cancels a ReadableStream we don't need to consume.
+ * See https://undici.nodejs.org/#/?id=garbage-collection
+ */
+export declare function CancelReadableStream(stream: any): Promise<void>;
+export {};
+//# sourceMappingURL=shims.d.ts.map
+// ===== internal/to-file.d.ts =====
+import type { FilePropertyBag } from "./builtin-types.js";
+type BlobLikePart = string | ArrayBuffer | ArrayBufferView | BlobLike | DataView;
+/**
+ * Intended to match DOM Blob, node-fetch Blob, node:buffer Blob, etc.
+ * Don't add arrayBuffer here, node-fetch doesn't have it
+ */
+interface BlobLike {
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/size) */
+    readonly size: number;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/type) */
+    readonly type: string;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/text) */
+    text(): Promise<string>;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/slice) */
+    slice(start?: number, end?: number): BlobLike;
+}
+/**
+ * Intended to match DOM File, node:buffer File, undici File, etc.
+ */
+interface FileLike extends BlobLike {
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/File/lastModified) */
+    readonly lastModified: number;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/File/name) */
+    readonly name?: string | undefined;
+}
+/**
+ * Intended to match DOM Response, node-fetch Response, undici Response, etc.
+ */
+export interface ResponseLike {
+    url: string;
+    blob(): Promise<BlobLike>;
+}
+export type ToFileInput = FileLike | ResponseLike | Exclude<BlobLikePart, string> | AsyncIterable<BlobLikePart>;
+/**
+ * Helper for creating a {@link File} to pass to an SDK upload method from a variety of different data formats
+ * @param value the raw content of the file. Can be an {@link Uploadable}, BlobLikePart, or AsyncIterable of BlobLikeParts
+ * @param {string=} name the name of the file. If omitted, toFile will try to determine a file name from bits if possible
+ * @param {Object=} options additional properties
+ * @param {string=} options.type the MIME type of the content
+ * @param {number=} options.lastModified the last modified timestamp
+ * @returns a {@link File} with the given properties
+ */
+export declare function toFile(value: ToFileInput | PromiseLike<ToFileInput>, name?: string | null | undefined, options?: FilePropertyBag | undefined): Promise<File>;
+export {};
+//# sourceMappingURL=to-file.d.ts.map
+// ===== internal/types.d.ts =====
+export type PromiseOrValue<T> = T | Promise<T>;
+export type HTTPMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
+export type KeysEnum<T> = {
+    [P in keyof Required<T>]: true;
+};
+export type FinalizedRequestInit = RequestInit & {
+    headers: Headers;
+};
+type NotAny<T> = [0] extends [1 & T] ? never : T;
+/**
+ * Some environments overload the global fetch function, and Parameters<T> only gets the last signature.
+ */
+type OverloadedParameters<T> = T extends ({
+    (...args: infer A): unknown;
+    (...args: infer B): unknown;
+    (...args: infer C): unknown;
+    (...args: infer D): unknown;
+}) ? A | B | C | D : T extends ({
+    (...args: infer A): unknown;
+    (...args: infer B): unknown;
+    (...args: infer C): unknown;
+}) ? A | B | C : T extends ({
+    (...args: infer A): unknown;
+    (...args: infer B): unknown;
+}) ? A | B : T extends (...args: infer A) => unknown ? A : never;
+/**
+ * These imports attempt to get types from a parent package's dependencies.
+ * Unresolved bare specifiers can trigger [automatic type acquisition][1] in some projects, which
+ * would cause typescript to show types not present at runtime. To avoid this, we import
+ * directly from parent node_modules folders.
+ *
+ * We need to check multiple levels because we don't know what directory structure we'll be in.
+ * For example, pnpm generates directories like this:
+ * ```
+ * node_modules
+ * ├── .pnpm
+ * │   └── pkg@1.0.0
+ * │       └── node_modules
+ * │           └── pkg
+ * │               └── internal
+ * │                   └── types.d.ts
+ * ├── pkg -> .pnpm/pkg@1.0.0/node_modules/pkg
+ * └── undici
+ * ```
+ *
+ * [1]: https://www.typescriptlang.org/tsconfig/#typeAcquisition
+ */
+// @ts-ignore
+type UndiciTypesRequestInit = NotAny<import('../node_modules/undici-types/index.d.ts').RequestInit> | NotAny<import('../../node_modules/undici-types/index.d.ts').RequestInit> | NotAny<import('../../../node_modules/undici-types/index.d.ts').RequestInit> | NotAny<import('../../../../node_modules/undici-types/index.d.ts').RequestInit> | NotAny<import('../../../../../node_modules/undici-types/index.d.ts').RequestInit> | NotAny<import('../../../../../../node_modules/undici-types/index.d.ts').RequestInit> | NotAny<import('../../../../../../../node_modules/undici-types/index.d.ts').RequestInit> | NotAny<import('../../../../../../../../node_modules/undici-types/index.d.ts').RequestInit> | NotAny<import('../../../../../../../../../node_modules/undici-types/index.d.ts').RequestInit> | NotAny<import('../../../../../../../../../../node_modules/undici-types/index.d.ts').RequestInit>;
+// @ts-ignore
+type UndiciRequestInit = NotAny<import('../node_modules/undici/index.d.ts').RequestInit> | NotAny<import('../../node_modules/undici/index.d.ts').RequestInit> | NotAny<import('../../../node_modules/undici/index.d.ts').RequestInit> | NotAny<import('../../../../node_modules/undici/index.d.ts').RequestInit> | NotAny<import('../../../../../node_modules/undici/index.d.ts').RequestInit> | NotAny<import('../../../../../../node_modules/undici/index.d.ts').RequestInit> | NotAny<import('../../../../../../../node_modules/undici/index.d.ts').RequestInit> | NotAny<import('../../../../../../../../node_modules/undici/index.d.ts').RequestInit> | NotAny<import('../../../../../../../../../node_modules/undici/index.d.ts').RequestInit> | NotAny<import('../../../../../../../../../../node_modules/undici/index.d.ts').RequestInit>;
+// @ts-ignore
+type BunRequestInit = globalThis.FetchRequestInit;
+// @ts-ignore
+type NodeFetch2RequestInit = NotAny<import('../node_modules/@types/node-fetch/index.d.ts').RequestInit> | NotAny<import('../../node_modules/@types/node-fetch/index.d.ts').RequestInit> | NotAny<import('../../../node_modules/@types/node-fetch/index.d.ts').RequestInit> | NotAny<import('../../../../node_modules/@types/node-fetch/index.d.ts').RequestInit> | NotAny<import('../../../../../node_modules/@types/node-fetch/index.d.ts').RequestInit> | NotAny<import('../../../../../../node_modules/@types/node-fetch/index.d.ts').RequestInit> | NotAny<import('../../../../../../../node_modules/@types/node-fetch/index.d.ts').RequestInit> | NotAny<import('../../../../../../../../node_modules/@types/node-fetch/index.d.ts').RequestInit> | NotAny<import('../../../../../../../../../node_modules/@types/node-fetch/index.d.ts').RequestInit> | NotAny<import('../../../../../../../../../../node_modules/@types/node-fetch/index.d.ts').RequestInit>;
+// @ts-ignore
+type NodeFetch3RequestInit = NotAny<import('../node_modules/node-fetch').RequestInit> | NotAny<import('../../node_modules/node-fetch').RequestInit> | NotAny<import('../../../node_modules/node-fetch').RequestInit> | NotAny<import('../../../../node_modules/node-fetch').RequestInit> | NotAny<import('../../../../../node_modules/node-fetch').RequestInit> | NotAny<import('../../../../../../node_modules/node-fetch').RequestInit> | NotAny<import('../../../../../../../node_modules/node-fetch').RequestInit> | NotAny<import('../../../../../../../../node_modules/node-fetch').RequestInit> | NotAny<import('../../../../../../../../../node_modules/node-fetch').RequestInit> | NotAny<import('../../../../../../../../../../node_modules/node-fetch').RequestInit>;
+// @ts-ignore
+type FetchRequestInit = NonNullable<OverloadedParameters<typeof fetch>[1]>;
+type RequestInits = NotAny<UndiciTypesRequestInit> | NotAny<UndiciRequestInit> | NotAny<BunRequestInit> | NotAny<NodeFetch2RequestInit> | NotAny<NodeFetch3RequestInit> | NotAny<RequestInit> | NotAny<FetchRequestInit>;
+/**
+ * This type contains `RequestInit` options that may be available on the current runtime,
+ * including per-platform extensions like `dispatcher`, `agent`, `client`, etc.
+ */
+export type MergedRequestInit = RequestInits & 
+/** We don't include these in the types as they'll be overridden for every request. */
+Partial<Record<'body' | 'headers' | 'method' | 'signal', never>>;
+export {};
+//# sourceMappingURL=types.d.ts.map
+// ===== internal/uploads.d.ts =====
+import { type RequestOptions } from "./request-options.js";
+import type { FilePropertyBag, Fetch } from "./builtin-types.js";
+import type { Anchorbrowser } from "../client.js";
+export type BlobPart = string | ArrayBuffer | ArrayBufferView | Blob | DataView;
+type FsReadStream = AsyncIterable<Uint8Array> & {
+    path: string | {
+        toString(): string;
+    };
+};
+interface BunFile extends Blob {
+    readonly name?: string | undefined;
+}
+export declare const checkFileSupport: () => void;
+/**
+ * Typically, this is a native "File" class.
+ *
+ * We provide the {@link toFile} utility to convert a variety of objects
+ * into the File class.
+ *
+ * For convenience, you can also pass a fetch Response, or in Node,
+ * the result of fs.createReadStream().
+ */
+export type Uploadable = File | Response | FsReadStream | BunFile;
+/**
+ * Construct a `File` instance. This is used to ensure a helpful error is thrown
+ * for environments that don't define a global `File` yet.
+ */
+export declare function makeFile(fileBits: BlobPart[], fileName: string | undefined, options?: FilePropertyBag): File;
+export declare function getName(value: any): string | undefined;
+export declare const isAsyncIterable: (value: any) => value is AsyncIterable<any>;
+/**
+ * Returns a multipart/form-data request if any part of the given request body contains a File / Blob value.
+ * Otherwise returns the request as is.
+ */
+export declare const maybeMultipartFormRequestOptions: (opts: RequestOptions, fetch: Anchorbrowser | Fetch) => Promise<RequestOptions>;
+type MultipartFormRequestOptions = Omit<RequestOptions, 'body'> & {
+    body: unknown;
+};
+export declare const multipartFormRequestOptions: (opts: MultipartFormRequestOptions, fetch: Anchorbrowser | Fetch) => Promise<RequestOptions>;
+export declare const createForm: <T = Record<string, unknown>>(body: T | undefined, fetch: Anchorbrowser | Fetch) => Promise<FormData>;
+export {};
+//# sourceMappingURL=uploads.d.ts.map
+// ===== internal/utils.d.ts =====
+export * from "./utils/values.js";
+export * from "./utils/base64.js";
+export * from "./utils/env.js";
+export * from "./utils/log.js";
+export * from "./utils/uuid.js";
+export * from "./utils/sleep.js";
+export * from "./utils/query.js";
+//# sourceMappingURL=utils.d.ts.map
+// ===== internal/utils/base64.d.ts =====
+export declare const toBase64: (data: string | Uint8Array | null | undefined) => string;
+export declare const fromBase64: (str: string) => Uint8Array;
+//# sourceMappingURL=base64.d.ts.map
+// ===== internal/utils/bytes.d.ts =====
+export declare function concatBytes(buffers: Uint8Array[]): Uint8Array;
+export declare function encodeUTF8(str: string): Uint8Array<ArrayBufferLike>;
+export declare function decodeUTF8(bytes: Uint8Array): string;
+//# sourceMappingURL=bytes.d.ts.map
+// ===== internal/utils/env.d.ts =====
+/**
+ * Read an environment variable.
+ *
+ * Trims beginning and trailing whitespace.
+ *
+ * Will return undefined if the environment variable doesn't exist or cannot be accessed.
+ */
+export declare const readEnv: (env: string) => string | undefined;
+//# sourceMappingURL=env.d.ts.map
+// ===== internal/utils/log.d.ts =====
+import { type Anchorbrowser } from "../../client.js";
+import { RequestOptions } from "../request-options.js";
+type LogFn = (message: string, ...rest: unknown[]) => void;
+export type Logger = {
+    error: LogFn;
+    warn: LogFn;
+    info: LogFn;
+    debug: LogFn;
+};
+export type LogLevel = 'off' | 'error' | 'warn' | 'info' | 'debug';
+export declare const parseLogLevel: (maybeLevel: string | undefined, sourceName: string, client: Anchorbrowser) => LogLevel | undefined;
+export declare function loggerFor(client: Anchorbrowser): Logger;
+export declare const formatRequestDetails: (details: {
+    options?: RequestOptions | undefined;
+    headers?: Headers | Record<string, string> | undefined;
+    retryOfRequestLogID?: string | undefined;
+    retryOf?: string | undefined;
+    url?: string | undefined;
+    status?: number | undefined;
+    method?: string | undefined;
+    durationMs?: number | undefined;
+    message?: unknown;
+    body?: unknown;
+}) => {
+    options?: RequestOptions | undefined;
+    headers?: Headers | Record<string, string> | undefined;
+    retryOfRequestLogID?: string | undefined;
+    retryOf?: string | undefined;
+    url?: string | undefined;
+    status?: number | undefined;
+    method?: string | undefined;
+    durationMs?: number | undefined;
+    message?: unknown;
+    body?: unknown;
+};
+export {};
+//# sourceMappingURL=log.d.ts.map
+// ===== internal/utils/path.d.ts =====
+/**
+ * Percent-encode everything that isn't safe to have in a path without encoding safe chars.
+ *
+ * Taken from https://datatracker.ietf.org/doc/html/rfc3986#section-3.3:
+ * > unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
+ * > sub-delims  = "!" / "$" / "&" / "'" / "(" / ")" / "*" / "+" / "," / ";" / "="
+ * > pchar       = unreserved / pct-encoded / sub-delims / ":" / "@"
+ */
+export declare function encodeURIPath(str: string): string;
+export declare const createPathTagFunction: (pathEncoder?: typeof encodeURIPath) => (statics: readonly string[], ...params: readonly unknown[]) => string;
+/**
+ * URI-encodes path params and ensures no unsafe /./ or /../ path segments are introduced.
+ */
+export declare const path: (statics: readonly string[], ...params: readonly unknown[]) => string;
+//# sourceMappingURL=path.d.ts.map
+// ===== internal/utils/query.d.ts =====
+/**
+ * Basic re-implementation of `qs.stringify` for primitive types.
+ */
+export declare function stringifyQuery(query: object | Record<string, unknown>): string;
+//# sourceMappingURL=query.d.ts.map
+// ===== internal/utils/sleep.d.ts =====
+export declare const sleep: (ms: number) => Promise<void>;
+//# sourceMappingURL=sleep.d.ts.map
+// ===== internal/utils/uuid.d.ts =====
+/**
+ * https://stackoverflow.com/a/2117523
+ */
+export declare let uuid4: () => any;
+//# sourceMappingURL=uuid.d.ts.map
+// ===== internal/utils/values.d.ts =====
+export declare const isAbsoluteURL: (url: string) => boolean;
+export declare let isArray: (val: unknown) => val is unknown[];
+export declare let isReadonlyArray: (val: unknown) => val is readonly unknown[];
+/** Returns an object if the given value isn't an object, otherwise returns as-is */
+export declare function maybeObj(x: unknown): object;
+export declare function isEmptyObj(obj: Object | null | undefined): boolean;
+export declare function hasOwn<T extends object = object>(obj: T, key: PropertyKey): key is keyof T;
+export declare function isObj(obj: unknown): obj is Record<string, unknown>;
+export declare const ensurePresent: <T>(value: T | null | undefined) => T;
+export declare const validatePositiveInteger: (name: string, n: unknown) => number;
+export declare const coerceInteger: (value: unknown) => number;
+export declare const coerceFloat: (value: unknown) => number;
+export declare const coerceBoolean: (value: unknown) => boolean;
+export declare const maybeCoerceInteger: (value: unknown) => number | undefined;
+export declare const maybeCoerceFloat: (value: unknown) => number | undefined;
+export declare const maybeCoerceBoolean: (value: unknown) => boolean | undefined;
+export declare const safeJSON: (text: string) => any;
+//# sourceMappingURL=values.d.ts.map
+// ===== lib/browser.d.ts =====
+import type { Browser, Page } from 'playwright';
+import { BrowserContext } from 'playwright';
+export interface BrowserSetup {
+    session: {
+        data?: {
+            id?: string;
+        };
+    };
+    browser: Browser;
+    context: BrowserContext;
+    page: Page | undefined;
+}
+export type AgentTaskResult = {
+    data: {
+        result: Record<string, unknown>;
+    };
+};
+export interface TaskOptions {
+    url?: string;
+    outputSchema?: object;
+    model?: string;
+    provider?: string;
+    agent?: string;
+    highlightElements?: boolean;
+    detectElements?: boolean;
+    extendedSystemMessage?: string;
+    humanIntervention?: boolean;
+    maxSteps?: number;
+    secretValues?: Record<string, any>;
+    directlyOpenUrl?: boolean;
+    onAgentStep?: (step: string) => void;
+}
+export declare const getCdpUrl: (apiBaseURL: string, sessionId: string, apiKey: string) => string;
+export declare const getAgentWsUrl: (apiBaseURL: string, sessionId: string) => string;
+export declare const getPlaywrightChromiumFromCdpUrl: (apiBaseURL: string, sessionId: string, apiKey: string) => Promise<Browser>;
+//# sourceMappingURL=browser.d.ts.map
+// ===== resource.d.ts =====
+export * from "./core/resource.js";
+//# sourceMappingURL=resource.d.ts.map
+// ===== resources.d.ts =====
+export * from "./resources/index.js";
+//# sourceMappingURL=resources.d.ts.map
+// ===== resources/agent.d.ts =====
+import { APIResource } from "../core/resource.js";
+import { AgentTaskResult, BrowserSetup, TaskOptions } from "../lib/browser.js";
+import { SessionCreateParams } from "./sessions.js";
+export declare class Agent extends APIResource {
+    /**
+     * Execute an AI agent task in a browser session
+     * @param prompt - The task prompt for the AI agent
+     * @param options - Session and task configuration options
+     * @returns The result of the task execution
+     * @throws Error if browser setup fails or task execution fails
+     */
+    task(prompt: string, { sessionOptions, taskOptions, sessionId, }?: {
+        sessionOptions?: SessionCreateParams;
+        taskOptions?: TaskOptions;
+        sessionId?: string;
+    }): Promise<AgentTaskResult>;
+    /**
+     * Create a browser task that returns control to the caller
+     * @param prompt - The task prompt for the AI agent
+     * @param options - Session and task configuration options
+     * @returns Object containing session ID, task promise, and browser instance
+     * @throws Error if browser setup fails
+     */
+    browserTask(prompt: string, { sessionOptions, taskOptions, }?: {
+        sessionOptions?: SessionCreateParams;
+        taskOptions?: Omit<TaskOptions, 'onAgentStep'>;
+        playwrightBrowser?: BrowserSetup;
+    }): Promise<{
+        sessionId: string | undefined;
+        taskResultPromise: Promise<AgentTaskResult>;
+        playwrightBrowser: import("playwright-core").Browser;
+    }>;
+    /**
+     * Set up browser and session
+     */
+    private setupBrowser;
+    /**
+     * Set up WebSocket for agent step notifications
+     */
+    private setupWebSocket;
+    /**
+     * Create task payload JSON for AI execution
+     */
+    private createTaskPayloadJSON;
+    /**
+     * Create task payload for AI execution
+     */
+    private createTaskPayload;
+    /**
+     * Execute task on session client
+     */
+    private executeTaskSessionClient;
+    /**
+     * Clean up WebSocket connection
+     */
+    private cleanupWebSocket;
+}
+//# sourceMappingURL=agent.d.ts.map
+// ===== resources/applications.d.ts =====
+export * from "./applications/index.js";
+//# sourceMappingURL=applications.d.ts.map
+// ===== resources/applications/applications.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import * as AuthFlowsAPI from "./auth-flows.js";
+import { AuthFlowCreateParams, AuthFlowCreateResponse, AuthFlowDeleteParams, AuthFlowDeleteResponse, AuthFlowListResponse, AuthFlows } from "./auth-flows.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class Applications extends APIResource {
+    authFlows: AuthFlowsAPI.AuthFlows;
+    /**
+     * Creates a new application for identity management.
+     *
+     * @example
+     * ```ts
+     * const application = await client.applications.create({
+     *   source: 'https://example.com',
+     *   description: 'An example application',
+     *   name: 'Example App',
+     * });
+     * ```
+     */
+    create(body: ApplicationCreateParams, options?: RequestOptions): APIPromise<ApplicationCreateResponse>;
+    /**
+     * Retrieves details of a specific application by its ID.
+     *
+     * @example
+     * ```ts
+     * const application = await client.applications.retrieve(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     * );
+     * ```
+     */
+    retrieve(applicationID: string, options?: RequestOptions): APIPromise<ApplicationRetrieveResponse>;
+    /**
+     * Retrieves all applications for the authenticated team.
+     *
+     * @example
+     * ```ts
+     * const applications = await client.applications.list();
+     * ```
+     */
+    list(query?: ApplicationListParams | null | undefined, options?: RequestOptions): APIPromise<ApplicationListResponse>;
+    /**
+     * Deletes an existing application.
+     *
+     * @example
+     * ```ts
+     * const application = await client.applications.delete(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     * );
+     * ```
+     */
+    delete(applicationID: string, options?: RequestOptions): APIPromise<ApplicationDeleteResponse>;
+    /**
+     * Creates an identity token for a specific application. This token is used to
+     * initiate an authentication flow for linking user identities to the application.
+     *
+     * The callback URL must use HTTPS and is where the user will be redirected after
+     * authentication.
+     *
+     * @example
+     * ```ts
+     * const response =
+     *   await client.applications.createIdentityToken(
+     *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *     { callbackUrl: 'https://example.com/auth/callback' },
+     *   );
+     * ```
+     */
+    createIdentityToken(applicationID: string, body: ApplicationCreateIdentityTokenParams, options?: RequestOptions): APIPromise<ApplicationCreateIdentityTokenResponse>;
+    /**
+     * Retrieves all identities associated with a specific application.
+     *
+     * @example
+     * ```ts
+     * const response = await client.applications.listIdentities(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     * );
+     * ```
+     */
+    listIdentities(applicationID: string, query?: ApplicationListIdentitiesParams | null | undefined, options?: RequestOptions): APIPromise<ApplicationListIdentitiesResponse>;
+}
+export interface ApplicationCreateResponse {
+    /**
+     * Unique identifier for the application
+     */
+    id?: string;
+    /**
+     * Timestamp when the application was created
+     */
+    created_at?: string;
+    /**
+     * Description of the application
+     */
+    description?: string | null;
+    /**
+     * Name of the application
+     */
+    name?: string;
+    /**
+     * URL of the application
+     */
+    url?: string | null;
+}
+export interface ApplicationRetrieveResponse {
+    /**
+     * Unique identifier for the application
+     */
+    id?: string;
+    /**
+     * Authentication methods available for this application
+     */
+    auth_methods?: Array<string>;
+    /**
+     * Timestamp when the application was created
+     */
+    created_at?: string;
+    /**
+     * Description of the application
+     */
+    description?: string | null;
+    /**
+     * Number of identities associated with this application
+     */
+    identity_count?: number;
+    /**
+     * Name of the application
+     */
+    name?: string;
+    /**
+     * Timestamp when the application was last updated
+     */
+    updated_at?: string;
+    /**
+     * URL of the application
+     */
+    url?: string | null;
+}
+export interface ApplicationListResponse {
+    applications?: Array<ApplicationListResponse.Application>;
+}
+export declare namespace ApplicationListResponse {
+    interface Application {
+        /**
+         * Unique identifier for the application
+         */
+        id?: string;
+        /**
+         * Authentication methods available for this application
+         */
+        auth_methods?: Array<string>;
+        /**
+         * Timestamp when the application was created
+         */
+        created_at?: string;
+        /**
+         * Description of the application
+         */
+        description?: string | null;
+        /**
+         * Number of identities associated with this application
+         */
+        identity_count?: number;
+        /**
+         * Name of the application
+         */
+        name?: string;
+        /**
+         * Timestamp when the application was last updated
+         */
+        updated_at?: string;
+        /**
+         * URL of the application
+         */
+        url?: string | null;
+    }
+}
+export interface ApplicationDeleteResponse {
+    /**
+     * Whether the deletion was successful
+     */
+    success?: boolean;
+}
+export interface ApplicationCreateIdentityTokenResponse {
+    data?: ApplicationCreateIdentityTokenResponse.Data;
+}
+export declare namespace ApplicationCreateIdentityTokenResponse {
+    interface Data {
+        /**
+         * The generated identity token for authentication
+         */
+        token?: string;
+        /**
+         * The timestamp when the token expires
+         */
+        expires_at?: string;
+        /**
+         * A hash of the token for verification purposes
+         */
+        token_hash?: string;
+    }
+}
+export interface ApplicationListIdentitiesResponse {
+    identities?: Array<ApplicationListIdentitiesResponse.Identity>;
+}
+export declare namespace ApplicationListIdentitiesResponse {
+    interface Identity {
+        /**
+         * Unique identifier for the identity
+         */
+        id?: string;
+        /**
+         * Authentication flow associated with this identity
+         */
+        auth_flow?: string | null;
+        /**
+         * Timestamp when the identity was created
+         */
+        created_at?: string;
+        /**
+         * Name of the identity
+         */
+        name?: string;
+        /**
+         * Status of the identity
+         */
+        status?: 'pending' | 'validated' | 'failed';
+        /**
+         * Timestamp when the identity was last updated
+         */
+        updated_at?: string;
+    }
+}
+export interface ApplicationCreateParams {
+    /**
+     * The source URL of the application
+     */
+    source: string;
+    /**
+     * Description of the application
+     */
+    description?: string;
+    /**
+     * Name of the application
+     */
+    name?: string;
+}
+export interface ApplicationListParams {
+    /**
+     * Search query to filter applications by name
+     */
+    search?: string;
+}
+export interface ApplicationCreateIdentityTokenParams {
+    /**
+     * The HTTPS URL where the user will be redirected after authentication. Must use
+     * HTTPS protocol.
+     */
+    callbackUrl: string;
+}
+export interface ApplicationListIdentitiesParams {
+    /**
+     * Filter identities by metadata. Pass a **JSON object** to filter identities whose
+     * metadata contains the specified key-value pairs.
+     */
+    metadata?: string;
+    /**
+     * Search query to filter identities by name
+     */
+    search?: string;
+}
+export declare namespace Applications {
+    export { type ApplicationCreateResponse as ApplicationCreateResponse, type ApplicationRetrieveResponse as ApplicationRetrieveResponse, type ApplicationListResponse as ApplicationListResponse, type ApplicationDeleteResponse as ApplicationDeleteResponse, type ApplicationCreateIdentityTokenResponse as ApplicationCreateIdentityTokenResponse, type ApplicationListIdentitiesResponse as ApplicationListIdentitiesResponse, type ApplicationCreateParams as ApplicationCreateParams, type ApplicationListParams as ApplicationListParams, type ApplicationCreateIdentityTokenParams as ApplicationCreateIdentityTokenParams, type ApplicationListIdentitiesParams as ApplicationListIdentitiesParams, };
+    export { AuthFlows as AuthFlows, type AuthFlowCreateResponse as AuthFlowCreateResponse, type AuthFlowListResponse as AuthFlowListResponse, type AuthFlowDeleteResponse as AuthFlowDeleteResponse, type AuthFlowCreateParams as AuthFlowCreateParams, type AuthFlowDeleteParams as AuthFlowDeleteParams, };
+}
+//# sourceMappingURL=applications.d.ts.map
+// ===== resources/applications/auth-flows.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class AuthFlows extends APIResource {
+    /**
+     * Creates a new authentication flow for an application.
+     *
+     * @example
+     * ```ts
+     * const authFlow = await client.applications.authFlows.create(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   {
+     *     methods: ['username_password'],
+     *     name: 'Standard Login',
+     *     custom_fields: [],
+     *     description: 'Username and password authentication',
+     *     is_recommended: true,
+     *   },
+     * );
+     * ```
+     */
+    create(applicationID: string, body: AuthFlowCreateParams, options?: RequestOptions): APIPromise<AuthFlowCreateResponse>;
+    /**
+     * Retrieves all authentication flows for a specific application.
+     *
+     * @example
+     * ```ts
+     * const authFlows = await client.applications.authFlows.list(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     * );
+     * ```
+     */
+    list(applicationID: string, options?: RequestOptions): APIPromise<AuthFlowListResponse>;
+    /**
+     * Deletes an existing authentication flow.
+     *
+     * @example
+     * ```ts
+     * const authFlow = await client.applications.authFlows.delete(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   {
+     *     application_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   },
+     * );
+     * ```
+     */
+    delete(authFlowID: string, params: AuthFlowDeleteParams, options?: RequestOptions): APIPromise<AuthFlowDeleteResponse>;
+}
+export interface AuthFlowCreateResponse {
+    /**
+     * Unique identifier for the authentication flow
+     */
+    id?: string;
+    /**
+     * Timestamp when the authentication flow was created
+     */
+    created_at?: string;
+    /**
+     * Custom fields for this authentication flow
+     */
+    custom_fields?: Array<AuthFlowCreateResponse.CustomField>;
+    /**
+     * Description of the authentication flow
+     */
+    description?: string | null;
+    /**
+     * Whether this is the recommended authentication flow
+     */
+    is_recommended?: boolean;
+    /**
+     * Authentication methods in this flow
+     */
+    methods?: Array<string>;
+    /**
+     * Name of the authentication flow
+     */
+    name?: string;
+    /**
+     * Timestamp when the authentication flow was last updated
+     */
+    updated_at?: string;
+}
+export declare namespace AuthFlowCreateResponse {
+    interface CustomField {
+        /**
+         * Name of the custom field
+         */
+        name: string;
+    }
+}
+export interface AuthFlowListResponse {
+    auth_flows?: Array<AuthFlowListResponse.AuthFlow>;
+}
+export declare namespace AuthFlowListResponse {
+    interface AuthFlow {
+        /**
+         * Unique identifier for the authentication flow
+         */
+        id?: string;
+        /**
+         * Timestamp when the authentication flow was created
+         */
+        created_at?: string;
+        /**
+         * Custom fields for this authentication flow
+         */
+        custom_fields?: Array<AuthFlow.CustomField>;
+        /**
+         * Description of the authentication flow
+         */
+        description?: string | null;
+        /**
+         * Whether this is the recommended authentication flow
+         */
+        is_recommended?: boolean;
+        /**
+         * Authentication methods in this flow
+         */
+        methods?: Array<string>;
+        /**
+         * Name of the authentication flow
+         */
+        name?: string;
+        /**
+         * Timestamp when the authentication flow was last updated
+         */
+        updated_at?: string;
+    }
+    namespace AuthFlow {
+        interface CustomField {
+            /**
+             * Name of the custom field
+             */
+            name: string;
+        }
+    }
+}
+export interface AuthFlowDeleteResponse {
+    /**
+     * Whether the deletion was successful
+     */
+    success?: boolean;
+}
+export interface AuthFlowCreateParams {
+    /**
+     * Authentication methods in this flow
+     */
+    methods: Array<'username_password' | 'authenticator' | 'custom'>;
+    /**
+     * Name of the authentication flow
+     */
+    name: string;
+    /**
+     * Custom fields for this authentication flow
+     */
+    custom_fields?: Array<AuthFlowCreateParams.CustomField>;
+    /**
+     * Description of the authentication flow
+     */
+    description?: string;
+    /**
+     * Whether this is the recommended authentication flow
+     */
+    is_recommended?: boolean;
+}
+export declare namespace AuthFlowCreateParams {
+    interface CustomField {
+        /**
+         * Name of the custom field
+         */
+        name: string;
+    }
+}
+export interface AuthFlowDeleteParams {
+    /**
+     * The ID of the application
+     */
+    application_id: string;
+}
+export declare namespace AuthFlows {
+    export { type AuthFlowCreateResponse as AuthFlowCreateResponse, type AuthFlowListResponse as AuthFlowListResponse, type AuthFlowDeleteResponse as AuthFlowDeleteResponse, type AuthFlowCreateParams as AuthFlowCreateParams, type AuthFlowDeleteParams as AuthFlowDeleteParams, };
+}
+//# sourceMappingURL=auth-flows.d.ts.map
+// ===== resources/applications/index.d.ts =====
+export { Applications, type ApplicationCreateResponse, type ApplicationRetrieveResponse, type ApplicationListResponse, type ApplicationDeleteResponse, type ApplicationCreateIdentityTokenResponse, type ApplicationListIdentitiesResponse, type ApplicationCreateParams, type ApplicationListParams, type ApplicationCreateIdentityTokenParams, type ApplicationListIdentitiesParams, } from "./applications.js";
+export { AuthFlows, type AuthFlowCreateResponse, type AuthFlowListResponse, type AuthFlowDeleteResponse, type AuthFlowCreateParams, type AuthFlowDeleteParams, } from "./auth-flows.js";
+//# sourceMappingURL=index.d.ts.map
+// ===== resources/browser.d.ts =====
+import { APIResource } from "../core/resource.js";
+import { SessionCreateParams } from "./sessions.js";
+export declare class Browser extends APIResource {
+    connect(sessionId: string): Promise<import("playwright-core").Browser>;
+    create({ sessionOptions }?: {
+        sessionOptions?: SessionCreateParams;
+    }): Promise<import("playwright-core").Browser>;
+}
+//# sourceMappingURL=browser.d.ts.map
+// ===== resources/events.d.ts =====
+import { APIResource } from "../core/resource.js";
+import * as Shared from "./shared.js";
+import { APIPromise } from "../core/api-promise.js";
+import { RequestOptions } from "../internal/request-options.js";
+export declare class Events extends APIResource {
+    /**
+     * Signals an event with associated data, unblocking any clients waiting for this
+     * event. This enables coordination between different browser sessions, workflows,
+     * or external processes.
+     *
+     * @example
+     * ```ts
+     * const successResponse = await client.events.signal(
+     *   'event_name',
+     *   {
+     *     data: {
+     *       message: 'bar',
+     *       result: 'bar',
+     *       timestamp: 'bar',
+     *     },
+     *   },
+     * );
+     * ```
+     */
+    signal(eventName: string, body: EventSignalParams, options?: RequestOptions): APIPromise<Shared.SuccessResponse>;
+    /**
+     * Waits for a specific event to be signaled by another process, workflow, or
+     * session. This endpoint blocks until the event is signaled or the timeout is
+     * reached. Useful for coordinating between multiple browser sessions or workflows.
+     *
+     * @example
+     * ```ts
+     * const response = await client.events.waitFor('event_name');
+     * ```
+     */
+    waitFor(eventName: string, body?: EventWaitForParams | null | undefined, options?: RequestOptions): APIPromise<EventWaitForResponse>;
+}
+export interface EventWaitForResponse {
+    /**
+     * The event data that was signaled
+     */
+    data?: {
+        [key: string]: unknown;
+    };
+}
+export interface EventSignalParams {
+    /**
+     * Event data to be passed to waiting clients
+     */
+    data: {
+        [key: string]: unknown;
+    };
+}
+export interface EventWaitForParams {
+    /**
+     * Timeout in milliseconds to wait for the event. Defaults to 60000ms (1 minute).
+     */
+    timeoutMs?: number;
+}
+export declare namespace Events {
+    export { type EventWaitForResponse as EventWaitForResponse, type EventSignalParams as EventSignalParams, type EventWaitForParams as EventWaitForParams, };
+}
+//# sourceMappingURL=events.d.ts.map
+// ===== resources/extensions.d.ts =====
+import { APIResource } from "../core/resource.js";
+import * as ExtensionsAPI from "./extensions.js";
+import { APIPromise } from "../core/api-promise.js";
+import { RequestOptions } from "../internal/request-options.js";
+export declare class Extensions extends APIResource {
+    /**
+     * Get all extensions for the authenticated user
+     */
+    list(options?: RequestOptions): APIPromise<ExtensionListResponse>;
+}
+export interface ExtensionManifest {
+    description?: string;
+    manifest_version?: number;
+    name?: string;
+    permissions?: Array<string>;
+    version?: string;
+    [k: string]: unknown;
+}
+export interface ExtensionListResponse {
+    data?: Array<ExtensionListResponse.Data>;
+}
+export declare namespace ExtensionListResponse {
+    interface Data {
+        /**
+         * Unique identifier for the extension
+         */
+        id?: string;
+        /**
+         * Timestamp when the extension was created
+         */
+        createdAt?: string;
+        manifest?: ExtensionsAPI.ExtensionManifest;
+        /**
+         * Extension name
+         */
+        name?: string;
+        /**
+         * Timestamp when the extension was last updated
+         */
+        updatedAt?: string;
+    }
+}
+export declare namespace Extensions {
+    export { type ExtensionManifest as ExtensionManifest, type ExtensionListResponse as ExtensionListResponse };
+}
+//# sourceMappingURL=extensions.d.ts.map
+// ===== resources/identities.d.ts =====
+import { APIResource } from "../core/resource.js";
+import { APIPromise } from "../core/api-promise.js";
+import { RequestOptions } from "../internal/request-options.js";
+export declare class Identities extends APIResource {
+    /**
+     * Creates a new identity with credentials for authentication.
+     *
+     * @example
+     * ```ts
+     * const identity = await client.identities.create({
+     *   credentials: [
+     *     {
+     *       type: 'username_password',
+     *       username: 'user@example.com',
+     *       password: 'securepassword123',
+     *     },
+     *   ],
+     *   source: 'https://example.com/login',
+     *   metadata: { department: 'Engineering' },
+     *   name: 'My Work Account',
+     * });
+     * ```
+     */
+    create(params: IdentityCreateParams, options?: RequestOptions): APIPromise<IdentityCreateResponse>;
+    /**
+     * Retrieves details of a specific identity by its ID.
+     *
+     * @example
+     * ```ts
+     * const identity = await client.identities.retrieve(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     * );
+     * ```
+     */
+    retrieve(identityID: string, options?: RequestOptions): APIPromise<IdentityRetrieveResponse>;
+    /**
+     * Updates an existing identity's name, metadata, or credentials.
+     *
+     * @example
+     * ```ts
+     * const identity = await client.identities.update(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   { name: 'Updated Account Name' },
+     * );
+     * ```
+     */
+    update(identityID: string, body: IdentityUpdateParams, options?: RequestOptions): APIPromise<IdentityUpdateResponse>;
+    /**
+     * Deletes an existing identity.
+     *
+     * @example
+     * ```ts
+     * const identity = await client.identities.delete(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     * );
+     * ```
+     */
+    delete(identityID: string, options?: RequestOptions): APIPromise<IdentityDeleteResponse>;
+    /**
+     * Retrieves the credentials for a specific identity.
+     *
+     * @example
+     * ```ts
+     * const response =
+     *   await client.identities.retrieveCredentials(
+     *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   );
+     * ```
+     */
+    retrieveCredentials(identityID: string, options?: RequestOptions): APIPromise<IdentityRetrieveCredentialsResponse>;
+}
+export interface IdentityCreateResponse {
+    /**
+     * Unique identifier for the identity
+     */
+    id?: string;
+    /**
+     * Timestamp when the identity was created
+     */
+    created_at?: string;
+    /**
+     * Metadata associated with the identity
+     */
+    metadata?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Name of the identity
+     */
+    name?: string;
+    /**
+     * Status of the identity
+     */
+    status?: 'pending' | 'validated' | 'failed';
+}
+export interface IdentityRetrieveResponse {
+    /**
+     * Unique identifier for the identity
+     */
+    id?: string;
+    /**
+     * Timestamp when the identity was created
+     */
+    created_at?: string;
+    /**
+     * Metadata associated with the identity
+     */
+    metadata?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Name of the identity
+     */
+    name?: string;
+    /**
+     * Source URL for the identity
+     */
+    source?: string;
+    /**
+     * Status of the identity
+     */
+    status?: 'pending' | 'validated' | 'failed';
+    /**
+     * Timestamp when the identity was last updated
+     */
+    updated_at?: string;
+}
+export interface IdentityUpdateResponse {
+    /**
+     * Unique identifier for the identity
+     */
+    id?: string;
+    /**
+     * Metadata associated with the identity
+     */
+    metadata?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Name of the identity
+     */
+    name?: string;
+    /**
+     * Timestamp when the identity was last updated
+     */
+    updated_at?: string;
+}
+export interface IdentityDeleteResponse {
+    /**
+     * Deletion result message
+     */
+    message?: string;
+}
+export interface IdentityRetrieveCredentialsResponse {
+    /**
+     * The ID of the identity
+     */
+    id: string;
+    credentials: Array<IdentityRetrieveCredentialsResponse.UsernamePasswordCredentialSchema | IdentityRetrieveCredentialsResponse.AuthenticatorCredentialSchema | IdentityRetrieveCredentialsResponse.CustomCredentialSchema>;
+    /**
+     * The name of the identity
+     */
+    name: string;
+    /**
+     * The url related to the identity
+     */
+    source: string;
+}
+export declare namespace IdentityRetrieveCredentialsResponse {
+    interface UsernamePasswordCredentialSchema {
+        /**
+         * The password of the credential
+         */
+        password: string;
+        /**
+         * The type of credential
+         */
+        type: 'username_password';
+        /**
+         * The username of the credential
+         */
+        username: string;
+    }
+    interface AuthenticatorCredentialSchema {
+        /**
+         * The OTP of the credential
+         */
+        otp: string;
+        /**
+         * The secret of the credential
+         */
+        secret: string;
+        /**
+         * The type of credential
+         */
+        type: 'authenticator';
+    }
+    interface CustomCredentialSchema {
+        fields: Array<CustomCredentialSchema.Field>;
+        /**
+         * The type of credential
+         */
+        type: 'custom';
+    }
+    namespace CustomCredentialSchema {
+        interface Field {
+            /**
+             * The name of the field
+             */
+            name: string;
+            /**
+             * The value of the field
+             */
+            value: string;
+        }
+    }
+}
+export interface IdentityCreateParams {
+    /**
+     * Body param: Array of credentials for authentication
+     */
+    credentials: Array<IdentityCreateParams.UsernamePasswordCredentialSchema | IdentityCreateParams.AuthenticatorCredentialSchema | IdentityCreateParams.CustomCredentialSchema>;
+    /**
+     * Body param: The source URL for the identity (e.g., login page URL)
+     */
+    source: string;
+    /**
+     * Query param: Whether to validate the identity asynchronously. Defaults to true.
+     */
+    validateAsync?: boolean;
+    /**
+     * Body param: Optional application description
+     */
+    applicationDescription?: string;
+    /**
+     * Body param: Optional application name to associate with the identity
+     */
+    applicationName?: string;
+    /**
+     * Body param: Optional metadata for the identity
+     */
+    metadata?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Body param: Name of the identity. Defaults to "Unnamed Identity" if not
+     * provided.
+     */
+    name?: string;
+}
+export declare namespace IdentityCreateParams {
+    interface UsernamePasswordCredentialSchema {
+        /**
+         * The password of the credential
+         */
+        password?: string;
+        /**
+         * The type of credential
+         */
+        type?: 'username_password';
+        /**
+         * The username of the credential
+         */
+        username?: string;
+    }
+    interface AuthenticatorCredentialSchema {
+        /**
+         * The OTP of the credential
+         */
+        otp?: string;
+        /**
+         * The secret of the credential
+         */
+        secret?: string;
+        /**
+         * The type of credential
+         */
+        type?: 'authenticator';
+    }
+    interface CustomCredentialSchema {
+        fields?: Array<CustomCredentialSchema.Field>;
+        /**
+         * The type of credential
+         */
+        type?: 'custom';
+    }
+    namespace CustomCredentialSchema {
+        interface Field {
+            /**
+             * The name of the field
+             */
+            name?: string;
+            /**
+             * The value of the field
+             */
+            value?: string;
+        }
+    }
+}
+export interface IdentityUpdateParams {
+    /**
+     * Array of credentials for authentication
+     */
+    credentials?: Array<IdentityUpdateParams.UsernamePasswordCredentialSchema | IdentityUpdateParams.AuthenticatorCredentialSchema | IdentityUpdateParams.CustomCredentialSchema>;
+    /**
+     * Metadata for the identity
+     */
+    metadata?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Name of the identity
+     */
+    name?: string;
+}
+export declare namespace IdentityUpdateParams {
+    interface UsernamePasswordCredentialSchema {
+        /**
+         * The password of the credential
+         */
+        password?: string;
+        /**
+         * The type of credential
+         */
+        type?: 'username_password';
+        /**
+         * The username of the credential
+         */
+        username?: string;
+    }
+    interface AuthenticatorCredentialSchema {
+        /**
+         * The OTP of the credential
+         */
+        otp?: string;
+        /**
+         * The secret of the credential
+         */
+        secret?: string;
+        /**
+         * The type of credential
+         */
+        type?: 'authenticator';
+    }
+    interface CustomCredentialSchema {
+        fields?: Array<CustomCredentialSchema.Field>;
+        /**
+         * The type of credential
+         */
+        type?: 'custom';
+    }
+    namespace CustomCredentialSchema {
+        interface Field {
+            /**
+             * The name of the field
+             */
+            name?: string;
+            /**
+             * The value of the field
+             */
+            value?: string;
+        }
+    }
+}
+export declare namespace Identities {
+    export { type IdentityCreateResponse as IdentityCreateResponse, type IdentityRetrieveResponse as IdentityRetrieveResponse, type IdentityUpdateResponse as IdentityUpdateResponse, type IdentityDeleteResponse as IdentityDeleteResponse, type IdentityRetrieveCredentialsResponse as IdentityRetrieveCredentialsResponse, type IdentityCreateParams as IdentityCreateParams, type IdentityUpdateParams as IdentityUpdateParams, };
+}
+//# sourceMappingURL=identities.d.ts.map
+// ===== resources/index.d.ts =====
+export * from "./shared.js";
+export { Applications, type ApplicationCreateResponse, type ApplicationRetrieveResponse, type ApplicationListResponse, type ApplicationDeleteResponse, type ApplicationCreateIdentityTokenResponse, type ApplicationListIdentitiesResponse, type ApplicationCreateParams, type ApplicationListParams, type ApplicationCreateIdentityTokenParams, type ApplicationListIdentitiesParams, } from "./applications/applications.js";
+export { Events, type EventWaitForResponse, type EventSignalParams, type EventWaitForParams } from "./events.js";
+export { Extensions, type ExtensionManifest, type ExtensionListResponse } from "./extensions.js";
+export { Identities, type IdentityCreateResponse, type IdentityRetrieveResponse, type IdentityUpdateResponse, type IdentityDeleteResponse, type IdentityRetrieveCredentialsResponse, type IdentityCreateParams, type IdentityUpdateParams, } from "./identities.js";
+export { Profiles, type ProfileRetrieveResponse, type ProfileListResponse, type ProfileCreateParams, } from "./profiles.js";
+export { Sessions, type SessionCreateResponse, type SessionRetrieveResponse, type SessionDragAndDropResponse, type SessionGotoResponse, type SessionRetrieveDownloadsResponse, type SessionScrollResponse, type SessionUploadFileResponse, type SessionCreateParams, type SessionDragAndDropParams, type SessionGotoParams, type SessionScrollParams, type SessionUploadFileParams, } from "./sessions/sessions.js";
+export { Tasks, type TaskGenerateResponse, type TaskRunResponse, type TaskGenerateParams, type TaskRunParams, } from "./tasks/tasks.js";
+export { Tools, type ToolFetchWebpageResponse, type ToolGetPerformWebTaskStatusResponse, type ToolPerformWebTaskResponse, type ToolFetchWebpageParams, type ToolPerformWebTaskParams, type ToolScreenshotWebpageParams, } from "./tools.js";
+export { Browser } from "./browser.js";
+export { Agent } from "./agent.js";
+//# sourceMappingURL=index.d.ts.map
+// ===== resources/profiles.d.ts =====
+import { APIResource } from "../core/resource.js";
+import * as Shared from "./shared.js";
+import { APIPromise } from "../core/api-promise.js";
+import { RequestOptions } from "../internal/request-options.js";
+export declare class Profiles extends APIResource {
+    /**
+     * Creates a new profile from a browser session. A Profile stores cookies, local
+     * storage, and cache.
+     */
+    create(body: ProfileCreateParams, options?: RequestOptions): APIPromise<Shared.SuccessResponse>;
+    /**
+     * Retrieves details of a specific profile by its name.
+     */
+    retrieve(name: string, options?: RequestOptions): APIPromise<ProfileRetrieveResponse>;
+    /**
+     * Fetches all stored profiles.
+     */
+    list(options?: RequestOptions): APIPromise<ProfileListResponse>;
+    /**
+     * Deletes an existing profile by its name.
+     */
+    delete(name: string, options?: RequestOptions): APIPromise<Shared.SuccessResponse>;
+}
+export interface ProfileRetrieveResponse {
+    data?: ProfileRetrieveResponse.Data;
+}
+export declare namespace ProfileRetrieveResponse {
+    interface Data {
+        /**
+         * The timestamp when the profile was created.
+         */
+        created_at?: string;
+        /**
+         * A description of the profile.
+         */
+        description?: string;
+        /**
+         * The name of the profile.
+         */
+        name?: string;
+        /**
+         * The browser session ID used to create this profile, if applicable.
+         */
+        session_id?: string;
+        /**
+         * The source of the profile data.
+         */
+        source?: 'session';
+        /**
+         * The current status of the profile.
+         */
+        status?: string;
+    }
+}
+export interface ProfileListResponse {
+    data?: ProfileListResponse.Data;
+}
+export declare namespace ProfileListResponse {
+    interface Data {
+        /**
+         * Total number of profiles
+         */
+        count?: number;
+        items?: Array<Data.Item>;
+    }
+    namespace Data {
+        interface Item {
+            /**
+             * The timestamp when the profile was created.
+             */
+            created_at?: string;
+            /**
+             * A description of the profile.
+             */
+            description?: string;
+            /**
+             * The name of the profile.
+             */
+            name?: string;
+            /**
+             * The browser session ID used to create this profile, if applicable.
+             */
+            session_id?: string;
+            /**
+             * The source of the profile data.
+             */
+            source?: 'session';
+            /**
+             * The current status of the profile.
+             */
+            status?: string;
+        }
+    }
+}
+export interface ProfileCreateParams {
+    /**
+     * The name of the profile.
+     */
+    name: string;
+    /**
+     * Whether to use a dedicated sticky IP for this profile. Defaults to false.
+     */
+    dedicated_sticky_ip?: boolean;
+    /**
+     * A description of the profile.
+     */
+    description?: string;
+    /**
+     * The browser session ID is required if the source is set to `session`. The
+     * browser session must be running, and the profile will be stored once the browser
+     * session terminates.
+     */
+    session_id?: string;
+    /**
+     * The source of the profile data. currently only `session` is supported.
+     */
+    source?: 'session';
+}
+export declare namespace Profiles {
+    export { type ProfileRetrieveResponse as ProfileRetrieveResponse, type ProfileListResponse as ProfileListResponse, type ProfileCreateParams as ProfileCreateParams, };
+}
+//# sourceMappingURL=profiles.d.ts.map
+// ===== resources/sessions.d.ts =====
+export * from "./sessions/index.js";
+//# sourceMappingURL=sessions.d.ts.map
+// ===== resources/sessions/agent.d.ts =====
+export * from "./agent/index.js";
+//# sourceMappingURL=agent.d.ts.map
+// ===== resources/sessions/agent/agent.d.ts =====
+import { APIResource } from "../../../core/resource.js";
+import * as FilesAPI from "./files.js";
+import { FileUploadParams, FileUploadResponse, Files } from "./files.js";
+export declare class Agent extends APIResource {
+    files: FilesAPI.Files;
+}
+export declare namespace Agent {
+    export { Files as Files, type FileUploadResponse as FileUploadResponse, type FileUploadParams as FileUploadParams, };
+}
+//# sourceMappingURL=agent.d.ts.map
+// ===== resources/sessions/agent/files.d.ts =====
+import { APIResource } from "../../../core/resource.js";
+import { APIPromise } from "../../../core/api-promise.js";
+import { type Uploadable } from "../../../core/uploads.js";
+import { RequestOptions } from "../../../internal/request-options.js";
+export declare class Files extends APIResource {
+    /**
+     * Upload files as agent resources to a browser session using multipart/form-data.
+     * If you upload a ZIP file, it will be automatically extracted and the files will
+     * be made available as agent resources. If you upload a single file, it will be
+     * saved directly as an agent resource. Resources are then accessible to AI agents
+     * for task completion and automation.
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.agent.files.upload(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   { file: fs.createReadStream('path/to/file') },
+     * );
+     * ```
+     */
+    upload(sessionID: string, body: FileUploadParams, options?: RequestOptions): APIPromise<FileUploadResponse>;
+}
+export interface FileUploadResponse {
+    data?: FileUploadResponse.Data;
+}
+export declare namespace FileUploadResponse {
+    interface Data {
+        message?: string;
+        status?: string;
+    }
+}
+export interface FileUploadParams {
+    /**
+     * File to upload as agent resource (ZIP files will be extracted automatically)
+     */
+    file: Uploadable;
+}
+export declare namespace Files {
+    export { type FileUploadResponse as FileUploadResponse, type FileUploadParams as FileUploadParams };
+}
+//# sourceMappingURL=files.d.ts.map
+// ===== resources/sessions/agent/index.d.ts =====
+export { Agent } from "./agent.js";
+export { Files, type FileUploadResponse, type FileUploadParams } from "./files.js";
+//# sourceMappingURL=index.d.ts.map
+// ===== resources/sessions/all.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import * as Shared from "../shared.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class All extends APIResource {
+    /**
+     * Terminates all active browser sessions associated with the provided API key.
+     *
+     * @example
+     * ```ts
+     * const successResponse = await client.sessions.all.delete();
+     * ```
+     */
+    delete(options?: RequestOptions): APIPromise<Shared.SuccessResponse>;
+    /**
+     * Retrieves status information for all browser sessions associated with the API
+     * key.
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.all.status();
+     * ```
+     */
+    status(options?: RequestOptions): APIPromise<AllStatusResponse>;
+}
+export interface AllStatusResponse {
+    data?: AllStatusResponse.Data;
+}
+export declare namespace AllStatusResponse {
+    interface Data {
+        /**
+         * Total number of browser sessions
+         */
+        count?: number;
+        items?: Array<Data.Item>;
+    }
+    namespace Data {
+        interface Item {
+            /**
+             * Timestamp when the browser session was created
+             */
+            created_at: string;
+            /**
+             * Unique identifier for the browser session
+             */
+            session_id: string;
+            /**
+             * Current status of the browser session
+             */
+            status: string;
+        }
+    }
+}
+export declare namespace All {
+    export { type AllStatusResponse as AllStatusResponse };
+}
+//# sourceMappingURL=all.d.ts.map
+// ===== resources/sessions/clipboard.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class Clipboard extends APIResource {
+    /**
+     * Retrieves the current content of the clipboard
+     *
+     * @example
+     * ```ts
+     * const clipboard = await client.sessions.clipboard.get(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     * );
+     * ```
+     */
+    get(sessionID: string, options?: RequestOptions): APIPromise<ClipboardGetResponse>;
+    /**
+     * Sets the content of the clipboard
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.clipboard.set(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   { text: 'text' },
+     * );
+     * ```
+     */
+    set(sessionID: string, body: ClipboardSetParams, options?: RequestOptions): APIPromise<ClipboardSetResponse>;
+}
+export interface ClipboardGetResponse {
+    data?: ClipboardGetResponse.Data;
+}
+export declare namespace ClipboardGetResponse {
+    interface Data {
+        /**
+         * Text content of the clipboard
+         */
+        text?: string;
+    }
+}
+export interface ClipboardSetResponse {
+    status?: string;
+}
+export interface ClipboardSetParams {
+    /**
+     * Text to set in the clipboard
+     */
+    text: string;
+}
+export declare namespace Clipboard {
+    export { type ClipboardGetResponse as ClipboardGetResponse, type ClipboardSetResponse as ClipboardSetResponse, type ClipboardSetParams as ClipboardSetParams, };
+}
+//# sourceMappingURL=clipboard.d.ts.map
+// ===== resources/sessions/index.d.ts =====
+export { Agent } from "./agent/index.js";
+export { All, type AllStatusResponse } from "./all.js";
+export { Clipboard, type ClipboardGetResponse, type ClipboardSetResponse, type ClipboardSetParams, } from "./clipboard.js";
+export { Keyboard, type KeyboardShortcutResponse, type KeyboardTypeResponse, type KeyboardShortcutParams, type KeyboardTypeParams, } from "./keyboard.js";
+export { Mouse, type MouseClickResponse, type MouseDoubleClickResponse, type MouseMoveResponse, type MouseClickParams, type MouseDoubleClickParams, type MouseMoveParams, } from "./mouse.js";
+export { Recordings, type RecordingListResponse } from "./recordings/index.js";
+export { Sessions, type SessionCreateResponse, type SessionRetrieveResponse, type SessionDragAndDropResponse, type SessionGotoResponse, type SessionRetrieveDownloadsResponse, type SessionScrollResponse, type SessionUploadFileResponse, type SessionCreateParams, type SessionDragAndDropParams, type SessionGotoParams, type SessionScrollParams, type SessionUploadFileParams, } from "./sessions.js";
+//# sourceMappingURL=index.d.ts.map
+// ===== resources/sessions/keyboard.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class Keyboard extends APIResource {
+    /**
+     * Performs a keyboard shortcut using the specified keys
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.keyboard.shortcut(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   { keys: ['string'] },
+     * );
+     * ```
+     */
+    shortcut(sessionID: string, body: KeyboardShortcutParams, options?: RequestOptions): APIPromise<KeyboardShortcutResponse>;
+    /**
+     * Types the specified text with optional delay between keystrokes
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.keyboard.type(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   { text: 'text' },
+     * );
+     * ```
+     */
+    type(sessionID: string, body: KeyboardTypeParams, options?: RequestOptions): APIPromise<KeyboardTypeResponse>;
+}
+export interface KeyboardShortcutResponse {
+    status?: string;
+}
+export interface KeyboardTypeResponse {
+    status?: string;
+}
+export interface KeyboardShortcutParams {
+    /**
+     * Array of keys to press simultaneously
+     */
+    keys: Array<string>;
+    /**
+     * Time to hold the keys down in milliseconds
+     */
+    holdTime?: number;
+}
+export interface KeyboardTypeParams {
+    /**
+     * Text to type
+     */
+    text: string;
+    /**
+     * Delay between keystrokes in milliseconds
+     */
+    delay?: number;
+}
+export declare namespace Keyboard {
+    export { type KeyboardShortcutResponse as KeyboardShortcutResponse, type KeyboardTypeResponse as KeyboardTypeResponse, type KeyboardShortcutParams as KeyboardShortcutParams, type KeyboardTypeParams as KeyboardTypeParams, };
+}
+//# sourceMappingURL=keyboard.d.ts.map
+// ===== resources/sessions/mouse.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class Mouse extends APIResource {
+    /**
+     * Performs a mouse click at the specified coordinates
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.mouse.click(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     * );
+     * ```
+     */
+    click(sessionID: string, body: MouseClickParams, options?: RequestOptions): APIPromise<MouseClickResponse>;
+    /**
+     * Performs a double click at the specified coordinates
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.mouse.doubleClick(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   { x: 0, y: 0 },
+     * );
+     * ```
+     */
+    doubleClick(sessionID: string, body: MouseDoubleClickParams, options?: RequestOptions): APIPromise<MouseDoubleClickResponse>;
+    /**
+     * Moves the mouse cursor to the specified coordinates
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.mouse.move(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   { x: 0, y: 0 },
+     * );
+     * ```
+     */
+    move(sessionID: string, body: MouseMoveParams, options?: RequestOptions): APIPromise<MouseMoveResponse>;
+}
+export interface MouseClickResponse {
+    status?: string;
+}
+export interface MouseDoubleClickResponse {
+    status?: string;
+}
+export interface MouseMoveResponse {
+    status?: string;
+}
+export interface MouseClickParams {
+    /**
+     * Mouse button to use
+     */
+    button?: 'left' | 'middle' | 'right';
+    /**
+     * If a selector was passed and multiple elements match the selector, the index of
+     * the element in the list (0-based). Defaults to 0.
+     */
+    index?: number;
+    /**
+     * A valid CSS selector for the requested element
+     */
+    selector?: string;
+    /**
+     * If a selector was passed, timeout in ms for waiting for the DOM element to be
+     * selected. Defaults to 5000 (5 seconds).
+     */
+    selectorTimeoutMs?: number;
+    /**
+     * X coordinate
+     */
+    x?: number;
+    /**
+     * Y coordinate
+     */
+    y?: number;
+}
+export interface MouseDoubleClickParams {
+    /**
+     * X coordinate
+     */
+    x: number;
+    /**
+     * Y coordinate
+     */
+    y: number;
+    /**
+     * Mouse button to use
+     */
+    button?: 'left' | 'middle' | 'right';
+}
+export interface MouseMoveParams {
+    /**
+     * X coordinate
+     */
+    x: number;
+    /**
+     * Y coordinate
+     */
+    y: number;
+}
+export declare namespace Mouse {
+    export { type MouseClickResponse as MouseClickResponse, type MouseDoubleClickResponse as MouseDoubleClickResponse, type MouseMoveResponse as MouseMoveResponse, type MouseClickParams as MouseClickParams, type MouseDoubleClickParams as MouseDoubleClickParams, type MouseMoveParams as MouseMoveParams, };
+}
+//# sourceMappingURL=mouse.d.ts.map
+// ===== resources/sessions/recordings.d.ts =====
+export * from "./recordings/index.js";
+//# sourceMappingURL=recordings.d.ts.map
+// ===== resources/sessions/recordings/index.d.ts =====
+export { Primary } from "./primary.js";
+export { Recordings, type RecordingListResponse } from "./recordings.js";
+//# sourceMappingURL=index.d.ts.map
+// ===== resources/sessions/recordings/primary.d.ts =====
+import { APIResource } from "../../../core/resource.js";
+import { APIPromise } from "../../../core/api-promise.js";
+import { RequestOptions } from "../../../internal/request-options.js";
+export declare class Primary extends APIResource {
+    /**
+     * Downloads the primary recording file for the specified browser session. Returns
+     * the recording as an MP4 file.
+     *
+     * @example
+     * ```ts
+     * const primary =
+     *   await client.sessions.recordings.primary.get(
+     *     'session_id',
+     *   );
+     *
+     * const content = await primary.blob();
+     * console.log(content);
+     * ```
+     */
+    get(sessionID: string, options?: RequestOptions): APIPromise<Response>;
+}
+//# sourceMappingURL=primary.d.ts.map
+// ===== resources/sessions/recordings/recordings.d.ts =====
+import { APIResource } from "../../../core/resource.js";
+import * as PrimaryAPI from "./primary.js";
+import { Primary } from "./primary.js";
+import { APIPromise } from "../../../core/api-promise.js";
+import { RequestOptions } from "../../../internal/request-options.js";
+export declare class Recordings extends APIResource {
+    primary: PrimaryAPI.Primary;
+    /**
+     * Retrieves the URLs of the browser session's video recordings. Requires a valid
+     * API key for authentication.
+     *
+     * @example
+     * ```ts
+     * const recordings = await client.sessions.recordings.list(
+     *   'session_id',
+     * );
+     * ```
+     */
+    list(sessionID: string, options?: RequestOptions): APIPromise<RecordingListResponse>;
+}
+export interface RecordingListResponse {
+    data?: RecordingListResponse.Data;
+}
+export declare namespace RecordingListResponse {
+    interface Data {
+        /**
+         * Total number of video recordings
+         */
+        count?: number;
+        items?: Array<Data.Item>;
+    }
+    namespace Data {
+        interface Item {
+            /**
+             * Unique identifier for the recording
+             */
+            id?: string;
+            /**
+             * Timestamp when the recording was created
+             */
+            created_at?: string;
+            /**
+             * Duration of the recording
+             */
+            duration?: string;
+            /**
+             * URL to access the recording file
+             */
+            file_link?: string;
+            /**
+             * Indicates if this is the primary recording
+             */
+            is_primary?: boolean;
+            /**
+             * Size of the recording file in bytes
+             */
+            size?: number;
+            /**
+             * Suggested filename for the recording
+             */
+            suggested_file_name?: string;
+        }
+    }
+}
+export declare namespace Recordings {
+    export { type RecordingListResponse as RecordingListResponse };
+    export { Primary as Primary };
+}
+//# sourceMappingURL=recordings.d.ts.map
+// ===== resources/sessions/sessions.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import * as Shared from "../shared.js";
+import * as AllAPI from "./all.js";
+import { All, AllStatusResponse } from "./all.js";
+import * as ClipboardAPI from "./clipboard.js";
+import { Clipboard, ClipboardGetResponse, ClipboardSetParams, ClipboardSetResponse } from "./clipboard.js";
+import * as KeyboardAPI from "./keyboard.js";
+import { Keyboard, KeyboardShortcutParams, KeyboardShortcutResponse, KeyboardTypeParams, KeyboardTypeResponse } from "./keyboard.js";
+import * as MouseAPI from "./mouse.js";
+import { Mouse, MouseClickParams, MouseClickResponse, MouseDoubleClickParams, MouseDoubleClickResponse, MouseMoveParams, MouseMoveResponse } from "./mouse.js";
+import * as AgentAPI from "./agent/agent.js";
+import { Agent } from "./agent/agent.js";
+import * as RecordingsAPI from "./recordings/recordings.js";
+import { RecordingListResponse, Recordings } from "./recordings/recordings.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { type Uploadable } from "../../core/uploads.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class Sessions extends APIResource {
+    all: AllAPI.All;
+    recordings: RecordingsAPI.Recordings;
+    mouse: MouseAPI.Mouse;
+    keyboard: KeyboardAPI.Keyboard;
+    clipboard: ClipboardAPI.Clipboard;
+    agent: AgentAPI.Agent;
+    /**
+     * Allocates a new browser session for the user, with optional configurations for
+     * ad-blocking, captcha solving, proxy usage, and idle timeout.
+     *
+     * @example
+     * ```ts
+     * const session = await client.sessions.create();
+     * ```
+     */
+    create(body?: SessionCreateParams | null | undefined, options?: RequestOptions): APIPromise<SessionCreateResponse>;
+    /**
+     * Retrieves detailed information about a specific browser session.
+     *
+     * @example
+     * ```ts
+     * const session = await client.sessions.retrieve(
+     *   'session_id',
+     * );
+     * ```
+     */
+    retrieve(sessionID: string, options?: RequestOptions): APIPromise<SessionRetrieveResponse>;
+    /**
+     * Deletes the browser session associated with the provided browser session ID.
+     * Requires a valid API key for authentication.
+     *
+     * @example
+     * ```ts
+     * const successResponse = await client.sessions.delete(
+     *   'session_id',
+     * );
+     * ```
+     */
+    delete(sessionID: string, options?: RequestOptions): APIPromise<Shared.SuccessResponse>;
+    /**
+     * Performs a drag and drop operation from start coordinates to end coordinates
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.dragAndDrop(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   {
+     *     endX: 0,
+     *     endY: 0,
+     *     startX: 0,
+     *     startY: 0,
+     *   },
+     * );
+     * ```
+     */
+    dragAndDrop(sessionID: string, body: SessionDragAndDropParams, options?: RequestOptions): APIPromise<SessionDragAndDropResponse>;
+    /**
+     * Navigates the browser session to the specified URL
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.goto(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   { url: 'url' },
+     * );
+     * ```
+     */
+    goto(sessionID: string, body: SessionGotoParams, options?: RequestOptions): APIPromise<SessionGotoResponse>;
+    /**
+     * Retrieves metadata of files downloaded during a browser session. Requires a
+     * valid API key for authentication.
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.retrieveDownloads(
+     *   'session_id',
+     * );
+     * ```
+     */
+    retrieveDownloads(sessionID: string, options?: RequestOptions): APIPromise<SessionRetrieveDownloadsResponse>;
+    /**
+     * Takes a screenshot of the current browser session and returns it as an image.
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.retrieveScreenshot(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     * );
+     *
+     * const content = await response.blob();
+     * console.log(content);
+     * ```
+     */
+    retrieveScreenshot(sessionID: string, options?: RequestOptions): APIPromise<Response>;
+    /**
+     * Performs a scroll action at the specified coordinates
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.scroll(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   {
+     *     deltaY: 0,
+     *     x: 0,
+     *     y: 0,
+     *   },
+     * );
+     * ```
+     */
+    scroll(sessionID: string, body: SessionScrollParams, options?: RequestOptions): APIPromise<SessionScrollResponse>;
+    /**
+     * Upload files directly to a browser session for use with web forms and file
+     * inputs.
+     *
+     * Files are saved to the session's uploads directory and can be referenced in CDP
+     * commands.
+     *
+     * @example
+     * ```ts
+     * const response = await client.sessions.uploadFile(
+     *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+     *   { file: fs.createReadStream('path/to/file') },
+     * );
+     * ```
+     */
+    uploadFile(sessionID: string, body: SessionUploadFileParams, options?: RequestOptions): APIPromise<SessionUploadFileResponse>;
+}
+export interface SessionCreateResponse {
+    data?: SessionCreateResponse.Data;
+}
+export declare namespace SessionCreateResponse {
+    interface Data {
+        /**
+         * Unique identifier for the browser session
+         */
+        id?: string;
+        /**
+         * The CDP websocket connection string
+         */
+        cdp_url?: string;
+        /**
+         * The browser session live view url
+         */
+        live_view_url?: string;
+    }
+}
+export interface SessionRetrieveResponse {
+    data?: SessionRetrieveResponse.Data;
+}
+export declare namespace SessionRetrieveResponse {
+    interface Data {
+        /**
+         * The configuration settings for the session.
+         */
+        configuration?: unknown;
+        /**
+         * The timestamp when the session was created.
+         */
+        created_at?: string;
+        /**
+         * The number of credits consumed by the session.
+         */
+        credits_used?: number;
+        /**
+         * The duration of the session in seconds.
+         */
+        duration?: number;
+        /**
+         * Whether this is a playground session.
+         */
+        playground?: boolean;
+        /**
+         * The number of bytes transferred through the proxy.
+         */
+        proxy_bytes?: number;
+        /**
+         * The unique identifier of the session.
+         */
+        session_id?: string;
+        /**
+         * The current status of the session.
+         */
+        status?: string;
+        /**
+         * Number of AI agent steps executed in the session.
+         */
+        steps?: number;
+        /**
+         * Tags associated with the session.
+         */
+        tags?: unknown;
+        /**
+         * The team ID associated with the session.
+         */
+        team_id?: string;
+        /**
+         * Token usage information.
+         */
+        tokens?: unknown;
+    }
+}
+export interface SessionDragAndDropResponse {
+    status?: string;
+}
+export interface SessionGotoResponse {
+    status?: string;
+}
+export interface SessionRetrieveDownloadsResponse {
+    data?: SessionRetrieveDownloadsResponse.Data;
+}
+export declare namespace SessionRetrieveDownloadsResponse {
+    interface Data {
+        /**
+         * Total number of downloads
+         */
+        count?: number;
+        items?: Array<Data.Item>;
+    }
+    namespace Data {
+        interface Item {
+            /**
+             * The unique ID of the download record.
+             */
+            id?: string;
+            /**
+             * The timestamp when the file record was created.
+             */
+            created_at?: string;
+            /**
+             * The time it took to process or download the file, in milliseconds.
+             */
+            duration?: number;
+            /**
+             * The URL to download the file from anchorbrowser servers. Requires api key
+             * authentication.
+             */
+            file_link?: string;
+            /**
+             * The original URL where the file was found.
+             */
+            origin_url?: string;
+            /**
+             * The URL used to download the file.
+             */
+            original_download_url?: string;
+            /**
+             * The original file name before any modification.
+             */
+            original_file_name?: string;
+            /**
+             * The size of the file in bytes.
+             */
+            size?: number;
+            /**
+             * The suggested file name for saving the file.
+             */
+            suggested_file_name?: string;
+        }
+    }
+}
+export interface SessionScrollResponse {
+    status?: string;
+}
+export interface SessionUploadFileResponse {
+    data?: SessionUploadFileResponse.Data;
+}
+export declare namespace SessionUploadFileResponse {
+    interface Data {
+        message?: string;
+        status?: string;
+    }
+}
+export interface SessionCreateParams {
+    /**
+     * Browser-specific configurations.
+     */
+    browser?: SessionCreateParams.Browser;
+    /**
+     * Activates an authenticated session.
+     */
+    identities?: Array<SessionCreateParams.Identity>;
+    /**
+     * Array of integrations to load in the browser session. Integrations must be
+     * previously created using the Integrations API.
+     */
+    integrations?: Array<SessionCreateParams.Integration>;
+    /**
+     * Session-related configurations.
+     */
+    session?: SessionCreateParams.Session;
+}
+export declare namespace SessionCreateParams {
+    /**
+     * Browser-specific configurations.
+     */
+    interface Browser {
+        /**
+         * Configuration for ad-blocking.
+         */
+        adblock?: Browser.Adblock;
+        /**
+         * Configuration for captcha-solving.
+         */
+        captcha_solver?: Browser.CaptchaSolver;
+        /**
+         * Configuration for cross-origin support.
+         */
+        cross_origin_support?: Browser.CrossOriginSupport;
+        /**
+         * Configuration for disabling web security features.
+         */
+        disable_web_security?: Browser.DisableWebSecurity;
+        /**
+         * Array of extension IDs to load in the browser session. Extensions must be
+         * previously uploaded using the Extensions API.
+         */
+        extensions?: Array<string>;
+        /**
+         * Configuration for extra stealth mode to enhance browser fingerprinting
+         * protection.
+         */
+        extra_stealth?: Browser.ExtraStealth;
+        /**
+         * Configuration for force popup as tabs.
+         */
+        force_popups_as_tabs?: Browser.ForcePopupsAsTabs;
+        /**
+         * Configuration for fullscreen mode.
+         */
+        fullscreen?: Browser.Fullscreen;
+        /**
+         * Configuration for headless mode.
+         */
+        headless?: Browser.Headless;
+        /**
+         * Configuration for peer-to-peer download capture functionality.
+         */
+        p2p_download?: Browser.P2pDownload;
+        /**
+         * Configuration for popup blocking.
+         */
+        popup_blocker?: Browser.PopupBlocker;
+        /**
+         * Options for managing and persisting browser session profiles.
+         */
+        profile?: Browser.Profile;
+        /**
+         * Automatically detects and masks sensitive data (passwords, emails, phone
+         * numbers, credit card fields, tokens) in web pages. Supports custom CSS selectors
+         * globally or per site, and custom regex patterns.
+         */
+        sensitive_data_mask?: Browser.SensitiveDataMask;
+        /**
+         * Configuration for the browser's viewport size.
+         */
+        viewport?: Browser.Viewport;
+    }
+    namespace Browser {
+        /**
+         * Configuration for ad-blocking.
+         */
+        interface Adblock {
+            /**
+             * Enable or disable ad-blocking. Defaults to `true`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Configuration for captcha-solving.
+         */
+        interface CaptchaSolver {
+            /**
+             * Enable or disable captcha-solving. Requires proxy to be active. Defaults to
+             * `false`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Configuration for cross-origin support.
+         */
+        interface CrossOriginSupport {
+            /**
+             * Whether to enable cross-origin support. Allows accessing iframes and resources
+             * from different origins. Defaults to `false`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Configuration for disabling web security features.
+         */
+        interface DisableWebSecurity {
+            /**
+             * Whether to disable web security features (CORS, same-origin policy, etc.).
+             * Allows accessing iframes and resources from different origins. Defaults to
+             * `false`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Configuration for extra stealth mode to enhance browser fingerprinting
+         * protection.
+         */
+        interface ExtraStealth {
+            /**
+             * Enable or disable extra stealth mode.
+             */
+            active?: boolean;
+        }
+        /**
+         * Configuration for force popup as tabs.
+         */
+        interface ForcePopupsAsTabs {
+            /**
+             * Enable or disable force popup as tabs.
+             */
+            active?: boolean;
+        }
+        /**
+         * Configuration for fullscreen mode.
+         */
+        interface Fullscreen {
+            /**
+             * Enable or disable fullscreen mode. When enabled, the browser will start in
+             * fullscreen mode. Defaults to `false`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Configuration for headless mode.
+         */
+        interface Headless {
+            /**
+             * Whether browser should be headless or headful. Defaults to `false`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Configuration for peer-to-peer download capture functionality.
+         */
+        interface P2pDownload {
+            /**
+             * Enable or disable P2P downloads. When enabled, the browser will capture
+             * downloads for direct data extraction, instead of uploading them on Anchor's
+             * storage. Defaults to `false`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Configuration for popup blocking.
+         */
+        interface PopupBlocker {
+            /**
+             * Blocks popups, including ads and CAPTCHA consent banners. Requires adblock to be
+             * active. Defaults to `true`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Options for managing and persisting browser session profiles.
+         */
+        interface Profile {
+            /**
+             * The name of the profile to be used during the browser session.
+             */
+            name?: string;
+            /**
+             * Indicates whether the browser session profile data should be saved when the
+             * browser session ends. Defaults to `false`.
+             */
+            persist?: boolean;
+        }
+        /**
+         * Automatically detects and masks sensitive data (passwords, emails, phone
+         * numbers, credit card fields, tokens) in web pages. Supports custom CSS selectors
+         * globally or per site, and custom regex patterns.
+         */
+        interface SensitiveDataMask {
+            /**
+             * Enable or disable sensitive data masking. Defaults to `false`.
+             */
+            active?: boolean;
+            /**
+             * Custom regex patterns to detect and mask additional sensitive data types.
+             */
+            custom_patterns?: Array<SensitiveDataMask.CustomPattern>;
+            /**
+             * Additional CSS selectors to mask globally across all sites. Matched elements
+             * will be blurred.
+             */
+            custom_selectors?: Array<string>;
+            /**
+             * Per-site CSS selectors. Keys are hostnames (supports wildcard prefix like
+             * `*.bank.com`), values are arrays of CSS selectors. Matched elements will be
+             * blurred.
+             */
+            site_selectors?: {
+                [key: string]: Array<string>;
+            };
+        }
+        namespace SensitiveDataMask {
+            interface CustomPattern {
+                /**
+                 * Replacement string for matched text. Defaults to `****`.
+                 */
+                mask?: string;
+                /**
+                 * Regular expression pattern to match sensitive data.
+                 */
+                regex?: string;
+            }
+        }
+        /**
+         * Configuration for the browser's viewport size.
+         */
+        interface Viewport {
+            /**
+             * Height of the viewport in pixels. Defaults to `900`.
+             */
+            height?: number;
+            /**
+             * Width of the viewport in pixels. Defaults to `1440`.
+             */
+            width?: number;
+        }
+    }
+    /**
+     * Previously configured identity to be used for the authenticated session.
+     */
+    interface Identity {
+        /**
+         * The identity ID to use for the browser session.
+         */
+        id?: string;
+    }
+    interface Integration {
+        /**
+         * Unique integration ID
+         */
+        id: string;
+        configuration: Integration.OnePasswordAllSecretsConfig | Integration.OnePasswordSpecificSecretsConfig;
+        /**
+         * Integration type
+         */
+        type: '1PASSWORD';
+    }
+    namespace Integration {
+        interface OnePasswordAllSecretsConfig {
+            /**
+             * Load all secrets from 1Password
+             */
+            load_mode: 'all';
+        }
+        interface OnePasswordSpecificSecretsConfig {
+            /**
+             * Load specific secrets from 1Password
+             */
+            load_mode: 'specific';
+            /**
+             * Array of secret references to load
+             */
+            secrets: Array<string>;
+        }
+    }
+    /**
+     * Session-related configurations.
+     */
+    interface Session {
+        /**
+         * The URL to navigate to when the browser session starts. If not provided, the
+         * browser will load an empty page.
+         */
+        initial_url?: string;
+        /**
+         * Configuration for live viewing the browser session.
+         */
+        live_view?: Session.LiveView;
+        /**
+         * Proxy Documentation available at [Proxy Documentation](/advanced/proxy)
+         */
+        proxy?: Session.AnchorProxy | Session.CustomProxy;
+        /**
+         * Configuration for session recording.
+         */
+        recording?: Session.Recording;
+        /**
+         * Timeout configurations for the browser session.
+         */
+        timeout?: Session.Timeout;
+        /**
+         * Tags for the browser session.
+         */
+        tags?: string[];
+    }
+    namespace Session {
+        /**
+         * Configuration for live viewing the browser session.
+         */
+        interface LiveView {
+            /**
+             * Enable or disable read-only mode for live viewing. Defaults to `false`.
+             */
+            read_only?: boolean;
+        }
+        interface AnchorProxy {
+            active: boolean;
+            /**
+             * City name for precise geographic targeting. Supported for anchor_proxy only. Can
+             * only be used when region is also provided.
+             */
+            city?: string;
+            /**
+             * Supported country codes ISO 2 lowercase
+             */
+            country_code?: 'af' | 'al' | 'dz' | 'ad' | 'ao' | 'as' | 'ag' | 'ar' | 'am' | 'aw' | 'au' | 'at' | 'az' | 'bs' | 'bh' | 'bb' | 'by' | 'be' | 'bz' | 'bj' | 'bm' | 'bo' | 'ba' | 'br' | 'bg' | 'bf' | 'cm' | 'ca' | 'cv' | 'td' | 'cl' | 'co' | 'cg' | 'cr' | 'ci' | 'hr' | 'cu' | 'cy' | 'cz' | 'dk' | 'dm' | 'do' | 'ec' | 'eg' | 'sv' | 'ee' | 'et' | 'fo' | 'fi' | 'fr' | 'gf' | 'pf' | 'ga' | 'gm' | 'ge' | 'de' | 'gh' | 'gi' | 'gr' | 'gd' | 'gp' | 'gt' | 'gg' | 'gn' | 'gw' | 'gy' | 'ht' | 'hn' | 'hu' | 'is' | 'in' | 'ir' | 'iq' | 'ie' | 'il' | 'it' | 'jm' | 'jp' | 'jo' | 'kz' | 'kw' | 'kg' | 'lv' | 'lb' | 'ly' | 'li' | 'lt' | 'lu' | 'mk' | 'ml' | 'mt' | 'mq' | 'mr' | 'mx' | 'md' | 'mc' | 'me' | 'ma' | 'nl' | 'nz' | 'ni' | 'ng' | 'no' | 'pk' | 'pa' | 'py' | 'pe' | 'ph' | 'pl' | 'pt' | 'pr' | 'qa' | 'ro' | 'lc' | 'sm' | 'sa' | 'sn' | 'rs' | 'sc' | 'sl' | 'sk' | 'si' | 'so' | 'za' | 'kr' | 'es' | 'sr' | 'se' | 'ch' | 'sy' | 'st' | 'tw' | 'tj' | 'tg' | 'tt' | 'tn' | 'tr' | 'tc' | 'ua' | 'ae' | 'us' | 'uy' | 'uz' | 've' | 'ye';
+            /**
+             * Region code for more specific geographic targeting. The city parameter can only
+             * be used when region is also provided.
+             */
+            region?: string;
+            /**
+             * Create a session with a proxy to access websites as if you're browsing from a
+             * computer in that country.
+             */
+            type?: 'anchor_proxy';
+        }
+        interface CustomProxy {
+            active: boolean;
+            /**
+             * Proxy password
+             */
+            password: string;
+            /**
+             * Proxy address in **PROTOCOL://HOST:PORT** format (e.g.,
+             * https://proxy.example.com:443). See [proxy page](/advanced/proxy#custom-proxy).
+             */
+            server: string;
+            type: 'custom';
+            /**
+             * Proxy username
+             */
+            username: string;
+        }
+        /**
+         * Configuration for session recording.
+         */
+        interface Recording {
+            /**
+             * Enable or disable video recording of the browser session. Defaults to `true`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Timeout configurations for the browser session.
+         */
+        interface Timeout {
+            /**
+             * The amount of time (in minutes) the browser session waits for new connections
+             * after all others are closed before stopping. Defaults to `5`.
+             */
+            idle_timeout?: number;
+            /**
+             * Maximum amount of time (in minutes) for the browser to run before terminating.
+             * Defaults to `20`.
+             */
+            max_duration?: number;
+        }
+        interface Tags {
+            /**
+             * Tags for the browser session.
+             */
+            tags?: string[];
+        }
+    }
+}
+export interface SessionDragAndDropParams {
+    /**
+     * Ending X coordinate
+     */
+    endX: number;
+    /**
+     * Ending Y coordinate
+     */
+    endY: number;
+    /**
+     * Starting X coordinate
+     */
+    startX: number;
+    /**
+     * Starting Y coordinate
+     */
+    startY: number;
+    /**
+     * Mouse button to use
+     */
+    button?: 'left' | 'middle' | 'right';
+}
+export interface SessionGotoParams {
+    /**
+     * The URL to navigate to
+     */
+    url: string;
+}
+export interface SessionScrollParams {
+    /**
+     * Vertical scroll amount (positive is down, negative is up)
+     */
+    deltaY: number;
+    /**
+     * X coordinate
+     */
+    x: number;
+    /**
+     * Y coordinate
+     */
+    y: number;
+    /**
+     * Horizontal scroll amount (positive is right, negative is left)
+     */
+    deltaX?: number;
+    /**
+     * Number of steps to break the scroll into for smoother scrolling
+     */
+    steps?: number;
+    /**
+     * Whether to use the OS scroll or the Playwright scroll
+     */
+    useOs?: boolean;
+}
+export interface SessionUploadFileParams {
+    /**
+     * File to upload to the browser session
+     */
+    file: Uploadable;
+}
+export declare namespace Sessions {
+    export { type SessionCreateResponse as SessionCreateResponse, type SessionRetrieveResponse as SessionRetrieveResponse, type SessionDragAndDropResponse as SessionDragAndDropResponse, type SessionGotoResponse as SessionGotoResponse, type SessionRetrieveDownloadsResponse as SessionRetrieveDownloadsResponse, type SessionScrollResponse as SessionScrollResponse, type SessionUploadFileResponse as SessionUploadFileResponse, type SessionCreateParams as SessionCreateParams, type SessionDragAndDropParams as SessionDragAndDropParams, type SessionGotoParams as SessionGotoParams, type SessionScrollParams as SessionScrollParams, type SessionUploadFileParams as SessionUploadFileParams, };
+    export { All as All, type AllStatusResponse as AllStatusResponse };
+    export { Recordings as Recordings, type RecordingListResponse as RecordingListResponse };
+    export { Mouse as Mouse, type MouseClickResponse as MouseClickResponse, type MouseDoubleClickResponse as MouseDoubleClickResponse, type MouseMoveResponse as MouseMoveResponse, type MouseClickParams as MouseClickParams, type MouseDoubleClickParams as MouseDoubleClickParams, type MouseMoveParams as MouseMoveParams, };
+    export { Keyboard as Keyboard, type KeyboardShortcutResponse as KeyboardShortcutResponse, type KeyboardTypeResponse as KeyboardTypeResponse, type KeyboardShortcutParams as KeyboardShortcutParams, type KeyboardTypeParams as KeyboardTypeParams, };
+    export { Clipboard as Clipboard, type ClipboardGetResponse as ClipboardGetResponse, type ClipboardSetResponse as ClipboardSetResponse, type ClipboardSetParams as ClipboardSetParams, };
+    export { Agent as Agent };
+}
+//# sourceMappingURL=sessions.d.ts.map
+// ===== resources/shared.d.ts =====
+export interface SuccessResponse {
+    data?: SuccessResponse.Data;
+}
+export declare namespace SuccessResponse {
+    interface Data {
+        status?: string;
+    }
+}
+//# sourceMappingURL=shared.d.ts.map
+// ===== resources/tasks.d.ts =====
+export * from "./tasks/index.js";
+//# sourceMappingURL=tasks.d.ts.map
+// ===== resources/tasks/generations.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class Generations extends APIResource {
+    /**
+     * Returns the current status of asynchronous task generation. Poll this endpoint
+     * after generating a task until status is ready or failed.
+     *
+     * @example
+     * ```ts
+     * const response = await client.tasks.generations.getStatus(
+     *   'taskId',
+     * );
+     * ```
+     */
+    getStatus(taskID: string, options?: RequestOptions): APIPromise<GenerationGetStatusResponse>;
+}
+/**
+ * Current status of asynchronous task generation.
+ */
+export interface GenerationGetStatusResponse {
+    /**
+     * The task ID
+     */
+    id: string;
+    /**
+     * Whether the task is still generating, ready to run, or failed.
+     */
+    status: 'generating' | 'ready' | 'failed';
+    /**
+     * Error message when status is failed
+     */
+    error?: string;
+    /**
+     * Optional internal project state
+     */
+    project_state?: string;
+}
+export declare namespace Generations {
+    export { type GenerationGetStatusResponse as GenerationGetStatusResponse };
+}
+//# sourceMappingURL=generations.d.ts.map
+// ===== resources/tasks/index.d.ts =====
+export { Generations, type GenerationGetStatusResponse } from "./generations.js";
+export { Runs, type RunGetStatusResponse } from "./runs.js";
+export { Tasks, type TaskGenerateResponse, type TaskRunResponse, type TaskGenerateParams, type TaskRunParams, } from "./tasks.js";
+//# sourceMappingURL=index.d.ts.map
+// ===== resources/tasks/runs.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class Runs extends APIResource {
+    /**
+     * Retrieves the current status and result of a task run in the V2 tasks API.
+     *
+     * @example
+     * ```ts
+     * const response = await client.tasks.runs.getStatus('runId');
+     * ```
+     */
+    getStatus(runID: string, options?: RequestOptions): APIPromise<RunGetStatusResponse>;
+}
+export interface RunGetStatusResponse {
+    /**
+     * The ID of the task run
+     */
+    run_id: string;
+    /**
+     * Current task run status
+     */
+    status: 'queued' | 'running' | 'success' | 'failure' | 'timeout' | 'cancelled';
+    /**
+     * Error message when the run fails
+     */
+    error?: string;
+    /**
+     * Task output when available
+     */
+    result?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Session ID used for this task run
+     */
+    session_id?: string;
+}
+export declare namespace Runs {
+    export { type RunGetStatusResponse as RunGetStatusResponse };
+}
+//# sourceMappingURL=runs.d.ts.map
+// ===== resources/tasks/tasks.d.ts =====
+import { APIResource } from "../../core/resource.js";
+import * as GenerationsAPI from "./generations.js";
+import { GenerationGetStatusResponse, Generations } from "./generations.js";
+import * as RunsAPI from "./runs.js";
+import { RunGetStatusResponse, Runs } from "./runs.js";
+import { APIPromise } from "../../core/api-promise.js";
+import { RequestOptions } from "../../internal/request-options.js";
+export declare class Tasks extends APIResource {
+    runs: RunsAPI.Runs;
+    generations: GenerationsAPI.Generations;
+    /**
+     * Initiates asynchronous task generation. Use the returned task ID to poll for
+     * completion, then execute the task.
+     *
+     * @example
+     * ```ts
+     * const response = await client.tasks.generate({
+     *   description: 'Download a specific file from a URL',
+     *   name: 'file-downloader',
+     *   user_task: 'Create a task that downloads a specific file from a given URL.',
+     *   input_schema: [
+     *     {
+     *       display_name: 'URL',
+     *       type: 'string',
+     *       required: true,
+     *       description: 'URL of the file to download',
+     *     },
+     *     {
+     *       display_name: 'File Name',
+     *       type: 'string',
+     *       required: true,
+     *       description: 'Name of the file to download',
+     *     },
+     *   ],
+     *   output_schema: [
+     *     {
+     *       display_name: 'Success',
+     *       type: 'boolean',
+     *       description: 'Whether the download succeeded',
+     *     },
+     *     {
+     *       display_name: 'Message',
+     *       type: 'string',
+     *       description: 'Status or error message',
+     *     },
+     *   ],
+     * });
+     * ```
+     */
+    generate(body: TaskGenerateParams, options?: RequestOptions): APIPromise<TaskGenerateResponse>;
+    /**
+     * Triggers execution of a task by ID using the V2 tasks API.
+     *
+     * @example
+     * ```ts
+     * const response = await client.tasks.run('taskId', {
+     *   input_params: {
+     *     'File Name': 'invoice-2026-02.pdf',
+     *     Operation: 'extract_text',
+     *   },
+     * });
+     * ```
+     */
+    run(taskID: string, body: TaskRunParams, options?: RequestOptions): APIPromise<TaskRunResponse>;
+}
+/**
+ * Response when task generation has been started (generation is asynchronous).
+ */
+export interface TaskGenerateResponse {
+    /**
+     * The ID of the created task (use with generation-status and run endpoints)
+     */
+    id: string;
+    /**
+     * Whether the task is still generating, ready to run, or failed.
+     */
+    status: 'generating';
+}
+export interface TaskRunResponse {
+    /**
+     * The ID of the task run
+     */
+    run_id: string;
+    /**
+     * Current task run status
+     */
+    status: 'queued' | 'running' | 'success' | 'failure' | 'timeout' | 'cancelled';
+    /**
+     * Error message when the run fails
+     */
+    error?: string;
+    /**
+     * Task output when available
+     */
+    result?: {
+        [key: string]: unknown;
+    };
+    /**
+     * Session ID used for this task run
+     */
+    session_id?: string;
+}
+export interface TaskGenerateParams {
+    /**
+     * Description of the task
+     */
+    description: string;
+    /**
+     * Name of the task
+     */
+    name: string;
+    /**
+     * Natural language description of what the task should do (used for AI generation)
+     */
+    user_task: string;
+    /**
+     * Optional application (connection) ID to associate with the task
+     */
+    application_id?: string;
+    /**
+     * Optional list of input parameters for the task. Defaults to empty array.
+     */
+    input_schema?: Array<TaskGenerateParams.InputSchema>;
+    /**
+     * Optional list of output parameters for the task. Defaults to empty array.
+     */
+    output_schema?: Array<TaskGenerateParams.OutputSchema>;
+    /**
+     * Optional default browser/session configuration when running this task
+     */
+    task_browser_default_configuration?: TaskGenerateParams.TaskBrowserDefaultConfiguration;
+}
+export declare namespace TaskGenerateParams {
+    /**
+     * A single input or output parameter for a generated task.
+     */
+    interface InputSchema {
+        /**
+         * Human-readable name for the parameter
+         */
+        display_name: string;
+        /**
+         * Data type of the parameter
+         */
+        type: 'string' | 'number' | 'boolean' | 'date';
+        /**
+         * Optional default value as a string
+         */
+        default_value?: string;
+        /**
+         * Optional description of the parameter
+         */
+        description?: string;
+        /**
+         * Whether the parameter is required
+         */
+        required?: boolean;
+    }
+    /**
+     * A single input or output parameter for a generated task.
+     */
+    interface OutputSchema {
+        /**
+         * Human-readable name for the parameter
+         */
+        display_name: string;
+        /**
+         * Data type of the parameter
+         */
+        type: 'string' | 'number' | 'boolean' | 'date';
+        /**
+         * Optional default value as a string
+         */
+        default_value?: string;
+        /**
+         * Optional description of the parameter
+         */
+        description?: string;
+        /**
+         * Whether the parameter is required
+         */
+        required?: boolean;
+    }
+    /**
+     * Optional default browser/session configuration when running this task
+     */
+    interface TaskBrowserDefaultConfiguration {
+        /**
+         * The URL to navigate to when the browser session starts. If not provided, the
+         * browser will load an empty page.
+         */
+        initial_url?: string;
+        /**
+         * Configuration for live viewing the browser session.
+         */
+        live_view?: TaskBrowserDefaultConfiguration.LiveView;
+        /**
+         * Proxy Documentation available at [Proxy Documentation](/advanced/proxy)
+         */
+        proxy?: TaskBrowserDefaultConfiguration.AnchorProxy | TaskBrowserDefaultConfiguration.CustomProxy;
+        /**
+         * Configuration for session recording.
+         */
+        recording?: TaskBrowserDefaultConfiguration.Recording;
+        /**
+         * Timeout configurations for the browser session.
+         */
+        timeout?: TaskBrowserDefaultConfiguration.Timeout;
+    }
+    namespace TaskBrowserDefaultConfiguration {
+        /**
+         * Configuration for live viewing the browser session.
+         */
+        interface LiveView {
+            /**
+             * Enable or disable read-only mode for live viewing. Defaults to `false`.
+             */
+            read_only?: boolean;
+        }
+        interface AnchorProxy {
+            active: boolean;
+            /**
+             * City name for precise geographic targeting. Supported for anchor_proxy only. Can
+             * only be used when region is also provided.
+             */
+            city?: string;
+            /**
+             * Supported country codes ISO 2 lowercase
+             */
+            country_code?: 'af' | 'al' | 'dz' | 'ad' | 'ao' | 'as' | 'ag' | 'ar' | 'am' | 'aw' | 'au' | 'at' | 'az' | 'bs' | 'bh' | 'bb' | 'by' | 'be' | 'bz' | 'bj' | 'bm' | 'bo' | 'ba' | 'br' | 'bg' | 'bf' | 'cm' | 'ca' | 'cv' | 'td' | 'cl' | 'co' | 'cg' | 'cr' | 'ci' | 'hr' | 'cu' | 'cy' | 'cz' | 'dk' | 'dm' | 'do' | 'ec' | 'eg' | 'sv' | 'ee' | 'et' | 'fo' | 'fi' | 'fr' | 'gf' | 'pf' | 'ga' | 'gm' | 'ge' | 'de' | 'gh' | 'gi' | 'gr' | 'gd' | 'gp' | 'gt' | 'gg' | 'gn' | 'gw' | 'gy' | 'ht' | 'hn' | 'hu' | 'is' | 'in' | 'ir' | 'iq' | 'ie' | 'il' | 'it' | 'jm' | 'jp' | 'jo' | 'kz' | 'kw' | 'kg' | 'lv' | 'lb' | 'ly' | 'li' | 'lt' | 'lu' | 'mk' | 'ml' | 'mt' | 'mq' | 'mr' | 'mx' | 'md' | 'mc' | 'me' | 'ma' | 'nl' | 'nz' | 'ni' | 'ng' | 'no' | 'pk' | 'pa' | 'py' | 'pe' | 'ph' | 'pl' | 'pt' | 'pr' | 'qa' | 'ro' | 'lc' | 'sm' | 'sa' | 'sn' | 'rs' | 'sc' | 'sl' | 'sk' | 'si' | 'so' | 'za' | 'kr' | 'es' | 'sr' | 'se' | 'ch' | 'sy' | 'st' | 'tw' | 'tj' | 'tg' | 'tt' | 'tn' | 'tr' | 'tc' | 'ua' | 'ae' | 'us' | 'uy' | 'uz' | 've' | 'ye';
+            /**
+             * Region code for more specific geographic targeting. The city parameter can only
+             * be used when region is also provided.
+             */
+            region?: string;
+            /**
+             * Create a session with a proxy to access websites as if you're browsing from a
+             * computer in that country.
+             */
+            type?: 'anchor_proxy';
+        }
+        interface CustomProxy {
+            active: boolean;
+            /**
+             * Proxy password
+             */
+            password: string;
+            /**
+             * Proxy address in **PROTOCOL://HOST:PORT** format (e.g.,
+             * https://proxy.example.com:443). See [proxy page](/advanced/proxy#custom-proxy).
+             */
+            server: string;
+            type: 'custom';
+            /**
+             * Proxy username
+             */
+            username: string;
+        }
+        /**
+         * Configuration for session recording.
+         */
+        interface Recording {
+            /**
+             * Enable or disable video recording of the browser session. Defaults to `true`.
+             */
+            active?: boolean;
+        }
+        /**
+         * Timeout configurations for the browser session.
+         */
+        interface Timeout {
+            /**
+             * The amount of time (in minutes) the browser session waits for new connections
+             * after all others are closed before stopping. Defaults to `5`.
+             */
+            idle_timeout?: number;
+            /**
+             * Maximum amount of time (in minutes) for the browser to run before terminating.
+             * Defaults to `20`.
+             */
+            max_duration?: number;
+        }
+    }
+}
+export interface TaskRunParams {
+    /**
+     * Key-value pairs of input parameters for the task
+     */
+    input_params: {
+        [key: string]: string;
+    };
+    /**
+     * Whether to clean up sessions after execution (default: true)
+     */
+    cleanup_sessions?: boolean;
+    /**
+     * Optional identity ID to use for the task
+     */
+    identity_id?: string;
+    /**
+     * Optional session ID to run the task in
+     */
+    session_id?: string;
+}
+export declare namespace Tasks {
+    export { type TaskGenerateResponse as TaskGenerateResponse, type TaskRunResponse as TaskRunResponse, type TaskGenerateParams as TaskGenerateParams, type TaskRunParams as TaskRunParams, };
+    export { Runs as Runs, type RunGetStatusResponse as RunGetStatusResponse };
+    export { Generations as Generations, type GenerationGetStatusResponse as GenerationGetStatusResponse };
+}
+//# sourceMappingURL=tasks.d.ts.map
+// ===== resources/tools.d.ts =====
+import { APIResource } from "../core/resource.js";
+import { APIPromise } from "../core/api-promise.js";
+import { RequestOptions } from "../internal/request-options.js";
+export declare class Tools extends APIResource {
+    /**
+     * Retrieve the rendered content of a webpage, optionally formatted as Markdown or
+     * HTML.
+     */
+    fetchWebpage(params: ToolFetchWebpageParams, options?: RequestOptions): APIPromise<string>;
+    /**
+     * Get the status of an asynchronous perform-web-task execution by workflow ID.
+     */
+    getPerformWebTaskStatus(workflowID: string, options?: RequestOptions): APIPromise<ToolGetPerformWebTaskStatusResponse>;
+    /**
+     * Start from a URL and perform the given task.
+     */
+    performWebTask(params: ToolPerformWebTaskParams, options?: RequestOptions): APIPromise<ToolPerformWebTaskResponse>;
+    /**
+     * This endpoint captures a screenshot of the specified webpage using Chromium.
+     * Users can customize the viewport dimensions and capture options.
+     */
+    screenshotWebpage(params: ToolScreenshotWebpageParams, options?: RequestOptions): APIPromise<Response>;
+}
+/**
+ * The rendered content of the webpage.
+ */
+export type ToolFetchWebpageResponse = string;
+export interface ToolGetPerformWebTaskStatusResponse {
+    data: ToolGetPerformWebTaskStatusResponse.PerformWebTaskStatusSuccessResponseData | ToolGetPerformWebTaskStatusResponse.PerformWebTaskStatusRunningResponseData | ToolGetPerformWebTaskStatusResponse.PerformWebTaskStatusFailedResponseData;
+}
+export declare namespace ToolGetPerformWebTaskStatusResponse {
+    interface PerformWebTaskStatusSuccessResponseData {
+        /**
+         * The outcome or answer produced by the autonomous task.
+         */
+        result: unknown;
+        /**
+         * The workflow has completed successfully.
+         */
+        status: 'COMPLETED';
+    }
+    interface PerformWebTaskStatusRunningResponseData {
+        /**
+         * The workflow is currently running.
+         */
+        status: 'RUNNING';
+    }
+    interface PerformWebTaskStatusFailedResponseData {
+        /**
+         * Error message describing why the workflow failed.
+         */
+        error: string;
+        /**
+         * The workflow has failed.
+         */
+        status: 'FAILED';
+    }
+}
+export interface ToolPerformWebTaskResponse {
+    data: ToolPerformWebTaskResponse.Data;
+}
+export declare namespace ToolPerformWebTaskResponse {
+    interface Data {
+        /**
+         * The outcome or answer produced by the autonomous task.
+         */
+        result: Record<string, unknown>;
+    }
+}
+export interface ToolFetchWebpageParams {
+    /**
+     * Query param: An optional browser session identifier to reference an existing
+     * running browser session. If provided, the tool will execute within that browser
+     * session.
+     */
+    sessionId?: string;
+    /**
+     * Body param: The output format of the content.
+     */
+    format?: 'html' | 'markdown';
+    /**
+     * Body param: Whether to create a new page for the content.
+     */
+    new_page?: boolean;
+    /**
+     * Body param: The index of the page to fetch content from. **Overides new_page**.
+     */
+    page_index?: number;
+    /**
+     * Body param: Whether to return partial content if the content is not loaded
+     * within the 20 seconds.
+     */
+    return_partial_on_timeout?: boolean;
+    /**
+     * Body param: The URL of the webpage to fetch content from. When left empty, the
+     * current webpage is used.
+     */
+    url?: string;
+    /**
+     * Body param: The time to wait for **dynamic** content to load in
+     * **milliseconds**.
+     */
+    wait?: number;
+}
+export interface ToolPerformWebTaskParams {
+    /**
+     * Body param: The task to be autonomously completed.
+     */
+    prompt: string;
+    /**
+     * Query param: An optional browser session identifier to reference an existing
+     * running browser sessions. When passed, the tool will be executed on the provided
+     * browser session.
+     */
+    sessionId?: string;
+    /**
+     * Body param: The AI agent to use for task completion. Defaults to browser-use.
+     */
+    agent?: 'browser-use' | 'openai-cua' | 'yutori';
+    /**
+     * Body param: Enable element detection for better interaction accuracy. Improves
+     * the agent's ability to identify and interact with UI elements.
+     */
+    detect_elements?: boolean;
+    /**
+     * Body param: Whether to highlight elements during task execution for better
+     * visibility.
+     */
+    highlight_elements?: boolean;
+    /**
+     * Body param: Allow human intervention during task execution. When enabled, the
+     * agent can request human input for ambiguous situations.
+     */
+    human_intervention?: boolean;
+    /**
+     * Body param: Maximum number of steps the agent can take to complete the task.
+     * Defaults to 200.
+     */
+    max_steps?: number;
+    /**
+     * Body param: The specific model to use for task completion. see our
+     * [models](/agentic-browser-control/ai-task-completion#available-models) page for
+     * more information.
+     */
+    model?: string;
+    /**
+     * Body param: JSON Schema defining the expected structure of the output data.
+     */
+    output_schema?: unknown;
+    /**
+     * Body param: The AI provider to use for task completion.
+     */
+    provider?: 'openai' | 'gemini' | 'groq' | 'azure' | 'xai';
+    /**
+     * Body param: Secret values to pass to the agent for secure credential handling.
+     * Keys and values are passed as environment variables to the agent.
+     */
+    secret_values?: {
+        [key: string]: string;
+    };
+    /**
+     * Body param: The URL of the webpage. If not provided, the tool will use the
+     * current page in the session.
+     */
+    url?: string;
+    /**
+     * Body param: If true, the tool will directly open the URL in the browser.
+     */
+    directlyOpenUrl?: boolean;
+}
+export interface ToolScreenshotWebpageParams {
+    /**
+     * Query param: An optional browser session identifier to reference an existing
+     * running browser sessions. When passed, the tool will be executed on the provided
+     * browser session.
+     */
+    sessionId?: string;
+    /**
+     * Body param: If true, captures the entire height of the page, ignoring the
+     * viewport height.
+     */
+    capture_full_height?: boolean;
+    /**
+     * Body param: The height of the browser viewport in pixels.
+     */
+    height?: number;
+    /**
+     * Body param: Quality of the output image, on the range 1-100. 100 will not
+     * perform any compression.
+     */
+    image_quality?: number;
+    /**
+     * Body param: Presigned S3 url target to upload the image to.
+     */
+    s3_target_address?: string;
+    /**
+     * Body param: If true, scrolls the page and captures all visible content.
+     */
+    scroll_all_content?: boolean;
+    /**
+     * Body param: The URL of the webpage to capture.
+     */
+    url?: string;
+    /**
+     * Body param: Duration in milliseconds to wait after page has loaded, mainly used
+     * for sites with JS animations.
+     */
+    wait?: number;
+    /**
+     * Body param: The width of the browser viewport in pixels.
+     */
+    width?: number;
+}
+export declare namespace Tools {
+    export { type ToolFetchWebpageResponse as ToolFetchWebpageResponse, type ToolGetPerformWebTaskStatusResponse as ToolGetPerformWebTaskStatusResponse, type ToolPerformWebTaskResponse as ToolPerformWebTaskResponse, type ToolFetchWebpageParams as ToolFetchWebpageParams, type ToolPerformWebTaskParams as ToolPerformWebTaskParams, type ToolScreenshotWebpageParams as ToolScreenshotWebpageParams, };
+}
+//# sourceMappingURL=tools.d.ts.map
+// ===== uploads.d.ts =====
+export * from "./core/uploads.js";
+//# sourceMappingURL=uploads.d.ts.map
+// ===== version.d.ts =====
+export declare const VERSION = "<version>";
+//# sourceMappingURL=version.d.ts.map
