@@ -243,6 +243,12 @@ export namespace TaskGenerateParams {
      * Timeout configurations for the browser session.
      */
     timeout?: TaskBrowserDefaultConfiguration.Timeout;
+
+    /**
+     * Allow this browser session to automatically pay x402-protected resources using
+     * Amazon Bedrock AgentCore Payments.
+     */
+    x402?: boolean;
   }
 
   export namespace TaskBrowserDefaultConfiguration {

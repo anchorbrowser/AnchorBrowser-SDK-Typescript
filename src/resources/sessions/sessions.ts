@@ -742,6 +742,12 @@ export namespace SessionCreateParams {
      * Timeout configurations for the browser session.
      */
     timeout?: Session.Timeout;
+
+    /**
+     * Allow this browser session to automatically pay x402-protected resources using
+     * Amazon Bedrock AgentCore Payments.
+     */
+    x402?: boolean;
   }
 
   export namespace Session {

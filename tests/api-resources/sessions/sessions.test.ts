@@ -66,6 +66,7 @@ describe('resource sessions', () => {
             },
             recording: { active: true },
             timeout: { idle_timeout: 0, max_duration: 0 },
+            x402: true,
           },
         },
         { path: '/_stainless_unknown_path' },
