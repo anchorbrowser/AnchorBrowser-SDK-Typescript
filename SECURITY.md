@@ -5,7 +5,7 @@
 Anchorbrowser takes security seriously, and encourages you to report any security
 vulnerability promptly so that appropriate action can be taken.
 
-To report a security issue in this SDK, please contact security@anchorbrowser.io.
+To report a security issue in this SDK, please contact support@anchorbrowser.io.
 
 ## Responsible Disclosure
 

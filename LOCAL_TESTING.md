@@ -69,21 +69,6 @@ yarn link anchorbrowser
 Note: linking points at the repo root, not the built `dist/` — run
 `yarn build` after changes, and prefer Option A for release validation.
 
-## Testing against a real environment
-
-The client reads `ANCHORBROWSER_API_KEY` from the environment; pass
-`baseURL` to target something other than production:
-
-```ts
-import { client } from 'anchorbrowser';
-
-client.setConfig({ baseUrl: 'https://api.dev.anchorbrowser.io' }); // staging
-```
-
-The monorepo's `scripts/` sanity scripts (e.g. `sanity_simple_session.js`)
-are a good end-to-end smoke suite: install the tarball there and run them
-against staging.
-
 ## Updating baselines intentionally
 
 When you _intend_ to change the public surface or wire behavior (e.g. adding

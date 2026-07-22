@@ -4,7 +4,7 @@
 
 This library provides convenient access to the Anchorbrowser REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.anchorbrowser.io](https://docs.anchorbrowser.io). The SDK is generated directly from the public OpenAPI specification — every documented endpoint is available as a typed method.
+The REST API documentation can be found on [docs.anchorbrowser.io](https://docs.anchorbrowser.io/api-reference). The SDK is generated directly from the public OpenAPI specification — every documented endpoint is available as a typed method.
 
 ## Installation
 
@@ -22,9 +22,9 @@ import { client, Sessions } from 'anchorbrowser';
 client.setConfig({ auth: () => 'your-api-key' });
 
 const session = await Sessions.createSession({
-  body: { session: { recording: { active: false } } },
+  body: { session: { recording: { active: true } } },
 });
-console.log(session.data?.id);
+console.log(session.data.id);
 ```
 
 Every resource is a class of static methods, one per API operation:

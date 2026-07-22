@@ -9,33 +9,10 @@ $ yarn build
 
 ## How this SDK is built
 
-The SDK is **fully generated** from the public OpenAPI spec:
-
-```
-spec/openapi.yaml          verbatim copy of the monorepo's docs/openapi.yaml (the source of truth)
-spec/sdk-manifest.yaml     operation -> Class.method naming map
-spec/openapi-sdk.yaml      generated: openapi.yaml + naming injected (operationId/tags)
-src/generated/             generated: resource classes, types, HTTP client — never edit
-src/hey-api.ts             hand-written: runtime defaults (baseUrl, env auth, throwOnError)
-src/lib/                   hand-written: Playwright + AI-agent helpers
-src/index.ts               hand-written: public entry point
-```
+The SDK is **fully generated** from the public OpenAPI spec.
 
 `yarn generate` runs the whole chain: `prepare-spec.cjs` → `@hey-api/openapi-ts` → prettier.
 
-### Changing the API surface
-
-1. Change `docs/openapi.yaml` in the anchorbrowser monorepo — that's the source of truth.
-   The spec-sync pipeline copies it here and opens a regeneration PR automatically
-   (or copy it to `spec/openapi.yaml` manually for local work).
-2. Add a naming entry for any new operation in `spec/sdk-manifest.yaml`
-   (`"post /v1/foo": { class: Foo, method: createFoo }`). Without one, the
-   operation still generates with a deterministic auto-derived name — CI's
-   coverage test fails until the naming is made explicit.
-3. Run `yarn generate`.
-4. Run `yarn build && yarn api:update` and `yarn test tests/parity -u` to refresh
-   the baselines — their diffs are the reviewable record of the surface change.
-5. `yarn lint && yarn test`.
 
 ## Running tests & checks
 
