@@ -20,6 +20,8 @@ export * from './generated';
 // The shared, configurable HTTP client (auth, baseUrl, interceptors, ...)
 export { client } from './generated/client.gen';
 export type { CreateClientConfig } from './generated/client.gen';
+export { createClientConfig } from './hey-api';
+export { VERSION } from './version';
 export { createClient, createConfig } from './generated/client';
 export type { Client, Config, ClientOptions as ClientConfigOptions } from './generated/client';
 

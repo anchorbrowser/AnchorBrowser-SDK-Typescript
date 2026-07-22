@@ -13,7 +13,6 @@ The SDK is **fully generated** from the public OpenAPI spec.
 
 `yarn generate` runs the whole chain: `prepare-spec.cjs` → `@hey-api/openapi-ts` → prettier.
 
-
 ## Running tests & checks
 
 ```sh

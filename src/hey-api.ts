@@ -1,4 +1,5 @@
 import type { CreateClientConfig } from './generated/client.gen';
+import { VERSION } from './version';
 
 /**
  * Default runtime configuration for the generated client.
@@ -13,4 +14,9 @@ export const createClientConfig: CreateClientConfig = (config) => ({
   auth: () => (globalThis as any).process?.env?.['ANCHORBROWSER_API_KEY'],
   throwOnError: true,
   ...config,
+  headers: {
+    'User-Agent': `Anchorbrowser/JS ${VERSION}`,
+    'X-Anchor-Sdk': `typescript/${VERSION}`,
+    ...(config?.headers as Record<string, unknown> | undefined),
+  },
 });

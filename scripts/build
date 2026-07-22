@@ -4,6 +4,8 @@ set -exuo pipefail
 
 cd "$(dirname "$0")/.."
 
+node scripts/utils/sync-version.cjs
+
 # Bundle CJS + ESM + type declarations into dist/ (published via package.json "files")
 ./node_modules/.bin/tsup
 

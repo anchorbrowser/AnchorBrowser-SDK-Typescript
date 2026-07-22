@@ -9,6 +9,7 @@ exports[`wire parity Agent.getRequestedHumanIntervention: Agent.getRequestedHuma
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -29,6 +30,7 @@ exports[`wire parity Agent.listAgentFiles: Agent.listAgentFiles 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -49,6 +51,7 @@ exports[`wire parity Agent.listPendingInterventions: Agent.listPendingInterventi
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -69,6 +72,7 @@ exports[`wire parity Agent.pauseAgent: Agent.pauseAgent 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -92,6 +96,7 @@ exports[`wire parity Agent.respondToHumanIntervention: Agent.respondToHumanInter
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -113,6 +118,7 @@ exports[`wire parity Agent.resumeAgent: Agent.resumeAgent 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -140,6 +146,7 @@ Example data
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -164,6 +171,7 @@ exports[`wire parity Applications.createApplication: Applications.createApplicat
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -191,6 +199,7 @@ exports[`wire parity Applications.createAuthFlow: Applications.createAuthFlow 1`
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -215,6 +224,7 @@ exports[`wire parity Applications.createIdentityToken: Applications.createIdenti
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -236,6 +246,7 @@ exports[`wire parity Applications.deleteApplication: Applications.deleteApplicat
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -256,6 +267,7 @@ exports[`wire parity Applications.deleteAuthFlow: Applications.deleteAuthFlow 1`
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -276,6 +288,7 @@ exports[`wire parity Applications.getApplication: Applications.getApplication 1`
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -296,6 +309,7 @@ exports[`wire parity Applications.listApplicationIdentities: Applications.listAp
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -316,6 +330,7 @@ exports[`wire parity Applications.listApplications: Applications.listApplication
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -336,6 +351,7 @@ exports[`wire parity Applications.listAuthFlows: Applications.listAuthFlows 1`] 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -357,6 +373,7 @@ exports[`wire parity Applications.updateAuthFlow: Applications.updateAuthFlow 1`
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -381,6 +398,7 @@ exports[`wire parity BatchSessions.createBatchSession: BatchSessions.createBatch
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -402,6 +420,7 @@ exports[`wire parity BatchSessions.deleteBatchSession: BatchSessions.deleteBatch
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -422,6 +441,7 @@ exports[`wire parity BatchSessions.getBatchSession: BatchSessions.getBatchSessio
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -442,6 +462,7 @@ exports[`wire parity BatchSessions.listBatchSessions: BatchSessions.listBatchSes
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -463,6 +484,7 @@ exports[`wire parity BatchSessions.retryBatchSession: BatchSessions.retryBatchSe
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -487,6 +509,7 @@ exports[`wire parity BatchSessions.updateBatchSession: BatchSessions.updateBatch
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -508,6 +531,7 @@ exports[`wire parity Billing.getBilling: Billing.getBilling 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -539,6 +563,7 @@ Example data
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -560,6 +585,7 @@ exports[`wire parity Certificates.deleteCertificate: Certificates.deleteCertific
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -580,6 +606,7 @@ exports[`wire parity Certificates.listCertificates: Certificates.listCertificate
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -607,6 +634,7 @@ exports[`wire parity Events.signalEvent: Events.signalEvent 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -628,6 +656,7 @@ exports[`wire parity Events.waitForEvent: Events.waitForEvent 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -648,6 +677,7 @@ exports[`wire parity Extensions.deleteExtension: Extensions.deleteExtension 1`] 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -668,6 +698,7 @@ exports[`wire parity Extensions.getExtension: Extensions.getExtension 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -688,6 +719,7 @@ exports[`wire parity Extensions.listExtensions: Extensions.listExtensions 1`] = 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -719,6 +751,7 @@ Example data
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -743,6 +776,7 @@ exports[`wire parity Identities.createIdentity: Identities.createIdentity 1`] = 
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -764,6 +798,7 @@ exports[`wire parity Identities.deleteIdentity: Identities.deleteIdentity 1`] = 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -784,6 +819,7 @@ exports[`wire parity Identities.getIdentity: Identities.getIdentity 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -805,6 +841,7 @@ exports[`wire parity Identities.updateIdentity: Identities.updateIdentity 1`] = 
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -836,6 +873,7 @@ exports[`wire parity Integrations.createIntegration: Integrations.createIntegrat
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -857,6 +895,7 @@ exports[`wire parity Integrations.deleteIntegration: Integrations.deleteIntegrat
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -877,6 +916,7 @@ exports[`wire parity Integrations.listIntegrations: Integrations.listIntegration
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -900,6 +940,7 @@ exports[`wire parity Profiles.createProfile: Profiles.createProfile 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -921,6 +962,7 @@ exports[`wire parity Profiles.deleteProfile: Profiles.deleteProfile 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -941,6 +983,7 @@ exports[`wire parity Profiles.getProfile: Profiles.getProfile 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -961,6 +1004,7 @@ exports[`wire parity Profiles.listProfiles: Profiles.listProfiles 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -981,6 +1025,7 @@ exports[`wire parity Recordings.deleteRecording: Recordings.deleteRecording 1`] 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1001,6 +1046,7 @@ exports[`wire parity Recordings.fetchPrimaryRecording: Recordings.fetchPrimaryRe
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1021,6 +1067,7 @@ exports[`wire parity Recordings.listRecordings: Recordings.listRecordings 1`] = 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1041,6 +1088,7 @@ exports[`wire parity Recordings.pauseRecording: Recordings.pauseRecording 1`] = 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1061,6 +1109,7 @@ exports[`wire parity Recordings.resumeRecording: Recordings.resumeRecording 1`] 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1081,6 +1130,7 @@ exports[`wire parity Sessions.copy: Sessions.copy 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1101,6 +1151,7 @@ exports[`wire parity Sessions.createSession: Sessions.createSession 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1121,6 +1172,7 @@ exports[`wire parity Sessions.createSessionAsync: Sessions.createSessionAsync 1`
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1141,6 +1193,7 @@ exports[`wire parity Sessions.deleteAllSessions: Sessions.deleteAllSessions 1`] 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1161,6 +1214,7 @@ exports[`wire parity Sessions.deleteSession: Sessions.deleteSession 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1187,6 +1241,7 @@ exports[`wire parity Sessions.dragAndDrop: Sessions.dragAndDrop 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1208,6 +1263,7 @@ exports[`wire parity Sessions.getAllSessionsStatus: Sessions.getAllSessionsStatu
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1228,6 +1284,7 @@ exports[`wire parity Sessions.getAsyncSessionStatus: Sessions.getAsyncSessionSta
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1248,6 +1305,7 @@ exports[`wire parity Sessions.getClipboard: Sessions.getClipboard 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1268,6 +1326,7 @@ exports[`wire parity Sessions.getSession: Sessions.getSession 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1288,6 +1347,7 @@ exports[`wire parity Sessions.getSessionDownloads: Sessions.getSessionDownloads 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1308,6 +1368,7 @@ exports[`wire parity Sessions.getSessionPages: Sessions.getSessionPages 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1328,6 +1389,7 @@ exports[`wire parity Sessions.getSessionScreenshot: Sessions.getSessionScreensho
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1348,6 +1410,7 @@ exports[`wire parity Sessions.getSessionsHistory: Sessions.getSessionsHistory 1`
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1371,6 +1434,7 @@ exports[`wire parity Sessions.goto: Sessions.goto 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1397,6 +1461,7 @@ exports[`wire parity Sessions.keyboardShortcut: Sessions.keyboardShortcut 1`] = 
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1421,6 +1486,7 @@ exports[`wire parity Sessions.keyboardType: Sessions.keyboardType 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1442,6 +1508,7 @@ exports[`wire parity Sessions.listSessions: Sessions.listSessions 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1463,6 +1530,7 @@ exports[`wire parity Sessions.mouseClick: Sessions.mouseClick 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1488,6 +1556,7 @@ exports[`wire parity Sessions.mouseDoubleClick: Sessions.mouseDoubleClick 1`] = 
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1513,6 +1582,7 @@ exports[`wire parity Sessions.mouseDown: Sessions.mouseDown 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1538,6 +1608,7 @@ exports[`wire parity Sessions.mouseMove: Sessions.mouseMove 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1563,6 +1634,7 @@ exports[`wire parity Sessions.mouseUp: Sessions.mouseUp 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1587,6 +1659,7 @@ exports[`wire parity Sessions.paste: Sessions.paste 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1613,6 +1686,7 @@ exports[`wire parity Sessions.scroll: Sessions.scroll 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1637,6 +1711,7 @@ exports[`wire parity Sessions.setClipboard: Sessions.setClipboard 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1665,6 +1740,7 @@ Example data
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1686,6 +1762,7 @@ exports[`wire parity Tasks.getTaskRunStatus: Tasks.getTaskRunStatus 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1709,6 +1786,7 @@ exports[`wire parity Tasks.runTask: Tasks.runTask 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1734,6 +1812,7 @@ exports[`wire parity TasksLegacy.createTask: TasksLegacy.createTask 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1755,6 +1834,7 @@ exports[`wire parity TasksLegacy.deleteTask: TasksLegacy.deleteTask 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1775,6 +1855,7 @@ exports[`wire parity TasksLegacy.deleteTaskVersion: TasksLegacy.deleteTaskVersio
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1796,6 +1877,7 @@ exports[`wire parity TasksLegacy.deployTask: TasksLegacy.deployTask 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1817,6 +1899,7 @@ exports[`wire parity TasksLegacy.getLatestTaskVersion: TasksLegacy.getLatestTask
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1837,6 +1920,7 @@ exports[`wire parity TasksLegacy.getTask: TasksLegacy.getTask 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1857,6 +1941,7 @@ exports[`wire parity TasksLegacy.getTaskDraft: TasksLegacy.getTaskDraft 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1877,6 +1962,7 @@ exports[`wire parity TasksLegacy.getTaskExecution: TasksLegacy.getTaskExecution 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1897,6 +1983,7 @@ exports[`wire parity TasksLegacy.getTaskVersion: TasksLegacy.getTaskVersion 1`] 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1917,6 +2004,7 @@ exports[`wire parity TasksLegacy.listTaskExecutions: TasksLegacy.listTaskExecuti
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1937,6 +2025,7 @@ exports[`wire parity TasksLegacy.listTaskVersions: TasksLegacy.listTaskVersions 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1957,6 +2046,7 @@ exports[`wire parity TasksLegacy.listTasks: TasksLegacy.listTasks 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -1978,6 +2068,7 @@ exports[`wire parity TasksLegacy.publishTaskVersion: TasksLegacy.publishTaskVers
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2002,6 +2093,7 @@ exports[`wire parity TasksLegacy.runAdhocTask: TasksLegacy.runAdhocTask 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2024,6 +2116,7 @@ exports[`wire parity TasksLegacy.runTaskByName: TasksLegacy.runTaskByName 1`] = 
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2048,6 +2141,7 @@ exports[`wire parity TasksLegacy.saveTaskDraft: TasksLegacy.saveTaskDraft 1`] = 
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2070,6 +2164,7 @@ exports[`wire parity TasksLegacy.updateTask: TasksLegacy.updateTask 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2094,6 +2189,7 @@ exports[`wire parity Tools.createPagePdf: Tools.createPagePdf 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2118,6 +2214,7 @@ exports[`wire parity Tools.executeCode: Tools.executeCode 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2144,6 +2241,7 @@ exports[`wire parity Tools.fetchWebpage: Tools.fetchWebpage 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2165,6 +2263,7 @@ exports[`wire parity Tools.getPerformWebTaskStatus: Tools.getPerformWebTaskStatu
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2188,6 +2287,7 @@ exports[`wire parity Tools.performWebTask: Tools.performWebTask 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2210,6 +2310,7 @@ exports[`wire parity Tools.screenshotWebpage: Tools.screenshotWebpage 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2237,6 +2338,7 @@ exports[`wire parity Webhooks.createWebhook: Webhooks.createWebhook 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2258,6 +2360,7 @@ exports[`wire parity Webhooks.deleteWebhook: Webhooks.deleteWebhook 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2278,6 +2381,7 @@ exports[`wire parity Webhooks.getWebhook: Webhooks.getWebhook 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2298,6 +2402,7 @@ exports[`wire parity Webhooks.listWebhookEvents: Webhooks.listWebhookEvents 1`] 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2318,6 +2423,7 @@ exports[`wire parity Webhooks.listWebhooks: Webhooks.listWebhooks 1`] = `
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2338,6 +2444,7 @@ exports[`wire parity Webhooks.rotateWebhookSecret: Webhooks.rotateWebhookSecret 
     "anchor-api-key",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2361,6 +2468,7 @@ exports[`wire parity Webhooks.sendWebhookTestEvent: Webhooks.sendWebhookTestEven
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",
@@ -2383,6 +2491,7 @@ exports[`wire parity Webhooks.updateWebhook: Webhooks.updateWebhook 1`] = `
     "content-type",
     "sec-fetch-mode",
     "user-agent",
+    "x-anchor-sdk",
   ],
   "headers": {
     "accept": "*/*",

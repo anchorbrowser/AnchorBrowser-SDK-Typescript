@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import YAML from 'yaml';
 import { createClient, createConfig } from '../../src/generated/client';
+import { createClientConfig } from '../../src/hey-api';
 import * as sdk from '../../src/generated/sdk.gen';
 import { CaptureServer, CapturedRequest, RouteSpec } from './capture-server';
 import { Synthesizer } from './synthesize';
@@ -88,7 +89,9 @@ describe('wire parity', () => {
   beforeAll(async () => {
     const baseUrl = await server.start();
     client = createClient(
-      createConfig({ baseUrl, auth: () => 'test-api-key', throwOnError: true, responseStyle: 'data' }),
+      createClientConfig(
+        createConfig({ baseUrl, auth: () => 'test-api-key', throwOnError: true, responseStyle: 'data' }),
+      ),
     );
   });
 
@@ -112,6 +115,9 @@ describe('wire parity', () => {
       await cls[op.methodName]({ ...options, client });
 
       expect(server.requests).toHaveLength(1);
+      // every SDK request must be identifiable in access logs / Datadog
+      expect(server.requests[0]!.headers['user-agent']).toMatch(/^Anchorbrowser\/JS /);
+      expect(server.requests[0]!.headers['x-anchor-sdk']).toMatch(/^typescript\//);
       expect(normalize(server.requests[0]!)).toMatchSnapshot(op.name);
     });
   }

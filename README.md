@@ -24,7 +24,7 @@ client.setConfig({ auth: () => 'your-api-key' });
 const session = await Sessions.createSession({
   body: { session: { recording: { active: true } } },
 });
-console.log(session.data.id);
+console.log(session.data);
 ```
 
 Every resource is a class of static methods, one per API operation:
@@ -44,8 +44,12 @@ Methods take a single options object with `path`, `query` and `body` keys matchi
 ```ts
 import { Sessions, Webhooks } from 'anchorbrowser';
 
+const session = await Sessions.createSession({
+  body: { session: { recording: { active: true } } },
+});
+
 await Sessions.goto({
-  path: { sessionId: session.data!.id! },
+  path: { sessionId: session.data.id },
   body: { url: 'https://example.com' },
 });
 
@@ -64,9 +68,6 @@ const { browser, session } = await createBrowser({
 const page = browser.contexts()[0].pages()[0];
 await page.goto('https://example.com');
 await browser.close();
-
-// or connect to an existing session
-const browser2 = await connectBrowser(session.data!.id!);
 ```
 
 ### AI agent tasks
@@ -83,23 +84,7 @@ const result = await agentTask('Find the current weather in Tokyo', {
 console.log(result.data.result);
 ```
 
-### Multiple clients / custom configuration
-
-```ts
-import { createClient, createConfig, Sessions } from 'anchorbrowser';
-
-const staging = createClient(
-  createConfig({
-    baseUrl: 'https://api.staging.example.com',
-    auth: () => process.env['STAGING_API_KEY'],
-    throwOnError: true,
-  }),
-);
-
-await Sessions.listSessions({ client: staging });
-```
-
-The shared `client` also supports interceptors and per-request fetch options — see the [hey-api client docs](https://heyapi.dev/docs/clients/fetch) for the full configuration surface.
+The shared `client` also supports interceptors and per-request fetch options
 
 ### File uploads
 
@@ -108,8 +93,12 @@ Pass a `File` or `Blob` (built into Node 20+):
 ```ts
 import { Sessions } from 'anchorbrowser';
 
+const session = await Sessions.createSession({
+  body: { session: { recording: { active: true } } },
+});
+
 await Sessions.uploadFile({
-  path: { sessionId: session.data!.id! },
+  path: { sessionId: session.data.id },
   body: { file: new File(['data'], 'data.txt') },
 });
 ```

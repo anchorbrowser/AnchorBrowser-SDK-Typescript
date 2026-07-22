@@ -634,6 +634,9 @@ export const createClient: (config?: Config) => Client;
 // @public
 export type CreateClientConfig<T extends ClientConfigOptions = ClientOptions> = (override?: Config<ClientConfigOptions & T>) => Config<Required<ClientConfigOptions> & T>;
 
+// @public
+export const createClientConfig: CreateClientConfig;
+
 // @public (undocumented)
 export const createConfig: <T extends ClientConfigOptions = ClientConfigOptions>(override?: Config<Omit<ClientConfigOptions, keyof T> & T>) => Config<Omit<ClientConfigOptions, keyof T> & T>;
 
@@ -4680,6 +4683,9 @@ export type UsernamePasswordCredential = {
     username: string;
     password: string;
 };
+
+// @public (undocumented)
+export const VERSION = "1.0.0";
 
 // @public (undocumented)
 export type WaitForEventData = {
