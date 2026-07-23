@@ -1,6 +1,10 @@
 ## Setting up the environment
 
-This repository uses [`yarn@v1`](https://classic.yarnpkg.com/lang/en/docs/install).
+This repository uses [`yarn@v1`](https://classic.yarnpkg.com/lang/en/docs/install) and
+requires **Node.js >= 22.18.0** for development (`@hey-api/openapi-ts`, used by `yarn
+generate`, enforces this at install time). The published package itself still targets
+Node 18+ for consumers — this requirement is for working on the SDK repo only. Use the
+version pinned in `.nvmrc` (`nvm use`) if you have nvm installed.
 
 ```sh
 $ yarn
