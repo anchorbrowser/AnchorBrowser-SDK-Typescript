@@ -510,6 +510,10 @@ type SessionConfig = {
          */
         one_time_url?: boolean;
     };
+    /**
+     * Allow this browser session to automatically pay x402-protected resources using Amazon Bedrock AgentCore Payments.
+     */
+    x402?: boolean;
 };
 /**
  * Browser-specific configurations.
@@ -2332,6 +2336,127 @@ type TaskRunStatusV2Response = {
      */
     session_id?: string;
 };
+/**
+ * A single input or output parameter for a generated task.
+ */
+type TaskParameterV2 = {
+    /**
+     * The field name/key
+     */
+    name: string;
+    /**
+     * Data type of the parameter
+     */
+    type: 'string' | 'number' | 'boolean' | 'secret' | 'file';
+    /**
+     * Whether the parameter is required
+     */
+    required?: boolean;
+    /**
+     * Description of the parameter
+     */
+    description?: string;
+    /**
+     * Default value of the parameter, used when not provided
+     */
+    defaultValue?: unknown;
+    /**
+     * Allowed values for the parameter, if constrained
+     */
+    options?: Array<string>;
+};
+type GenerateTaskV2Request = {
+    /**
+     * Name of the task
+     */
+    taskName: string;
+    /**
+     * Natural-language description of what the task should do, used for AI generation. Make it as detailed as possible with all the logic and steps needed to complete the task.
+     */
+    taskPrompt: string;
+    /**
+     * Whether to generate the task asynchronously
+     */
+    async?: boolean;
+    /**
+     * Description of the task
+     */
+    description?: string;
+    /**
+     * Optional application (connection) ID to associate with the task
+     */
+    application_id?: string;
+    /**
+     * Optional identity ID to use during task generation
+     */
+    identity_id?: string;
+    /**
+     * Input parameters the task accepts
+     */
+    input_schema?: Array<TaskParameterV2>;
+    /**
+     * Output fields the task produces
+     */
+    output_schema?: Array<TaskParameterV2>;
+    /**
+     * Whether task runs should return only the bundled session downloads file
+     */
+    output_file_only?: boolean;
+    /**
+     * Allow human intervention during task execution
+     */
+    human_intervention?: boolean;
+    /**
+     * Existing finished browser session id to generate the workflow from
+     */
+    browser_session_id?: string;
+    /**
+     * Optional default browser/session configuration when running this task
+     */
+    task_browser_default_configuration?: {
+        [key: string]: unknown;
+    };
+};
+type GenerateTaskV2Response = {
+    /**
+     * The ID of the created task (use with generation-status and run endpoints)
+     */
+    id: string;
+    /**
+     * Whether the task is still generating, ready to run, or failed
+     */
+    status: 'generating';
+    /**
+     * The ID of the task being generated
+     */
+    taskId?: string;
+    /**
+     * The ID of the task version being generated
+     */
+    taskVersionId?: string;
+    /**
+     * The ID of the underlying generation project
+     */
+    projectId?: string;
+};
+type TaskGenerationStatusV2Response = {
+    /**
+     * Identifier of the generation request
+     */
+    id: string;
+    /**
+     * Current task generation status
+     */
+    status: 'generating' | 'ready' | 'failed' | 'waiting-for-session';
+    /**
+     * Internal state of the generation project
+     */
+    project_state?: string;
+    /**
+     * Error message when generation failed
+     */
+    error?: string;
+};
 type TaskListResponse = {
     data?: {
         tasks: Array<Task>;
@@ -3841,6 +3966,59 @@ type GetTaskRunStatusResponses = {
     200: TaskRunStatusV2Response;
 };
 type GetTaskRunStatusResponse = GetTaskRunStatusResponses[keyof GetTaskRunStatusResponses];
+type GenerateTaskData = {
+    body: GenerateTaskV2Request;
+    path?: never;
+    query?: never;
+    url: '/v2/tasks/generate';
+};
+type GenerateTaskErrors = {
+    /**
+     * Invalid task generation request
+     */
+    400: ErrorResponse;
+    /**
+     * Error generating task
+     */
+    500: ErrorResponse;
+};
+type GenerateTaskError = GenerateTaskErrors[keyof GenerateTaskErrors];
+type GenerateTaskResponses = {
+    /**
+     * Task generation started
+     */
+    200: GenerateTaskV2Response;
+};
+type GenerateTaskResponse = GenerateTaskResponses[keyof GenerateTaskResponses];
+type GetTaskGenerationStatusData = {
+    body?: never;
+    path: {
+        /**
+         * The ID of the task
+         */
+        taskId: string;
+    };
+    query?: never;
+    url: '/v2/tasks/{taskId}/generation-status';
+};
+type GetTaskGenerationStatusErrors = {
+    /**
+     * Task not found
+     */
+    404: ErrorResponse;
+    /**
+     * Failed to get task generation status
+     */
+    500: ErrorResponse;
+};
+type GetTaskGenerationStatusError = GetTaskGenerationStatusErrors[keyof GetTaskGenerationStatusErrors];
+type GetTaskGenerationStatusResponses = {
+    /**
+     * Current generation status
+     */
+    200: TaskGenerationStatusV2Response;
+};
+type GetTaskGenerationStatusResponse = GetTaskGenerationStatusResponses[keyof GetTaskGenerationStatusResponses];
 type ExecuteCodeData = {
     body: ExecuteCodeRequestSchema;
     path?: never;
@@ -7139,6 +7317,21 @@ declare class Tasks {
      *
      */
     static getTaskRunStatus<ThrowOnError extends boolean = true>(options: Options<GetTaskRunStatusData, ThrowOnError>): RequestResult<GetTaskRunStatusResponses, GetTaskRunStatusErrors, ThrowOnError, 'data'>;
+    /**
+     * Generate a Task
+     *
+     * Starts asynchronous generation of a new task from a natural-language prompt.
+     * Poll `GET /v2/tasks/{taskId}/generation-status` until the status is `ready`.
+     *
+     */
+    static generateTask<ThrowOnError extends boolean = true>(options: Options<GenerateTaskData, ThrowOnError>): RequestResult<GenerateTaskResponses, GenerateTaskErrors, ThrowOnError, 'data'>;
+    /**
+     * Get Task Generation Status
+     *
+     * Returns the generation status of a task created via `POST /v2/tasks/generate`.
+     *
+     */
+    static getTaskGenerationStatus<ThrowOnError extends boolean = true>(options: Options<GetTaskGenerationStatusData, ThrowOnError>): RequestResult<GetTaskGenerationStatusResponses, GetTaskGenerationStatusErrors, ThrowOnError, 'data'>;
 }
 declare class Applications {
     /**
@@ -7773,10 +7966,80 @@ declare const client: Client;
  * - the API key is read from ANCHORBROWSER_API_KEY unless set explicitly via
  *   `client.setConfig({ auth: () => '...' })` or the `apiKey` header
  * - errors throw (like the v1 SDK) instead of returning `{ error }` envelopes
+ *
+ * Note: this only builds the *config* — it can't attach the typed-error
+ * interceptor (that requires the constructed `Client`). The shared default
+ * `client` gets it via `installErrorInterceptor` in `src/index.ts`; use
+ * `createAnchorbrowserClient` below for any additional client.
  */
 declare const createClientConfig: CreateClientConfig;
+declare function createAnchorbrowserClient(config?: Config<ClientOptions$1>): Client;
 
 declare const VERSION = "<version>";
+
+/**
+ * Typed error hierarchy for the generated client, wired in via
+ * `client.interceptors.error.use(...)` (see `installErrorInterceptor` below
+ * and `src/hey-api.ts`). Without this, `throwOnError: true` throws the raw
+ * parsed response body (a plain object/string) with no status code and no
+ * `instanceof` discrimination — this restores both.
+ */
+declare class AnchorbrowserError extends Error {
+}
+declare class APIConnectionError extends AnchorbrowserError {
+    constructor({ message, cause }?: {
+        message?: string;
+        cause?: unknown;
+    });
+}
+declare class APIConnectionTimeoutError extends APIConnectionError {
+    constructor({ message }?: {
+        message?: string;
+    });
+}
+declare class APIUserAbortError extends AnchorbrowserError {
+    constructor(message?: string);
+}
+declare class APIError extends AnchorbrowserError {
+    /** HTTP status code, when the error came from a response (always set on APIError). */
+    readonly status: number;
+    /** Response headers, when available. */
+    readonly headers?: Headers;
+    /** The parsed response body (JSON) or raw response text. */
+    readonly error: unknown;
+    constructor(status: number, error: unknown, message: string | undefined, headers: Headers | undefined);
+    private static makeMessage;
+    /**
+     * Anchorbrowser's ErrorResponse schema nests the message as
+     * `{ error: { message } }`; some endpoints return a flat `{ message }` or
+     * a plain string. Handle all three.
+     */
+    private static extractMessage;
+    /** Build the right APIError subclass (or APIConnectionError) for a given status/response. */
+    static generate(status: number | undefined, errorBody: unknown, message: string | undefined, headers: Headers | undefined): AnchorbrowserError;
+}
+declare class BadRequestError extends APIError {
+}
+declare class AuthenticationError extends APIError {
+}
+declare class PermissionDeniedError extends APIError {
+}
+declare class NotFoundError extends APIError {
+}
+declare class ConflictError extends APIError {
+}
+declare class UnprocessableEntityError extends APIError {
+}
+declare class RateLimitError extends APIError {
+}
+declare class InternalServerError extends APIError {
+}
+/**
+ * Register the typed-error interceptor on a client. Called once for the
+ * shared default `client` (see `src/index.ts`); call it yourself for any
+ * additional client you create with `createClient()`.
+ */
+declare function installErrorInterceptor(client: Client): void;
 
 interface BrowserSetup {
     session: SessionCreateResponseSchema;
@@ -7852,4 +8115,27 @@ declare function agentBrowserTask(prompt: string, { sessionOptions, taskOptions,
     playwrightBrowser: playwright_core.Browser;
 }>;
 
-export { Agent, type AgentTaskResult, type AnchorProxy, type AnchorProxyCountryCode, type ApplicationIdentityItem, type ApplicationItem, Applications, type AsyncSessionCreateResponseSchema, type AsyncSessionStatusResponseSchema, type AuthFlowItem, type AuthenticatorCredential, type BatchSessionDeleteResponseSchema, type BatchSessionItemSchema, type BatchSessionListItemSchema, type BatchSessionListResponseSchema, type BatchSessionRequestSchema, type BatchSessionResponseSchema, type BatchSessionRetryRequestSchema, type BatchSessionRetryResponseSchema, type BatchSessionStatusResponseSchema, type BatchSessionUpdateRequestSchema, type BatchSessionUpdateResponseSchema, BatchSessions, Billing, type BillingInfoResponse, type BrowserConfig, type BrowserSetup, type CertificateListResponse, type CertificateResponse, type CertificateResponseSchema, Certificates, type Client, type ClientOptions$1 as ClientConfigOptions, type ClientOptions, type ClipboardRequestSchema, type ClipboardResponseSchema, type Config, type CoordinatesRequestSchema, type CopyData, type CopyErrors, type CopyResponse, type CopyResponseSchema, type CopyResponses, type CreateApplicationData, type CreateApplicationError, type CreateApplicationErrors, type CreateApplicationRequest, type CreateApplicationResponse, type CreateApplicationResponse2, type CreateApplicationResponses, type CreateAuthFlowData, type CreateAuthFlowError, type CreateAuthFlowErrors, type CreateAuthFlowRequest, type CreateAuthFlowResponse, type CreateAuthFlowResponse2, type CreateAuthFlowResponses, type CreateBatchSessionData, type CreateBatchSessionError, type CreateBatchSessionErrors, type CreateBatchSessionResponse, type CreateBatchSessionResponses, type CreateCertificateData, type CreateCertificateError, type CreateCertificateErrors, type CreateCertificateResponse, type CreateCertificateResponses, type CreateClientConfig, type CreateIdentityData, type CreateIdentityError, type CreateIdentityErrors, type CreateIdentityRequest, type CreateIdentityResponse, type CreateIdentityResponse2, type CreateIdentityResponses, type CreateIdentityTokenData, type CreateIdentityTokenError, type CreateIdentityTokenErrors, type CreateIdentityTokenRequest, type CreateIdentityTokenResponse, type CreateIdentityTokenResponses, type CreateIntegrationData, type CreateIntegrationError, type CreateIntegrationErrors, type CreateIntegrationRequest, type CreateIntegrationResponse, type CreateIntegrationResponses, type CreatePagePdfData, type CreatePagePdfError, type CreatePagePdfErrors, type CreatePagePdfResponse, type CreatePagePdfResponses, type CreateProfileData, type CreateProfileError, type CreateProfileErrors, type CreateProfileResponse, type CreateProfileResponses, type CreateSessionAsyncData, type CreateSessionAsyncError, type CreateSessionAsyncErrors, type CreateSessionAsyncResponse, type CreateSessionAsyncResponses, type CreateSessionData, type CreateSessionError, type CreateSessionErrors, type CreateSessionResponse, type CreateSessionResponses, type CreateTaskData, type CreateTaskError, type CreateTaskErrors, type CreateTaskRequest, type CreateTaskResponse, type CreateTaskResponses, type CreateWebhookData, type CreateWebhookErrors, type CreateWebhookResponse, type CreateWebhookResponses, type CredentialData, type CustomCredential, type CustomFieldDefinition, type CustomFieldItem, type CustomProxy, type DeleteAllSessionsData, type DeleteAllSessionsResponse, type DeleteAllSessionsResponses, type DeleteApplicationData, type DeleteApplicationError, type DeleteApplicationErrors, type DeleteApplicationResponse, type DeleteApplicationResponse2, type DeleteApplicationResponses, type DeleteAuthFlowData, type DeleteAuthFlowError, type DeleteAuthFlowErrors, type DeleteAuthFlowResponse, type DeleteAuthFlowResponse2, type DeleteAuthFlowResponses, type DeleteBatchSessionData, type DeleteBatchSessionError, type DeleteBatchSessionErrors, type DeleteBatchSessionResponse, type DeleteBatchSessionResponses, type DeleteCertificateData, type DeleteCertificateError, type DeleteCertificateErrors, type DeleteCertificateResponse, type DeleteCertificateResponses, type DeleteExtensionData, type DeleteExtensionError, type DeleteExtensionErrors, type DeleteExtensionResponse, type DeleteExtensionResponses, type DeleteIdentityData, type DeleteIdentityError, type DeleteIdentityErrors, type DeleteIdentityResponse, type DeleteIdentityResponse2, type DeleteIdentityResponses, type DeleteIntegrationData, type DeleteIntegrationError, type DeleteIntegrationErrors, type DeleteIntegrationResponse, type DeleteIntegrationResponses, type DeleteProfileData, type DeleteProfileError, type DeleteProfileErrors, type DeleteProfileResponse, type DeleteProfileResponses, type DeleteRecordingData, type DeleteRecordingError, type DeleteRecordingErrors, type DeleteRecordingResponse, type DeleteRecordingResponses, type DeleteSessionData, type DeleteSessionError, type DeleteSessionErrors, type DeleteSessionResponse, type DeleteSessionResponses, type DeleteTaskData, type DeleteTaskError, type DeleteTaskErrors, type DeleteTaskResponse, type DeleteTaskResponse2, type DeleteTaskResponses, type DeleteTaskVersionData, type DeleteTaskVersionError, type DeleteTaskVersionErrors, type DeleteTaskVersionResponse, type DeleteTaskVersionResponses, type DeleteWebhookData, type DeleteWebhookErrors, type DeleteWebhookResponse, type DeleteWebhookResponses, type DeployTaskData, type DeployTaskError, type DeployTaskErrors, type DeployTaskResponse, type DeployTaskResponses, type DownloadItem, type DownloadListResponse, type DraftTaskRequest, type DragAndDropData, type DragAndDropErrors, type DragAndDropResponse, type DragAndDropResponses, type DragDropRequestSchema, type ErrorResponse, type EventResponseSchema, Events, type ExecuteCodeData, type ExecuteCodeError, type ExecuteCodeErrors, type ExecuteCodeRequestSchema, type ExecuteCodeResponse, type ExecuteCodeResponses, type ExecuteCodeToolResponseSchema, type ExtensionListResponse, type ExtensionManifest, type ExtensionResponse, type ExtensionResponseSchema, Extensions, type FetchPrimaryRecordingData, type FetchPrimaryRecordingError, type FetchPrimaryRecordingErrors, type FetchPrimaryRecordingResponse, type FetchPrimaryRecordingResponses, type FetchWebpageData, type FetchWebpageError, type FetchWebpageErrors, type FetchWebpageRequestSchema, type FetchWebpageResponse, type FetchWebpageResponses, type GetAllSessionsStatusData, type GetAllSessionsStatusError, type GetAllSessionsStatusErrors, type GetAllSessionsStatusResponse, type GetAllSessionsStatusResponses, type GetApplicationData, type GetApplicationError, type GetApplicationErrors, type GetApplicationResponse, type GetApplicationResponse2, type GetApplicationResponses, type GetAsyncSessionStatusData, type GetAsyncSessionStatusError, type GetAsyncSessionStatusErrors, type GetAsyncSessionStatusResponse, type GetAsyncSessionStatusResponses, type GetBatchSessionData, type GetBatchSessionError, type GetBatchSessionErrors, type GetBatchSessionResponse, type GetBatchSessionResponses, type GetBillingData, type GetBillingError, type GetBillingErrors, type GetBillingResponse, type GetBillingResponses, type GetClipboardData, type GetClipboardErrors, type GetClipboardResponse, type GetClipboardResponses, type GetExtensionData, type GetExtensionError, type GetExtensionErrors, type GetExtensionResponse, type GetExtensionResponses, type GetIdentityCredentialsResponse, type GetIdentityData, type GetIdentityError, type GetIdentityErrors, type GetIdentityResponse, type GetIdentityResponse2, type GetIdentityResponses, type GetLatestTaskVersionData, type GetLatestTaskVersionError, type GetLatestTaskVersionErrors, type GetLatestTaskVersionResponse, type GetLatestTaskVersionResponses, type GetPerformWebTaskStatusData, type GetPerformWebTaskStatusError, type GetPerformWebTaskStatusErrors, type GetPerformWebTaskStatusResponse, type GetPerformWebTaskStatusResponses, type GetProfileData, type GetProfileError, type GetProfileErrors, type GetProfileResponse, type GetProfileResponses, type GetRequestedHumanInterventionData, type GetRequestedHumanInterventionError, type GetRequestedHumanInterventionErrors, type GetRequestedHumanInterventionResponse, type GetRequestedHumanInterventionResponses, type GetSessionData, type GetSessionDownloadsData, type GetSessionDownloadsError, type GetSessionDownloadsErrors, type GetSessionDownloadsResponse, type GetSessionDownloadsResponses, type GetSessionError, type GetSessionErrors, type GetSessionPagesData, type GetSessionPagesError, type GetSessionPagesErrors, type GetSessionPagesResponse, type GetSessionPagesResponses, type GetSessionResponse, type GetSessionResponses, type GetSessionScreenshotData, type GetSessionScreenshotError, type GetSessionScreenshotErrors, type GetSessionScreenshotResponse, type GetSessionScreenshotResponses, type GetSessionsHistoryData, type GetSessionsHistoryError, type GetSessionsHistoryErrors, type GetSessionsHistoryResponse, type GetSessionsHistoryResponses, type GetTaskData, type GetTaskDraftData, type GetTaskDraftError, type GetTaskDraftErrors, type GetTaskDraftResponse, type GetTaskDraftResponses, type GetTaskError, type GetTaskErrors, type GetTaskExecutionData, type GetTaskExecutionError, type GetTaskExecutionErrors, type GetTaskExecutionResponse, type GetTaskExecutionResponses, type GetTaskResponse, type GetTaskResponses, type GetTaskRunStatusData, type GetTaskRunStatusError, type GetTaskRunStatusErrors, type GetTaskRunStatusResponse, type GetTaskRunStatusResponses, type GetTaskVersionData, type GetTaskVersionError, type GetTaskVersionErrors, type GetTaskVersionResponse, type GetTaskVersionResponses, type GetWebhookData, type GetWebhookErrors, type GetWebhookResponse, type GetWebhookResponses, type GotoData, type GotoError, type GotoErrors, type GotoResponse, type GotoResponses, type HumanInterventionField, type HumanInterventionRequest, type HumanInterventionRequestsResponse, type HumanInterventionResponseRequest, type HumanInterventionResponseResponse, Identities, type IdentityTokenResponse, type Integration, type IntegrationItem, type IntegrationListResponse, type IntegrationResponse, type IntegrationType, Integrations, type KeyboardShortcutData, type KeyboardShortcutErrors, type KeyboardShortcutRequestSchema, type KeyboardShortcutResponse, type KeyboardShortcutResponses, type KeyboardTypeData, type KeyboardTypeErrors, type KeyboardTypeResponse, type KeyboardTypeResponses, type ListAgentFilesData, type ListAgentFilesError, type ListAgentFilesErrors, type ListAgentFilesResponse, type ListAgentFilesResponses, type ListApplicationAuthFlowsResponse, type ListApplicationIdentitiesData, type ListApplicationIdentitiesError, type ListApplicationIdentitiesErrors, type ListApplicationIdentitiesResponse, type ListApplicationIdentitiesResponse2, type ListApplicationIdentitiesResponses, type ListApplicationsData, type ListApplicationsError, type ListApplicationsErrors, type ListApplicationsResponse, type ListApplicationsResponse2, type ListApplicationsResponses, type ListAuthFlowsData, type ListAuthFlowsError, type ListAuthFlowsErrors, type ListAuthFlowsResponse, type ListAuthFlowsResponses, type ListBatchSessionsData, type ListBatchSessionsError, type ListBatchSessionsErrors, type ListBatchSessionsResponse, type ListBatchSessionsResponses, type ListCertificatesData, type ListCertificatesError, type ListCertificatesErrors, type ListCertificatesResponse, type ListCertificatesResponses, type ListExtensionsData, type ListExtensionsError, type ListExtensionsErrors, type ListExtensionsResponse, type ListExtensionsResponses, type ListIntegrationsData, type ListIntegrationsError, type ListIntegrationsErrors, type ListIntegrationsResponse, type ListIntegrationsResponses, type ListPendingInterventionsData, type ListPendingInterventionsError, type ListPendingInterventionsErrors, type ListPendingInterventionsResponse, type ListPendingInterventionsResponses, type ListProfilesData, type ListProfilesError, type ListProfilesErrors, type ListProfilesResponse, type ListProfilesResponses, type ListRecordingsData, type ListRecordingsError, type ListRecordingsErrors, type ListRecordingsResponse, type ListRecordingsResponses, type ListSessionsData, type ListSessionsError, type ListSessionsErrors, type ListSessionsResponse, type ListSessionsResponses, type ListTaskExecutionsData, type ListTaskExecutionsError, type ListTaskExecutionsErrors, type ListTaskExecutionsResponse, type ListTaskExecutionsResponses, type ListTaskVersionsData, type ListTaskVersionsError, type ListTaskVersionsErrors, type ListTaskVersionsResponse, type ListTaskVersionsResponses, type ListTasksData, type ListTasksError, type ListTasksErrors, type ListTasksResponse, type ListTasksResponses, type ListWebhookEventsData, type ListWebhookEventsErrors, type ListWebhookEventsResponse, type ListWebhookEventsResponses, type ListWebhooksData, type ListWebhooksErrors, type ListWebhooksResponse, type ListWebhooksResponses, type MouseClickData, type MouseClickErrors, type MouseClickRequestSchema, type MouseClickResponse, type MouseClickResponses, type MouseDoubleClickData, type MouseDoubleClickErrors, type MouseDoubleClickResponse, type MouseDoubleClickResponses, type MouseDownData, type MouseDownErrors, type MouseDownResponse, type MouseDownResponses, type MouseMoveData, type MouseMoveErrors, type MouseMoveResponse, type MouseMoveResponses, type MouseSingleClickRequestSchema, type MouseUpData, type MouseUpErrors, type MouseUpResponse, type MouseUpResponses, type NavigateRequestSchema, type OnePasswordAllSecretsConfig, type OnePasswordConfig, type OnePasswordIntegration, type OnePasswordSpecificSecretsConfig, type Options, type PasteData, type PasteErrors, type PasteRequestSchema, type PasteResponse, type PasteResponses, type PauseAgentData, type PauseAgentError, type PauseAgentErrors, type PauseAgentResponse, type PauseAgentResponses, type PauseRecordingData, type PauseRecordingError, type PauseRecordingErrors, type PauseRecordingResponse, type PauseRecordingResponses, type PendingInterventionItem, type PendingInterventionsResponse, type PerformWebTaskAsyncResponseData, type PerformWebTaskData, type PerformWebTaskError, type PerformWebTaskErrors, type PerformWebTaskRequestSchema, type PerformWebTaskResponse, type PerformWebTaskResponseSchema, type PerformWebTaskResponses, type PerformWebTaskStatusFailedResponseData, type PerformWebTaskStatusResponseSchema, type PerformWebTaskStatusRunningResponseData, type PerformWebTaskStatusSuccessResponseData, type PerformWebTaskSyncResponseData, type ProfileListResponse, type ProfileRequestSchema, type ProfileResponse, type ProfileResponseSchema, Profiles, type ProxyConfig, type PublishTaskVersionData, type PublishTaskVersionError, type PublishTaskVersionErrors, type PublishTaskVersionResponse, type PublishTaskVersionResponses, type PublishVersionRequest, type RecordingItem, type RecordingListResponse, Recordings, type RespondToHumanInterventionData, type RespondToHumanInterventionError, type RespondToHumanInterventionErrors, type RespondToHumanInterventionResponse, type RespondToHumanInterventionResponses, type ResumeAgentData, type ResumeAgentError, type ResumeAgentErrors, type ResumeAgentResponse, type ResumeAgentResponses, type ResumeRecordingData, type ResumeRecordingError, type ResumeRecordingErrors, type ResumeRecordingResponse, type ResumeRecordingResponses, type RetryBatchSessionData, type RetryBatchSessionError, type RetryBatchSessionErrors, type RetryBatchSessionResponse, type RetryBatchSessionResponses, type RotateWebhookSecretData, type RotateWebhookSecretErrors, type RotateWebhookSecretResponse, type RotateWebhookSecretResponses, type RunAdhocTaskData, type RunAdhocTaskError, type RunAdhocTaskErrors, type RunAdhocTaskResponse, type RunAdhocTaskResponses, type RunTaskByNameData, type RunTaskByNameError, type RunTaskByNameErrors, type RunTaskByNameRequest, type RunTaskByNameResponse, type RunTaskByNameResponses, type RunTaskData, type RunTaskError, type RunTaskErrors, type RunTaskRequest, type RunTaskResponse, type RunTaskResponse2, type RunTaskResponses, type RunTaskV2Request, type SaveTaskDraftData, type SaveTaskDraftError, type SaveTaskDraftErrors, type SaveTaskDraftResponse, type SaveTaskDraftResponses, type ScreenshotRequestSchema, type ScreenshotWebpageData, type ScreenshotWebpageError, type ScreenshotWebpageErrors, type ScreenshotWebpageResponse, type ScreenshotWebpageResponses, type ScrollData, type ScrollErrors, type ScrollRequestSchema, type ScrollResponse, type ScrollResponses, type SendWebhookTestEventData, type SendWebhookTestEventErrors, type SendWebhookTestEventResponse, type SendWebhookTestEventResponses, type ServiceAccountCredentials, type SessionConfig, type SessionCreateRequestSchema, type SessionCreateResponseSchema, type SessionHistoryDataPoint, type SessionHistoryPageItem, type SessionHistoryPageResponse, type SessionHistoryPagination, type SessionHistoryResponse, type SessionHistorySummary, type SessionListResponse, type SessionStatus, Sessions, type SetClipboardData, type SetClipboardErrors, type SetClipboardResponse, type SetClipboardResponses, type SignalEventData, type SignalEventError, type SignalEventErrors, type SignalEventRequestSchema, type SignalEventResponse, type SignalEventResponses, type SuccessResponse, type Task, type TaskExecutionResult, type TaskExecutionResultResponse, type TaskExecutionResultsListResponse, type TaskListResponse, type TaskMetadata, type TaskMetadataResponse, type TaskOptions, type TaskResponse, type TaskRunStatusV2Response, type TaskVersion, type TaskVersionResponse, type TaskVersionsListResponse, Tasks, TasksLegacy, Tools, type TypeTextRequestSchema, type UpdateApplicationRequest, type UpdateApplicationResponse, type UpdateAuthFlowData, type UpdateAuthFlowError, type UpdateAuthFlowErrors, type UpdateAuthFlowRequest, type UpdateAuthFlowResponse, type UpdateAuthFlowResponse2, type UpdateAuthFlowResponses, type UpdateBatchSessionData, type UpdateBatchSessionError, type UpdateBatchSessionErrors, type UpdateBatchSessionResponse, type UpdateBatchSessionResponses, type UpdateIdentityData, type UpdateIdentityError, type UpdateIdentityErrors, type UpdateIdentityRequest, type UpdateIdentityResponse, type UpdateIdentityResponse2, type UpdateIdentityResponses, type UpdateTaskData, type UpdateTaskError, type UpdateTaskErrors, type UpdateTaskMetadataRequest, type UpdateTaskResponse, type UpdateTaskResponses, type UpdateWebhookData, type UpdateWebhookErrors, type UpdateWebhookResponse, type UpdateWebhookResponses, type UploadAgentFilesData, type UploadAgentFilesError, type UploadAgentFilesErrors, type UploadAgentFilesResponse, type UploadAgentFilesResponses, type UploadExtensionData, type UploadExtensionError, type UploadExtensionErrors, type UploadExtensionResponse, type UploadExtensionResponses, type UploadFileData, type UploadFileError, type UploadFileErrors, type UploadFileResponse, type UploadFileResponses, type UsernamePasswordCredential, VERSION, type WaitForEventData, type WaitForEventError, type WaitForEventErrors, type WaitForEventRequestSchema, type WaitForEventResponse, type WaitForEventResponses, type WebUnlockerRequestSchema, type WebhookCreateRequest, type WebhookDeleteResponse, type WebhookEventDeliveryRow, type WebhookEventType, type WebhookEventsListResponse, type WebhookListResponse, type WebhookPublic, type WebhookTestRequest, type WebhookTestResponse, type WebhookUpdateRequest, type WebhookWithSecret, Webhooks, agentBrowserTask, agentTask, client, connectBrowser, createBrowser, createClient, createClientConfig, createConfig, getAgentWsUrl, getApiKey, getBaseUrl, getCdpUrl };
+/**
+ * Helper for building a `File` for multipart/form-data endpoints (session
+ * uploads, extension uploads, agent file uploads, certificate uploads).
+ *
+ * `File` is a native global on Node.js 20+ and in browsers — pass one
+ * directly (`new File([data], 'name.txt')`) if you're on Node 20+. This
+ * helper additionally accepts Buffers/ArrayBuffers/streams/async iterables
+ * and infers a filename where possible, mirroring the v1 SDK's `toFile()`.
+ *
+ * A real `File` (not a plain `Blob`) is required: the generated client's
+ * FormData serializer relies on the platform's `File` handling to carry the
+ * filename — a `Blob` with a bolted-on `.name` property uploads as "blob".
+ */
+type ToFileInput = Blob | File | ArrayBuffer | ArrayBufferView | Iterable<Uint8Array> | AsyncIterable<Uint8Array> | ReadableStream<Uint8Array>;
+interface ToFileOptions {
+    type?: string;
+}
+/**
+ * Build a `File` from a Blob/Buffer/ArrayBuffer/stream/async-iterable of
+ * bytes. Requires Node.js 20+ (or a browser) — see the module doc above.
+ */
+declare function toFile(value: ToFileInput | Promise<ToFileInput>, name?: string | null, options?: ToFileOptions): Promise<File>;
+
+export { APIConnectionError, APIConnectionTimeoutError, APIError, APIUserAbortError, Agent, type AgentTaskResult, type AnchorProxy, type AnchorProxyCountryCode, AnchorbrowserError, type ApplicationIdentityItem, type ApplicationItem, Applications, type AsyncSessionCreateResponseSchema, type AsyncSessionStatusResponseSchema, type AuthFlowItem, AuthenticationError, type AuthenticatorCredential, BadRequestError, type BatchSessionDeleteResponseSchema, type BatchSessionItemSchema, type BatchSessionListItemSchema, type BatchSessionListResponseSchema, type BatchSessionRequestSchema, type BatchSessionResponseSchema, type BatchSessionRetryRequestSchema, type BatchSessionRetryResponseSchema, type BatchSessionStatusResponseSchema, type BatchSessionUpdateRequestSchema, type BatchSessionUpdateResponseSchema, BatchSessions, Billing, type BillingInfoResponse, type BrowserConfig, type BrowserSetup, type CertificateListResponse, type CertificateResponse, type CertificateResponseSchema, Certificates, type Client, type ClientOptions$1 as ClientConfigOptions, type ClientOptions, type ClipboardRequestSchema, type ClipboardResponseSchema, type Config, ConflictError, type CoordinatesRequestSchema, type CopyData, type CopyErrors, type CopyResponse, type CopyResponseSchema, type CopyResponses, type CreateApplicationData, type CreateApplicationError, type CreateApplicationErrors, type CreateApplicationRequest, type CreateApplicationResponse, type CreateApplicationResponse2, type CreateApplicationResponses, type CreateAuthFlowData, type CreateAuthFlowError, type CreateAuthFlowErrors, type CreateAuthFlowRequest, type CreateAuthFlowResponse, type CreateAuthFlowResponse2, type CreateAuthFlowResponses, type CreateBatchSessionData, type CreateBatchSessionError, type CreateBatchSessionErrors, type CreateBatchSessionResponse, type CreateBatchSessionResponses, type CreateCertificateData, type CreateCertificateError, type CreateCertificateErrors, type CreateCertificateResponse, type CreateCertificateResponses, type CreateClientConfig, type CreateIdentityData, type CreateIdentityError, type CreateIdentityErrors, type CreateIdentityRequest, type CreateIdentityResponse, type CreateIdentityResponse2, type CreateIdentityResponses, type CreateIdentityTokenData, type CreateIdentityTokenError, type CreateIdentityTokenErrors, type CreateIdentityTokenRequest, type CreateIdentityTokenResponse, type CreateIdentityTokenResponses, type CreateIntegrationData, type CreateIntegrationError, type CreateIntegrationErrors, type CreateIntegrationRequest, type CreateIntegrationResponse, type CreateIntegrationResponses, type CreatePagePdfData, type CreatePagePdfError, type CreatePagePdfErrors, type CreatePagePdfResponse, type CreatePagePdfResponses, type CreateProfileData, type CreateProfileError, type CreateProfileErrors, type CreateProfileResponse, type CreateProfileResponses, type CreateSessionAsyncData, type CreateSessionAsyncError, type CreateSessionAsyncErrors, type CreateSessionAsyncResponse, type CreateSessionAsyncResponses, type CreateSessionData, type CreateSessionError, type CreateSessionErrors, type CreateSessionResponse, type CreateSessionResponses, type CreateTaskData, type CreateTaskError, type CreateTaskErrors, type CreateTaskRequest, type CreateTaskResponse, type CreateTaskResponses, type CreateWebhookData, type CreateWebhookErrors, type CreateWebhookResponse, type CreateWebhookResponses, type CredentialData, type CustomCredential, type CustomFieldDefinition, type CustomFieldItem, type CustomProxy, type DeleteAllSessionsData, type DeleteAllSessionsResponse, type DeleteAllSessionsResponses, type DeleteApplicationData, type DeleteApplicationError, type DeleteApplicationErrors, type DeleteApplicationResponse, type DeleteApplicationResponse2, type DeleteApplicationResponses, type DeleteAuthFlowData, type DeleteAuthFlowError, type DeleteAuthFlowErrors, type DeleteAuthFlowResponse, type DeleteAuthFlowResponse2, type DeleteAuthFlowResponses, type DeleteBatchSessionData, type DeleteBatchSessionError, type DeleteBatchSessionErrors, type DeleteBatchSessionResponse, type DeleteBatchSessionResponses, type DeleteCertificateData, type DeleteCertificateError, type DeleteCertificateErrors, type DeleteCertificateResponse, type DeleteCertificateResponses, type DeleteExtensionData, type DeleteExtensionError, type DeleteExtensionErrors, type DeleteExtensionResponse, type DeleteExtensionResponses, type DeleteIdentityData, type DeleteIdentityError, type DeleteIdentityErrors, type DeleteIdentityResponse, type DeleteIdentityResponse2, type DeleteIdentityResponses, type DeleteIntegrationData, type DeleteIntegrationError, type DeleteIntegrationErrors, type DeleteIntegrationResponse, type DeleteIntegrationResponses, type DeleteProfileData, type DeleteProfileError, type DeleteProfileErrors, type DeleteProfileResponse, type DeleteProfileResponses, type DeleteRecordingData, type DeleteRecordingError, type DeleteRecordingErrors, type DeleteRecordingResponse, type DeleteRecordingResponses, type DeleteSessionData, type DeleteSessionError, type DeleteSessionErrors, type DeleteSessionResponse, type DeleteSessionResponses, type DeleteTaskData, type DeleteTaskError, type DeleteTaskErrors, type DeleteTaskResponse, type DeleteTaskResponse2, type DeleteTaskResponses, type DeleteTaskVersionData, type DeleteTaskVersionError, type DeleteTaskVersionErrors, type DeleteTaskVersionResponse, type DeleteTaskVersionResponses, type DeleteWebhookData, type DeleteWebhookErrors, type DeleteWebhookResponse, type DeleteWebhookResponses, type DeployTaskData, type DeployTaskError, type DeployTaskErrors, type DeployTaskResponse, type DeployTaskResponses, type DownloadItem, type DownloadListResponse, type DraftTaskRequest, type DragAndDropData, type DragAndDropErrors, type DragAndDropResponse, type DragAndDropResponses, type DragDropRequestSchema, type ErrorResponse, type EventResponseSchema, Events, type ExecuteCodeData, type ExecuteCodeError, type ExecuteCodeErrors, type ExecuteCodeRequestSchema, type ExecuteCodeResponse, type ExecuteCodeResponses, type ExecuteCodeToolResponseSchema, type ExtensionListResponse, type ExtensionManifest, type ExtensionResponse, type ExtensionResponseSchema, Extensions, type FetchPrimaryRecordingData, type FetchPrimaryRecordingError, type FetchPrimaryRecordingErrors, type FetchPrimaryRecordingResponse, type FetchPrimaryRecordingResponses, type FetchWebpageData, type FetchWebpageError, type FetchWebpageErrors, type FetchWebpageRequestSchema, type FetchWebpageResponse, type FetchWebpageResponses, type GenerateTaskData, type GenerateTaskError, type GenerateTaskErrors, type GenerateTaskResponse, type GenerateTaskResponses, type GenerateTaskV2Request, type GenerateTaskV2Response, type GetAllSessionsStatusData, type GetAllSessionsStatusError, type GetAllSessionsStatusErrors, type GetAllSessionsStatusResponse, type GetAllSessionsStatusResponses, type GetApplicationData, type GetApplicationError, type GetApplicationErrors, type GetApplicationResponse, type GetApplicationResponse2, type GetApplicationResponses, type GetAsyncSessionStatusData, type GetAsyncSessionStatusError, type GetAsyncSessionStatusErrors, type GetAsyncSessionStatusResponse, type GetAsyncSessionStatusResponses, type GetBatchSessionData, type GetBatchSessionError, type GetBatchSessionErrors, type GetBatchSessionResponse, type GetBatchSessionResponses, type GetBillingData, type GetBillingError, type GetBillingErrors, type GetBillingResponse, type GetBillingResponses, type GetClipboardData, type GetClipboardErrors, type GetClipboardResponse, type GetClipboardResponses, type GetExtensionData, type GetExtensionError, type GetExtensionErrors, type GetExtensionResponse, type GetExtensionResponses, type GetIdentityCredentialsResponse, type GetIdentityData, type GetIdentityError, type GetIdentityErrors, type GetIdentityResponse, type GetIdentityResponse2, type GetIdentityResponses, type GetLatestTaskVersionData, type GetLatestTaskVersionError, type GetLatestTaskVersionErrors, type GetLatestTaskVersionResponse, type GetLatestTaskVersionResponses, type GetPerformWebTaskStatusData, type GetPerformWebTaskStatusError, type GetPerformWebTaskStatusErrors, type GetPerformWebTaskStatusResponse, type GetPerformWebTaskStatusResponses, type GetProfileData, type GetProfileError, type GetProfileErrors, type GetProfileResponse, type GetProfileResponses, type GetRequestedHumanInterventionData, type GetRequestedHumanInterventionError, type GetRequestedHumanInterventionErrors, type GetRequestedHumanInterventionResponse, type GetRequestedHumanInterventionResponses, type GetSessionData, type GetSessionDownloadsData, type GetSessionDownloadsError, type GetSessionDownloadsErrors, type GetSessionDownloadsResponse, type GetSessionDownloadsResponses, type GetSessionError, type GetSessionErrors, type GetSessionPagesData, type GetSessionPagesError, type GetSessionPagesErrors, type GetSessionPagesResponse, type GetSessionPagesResponses, type GetSessionResponse, type GetSessionResponses, type GetSessionScreenshotData, type GetSessionScreenshotError, type GetSessionScreenshotErrors, type GetSessionScreenshotResponse, type GetSessionScreenshotResponses, type GetSessionsHistoryData, type GetSessionsHistoryError, type GetSessionsHistoryErrors, type GetSessionsHistoryResponse, type GetSessionsHistoryResponses, type GetTaskData, type GetTaskDraftData, type GetTaskDraftError, type GetTaskDraftErrors, type GetTaskDraftResponse, type GetTaskDraftResponses, type GetTaskError, type GetTaskErrors, type GetTaskExecutionData, type GetTaskExecutionError, type GetTaskExecutionErrors, type GetTaskExecutionResponse, type GetTaskExecutionResponses, type GetTaskGenerationStatusData, type GetTaskGenerationStatusError, type GetTaskGenerationStatusErrors, type GetTaskGenerationStatusResponse, type GetTaskGenerationStatusResponses, type GetTaskResponse, type GetTaskResponses, type GetTaskRunStatusData, type GetTaskRunStatusError, type GetTaskRunStatusErrors, type GetTaskRunStatusResponse, type GetTaskRunStatusResponses, type GetTaskVersionData, type GetTaskVersionError, type GetTaskVersionErrors, type GetTaskVersionResponse, type GetTaskVersionResponses, type GetWebhookData, type GetWebhookErrors, type GetWebhookResponse, type GetWebhookResponses, type GotoData, type GotoError, type GotoErrors, type GotoResponse, type GotoResponses, type HumanInterventionField, type HumanInterventionRequest, type HumanInterventionRequestsResponse, type HumanInterventionResponseRequest, type HumanInterventionResponseResponse, Identities, type IdentityTokenResponse, type Integration, type IntegrationItem, type IntegrationListResponse, type IntegrationResponse, type IntegrationType, Integrations, InternalServerError, type KeyboardShortcutData, type KeyboardShortcutErrors, type KeyboardShortcutRequestSchema, type KeyboardShortcutResponse, type KeyboardShortcutResponses, type KeyboardTypeData, type KeyboardTypeErrors, type KeyboardTypeResponse, type KeyboardTypeResponses, type ListAgentFilesData, type ListAgentFilesError, type ListAgentFilesErrors, type ListAgentFilesResponse, type ListAgentFilesResponses, type ListApplicationAuthFlowsResponse, type ListApplicationIdentitiesData, type ListApplicationIdentitiesError, type ListApplicationIdentitiesErrors, type ListApplicationIdentitiesResponse, type ListApplicationIdentitiesResponse2, type ListApplicationIdentitiesResponses, type ListApplicationsData, type ListApplicationsError, type ListApplicationsErrors, type ListApplicationsResponse, type ListApplicationsResponse2, type ListApplicationsResponses, type ListAuthFlowsData, type ListAuthFlowsError, type ListAuthFlowsErrors, type ListAuthFlowsResponse, type ListAuthFlowsResponses, type ListBatchSessionsData, type ListBatchSessionsError, type ListBatchSessionsErrors, type ListBatchSessionsResponse, type ListBatchSessionsResponses, type ListCertificatesData, type ListCertificatesError, type ListCertificatesErrors, type ListCertificatesResponse, type ListCertificatesResponses, type ListExtensionsData, type ListExtensionsError, type ListExtensionsErrors, type ListExtensionsResponse, type ListExtensionsResponses, type ListIntegrationsData, type ListIntegrationsError, type ListIntegrationsErrors, type ListIntegrationsResponse, type ListIntegrationsResponses, type ListPendingInterventionsData, type ListPendingInterventionsError, type ListPendingInterventionsErrors, type ListPendingInterventionsResponse, type ListPendingInterventionsResponses, type ListProfilesData, type ListProfilesError, type ListProfilesErrors, type ListProfilesResponse, type ListProfilesResponses, type ListRecordingsData, type ListRecordingsError, type ListRecordingsErrors, type ListRecordingsResponse, type ListRecordingsResponses, type ListSessionsData, type ListSessionsError, type ListSessionsErrors, type ListSessionsResponse, type ListSessionsResponses, type ListTaskExecutionsData, type ListTaskExecutionsError, type ListTaskExecutionsErrors, type ListTaskExecutionsResponse, type ListTaskExecutionsResponses, type ListTaskVersionsData, type ListTaskVersionsError, type ListTaskVersionsErrors, type ListTaskVersionsResponse, type ListTaskVersionsResponses, type ListTasksData, type ListTasksError, type ListTasksErrors, type ListTasksResponse, type ListTasksResponses, type ListWebhookEventsData, type ListWebhookEventsErrors, type ListWebhookEventsResponse, type ListWebhookEventsResponses, type ListWebhooksData, type ListWebhooksErrors, type ListWebhooksResponse, type ListWebhooksResponses, type MouseClickData, type MouseClickErrors, type MouseClickRequestSchema, type MouseClickResponse, type MouseClickResponses, type MouseDoubleClickData, type MouseDoubleClickErrors, type MouseDoubleClickResponse, type MouseDoubleClickResponses, type MouseDownData, type MouseDownErrors, type MouseDownResponse, type MouseDownResponses, type MouseMoveData, type MouseMoveErrors, type MouseMoveResponse, type MouseMoveResponses, type MouseSingleClickRequestSchema, type MouseUpData, type MouseUpErrors, type MouseUpResponse, type MouseUpResponses, type NavigateRequestSchema, NotFoundError, type OnePasswordAllSecretsConfig, type OnePasswordConfig, type OnePasswordIntegration, type OnePasswordSpecificSecretsConfig, type Options, type PasteData, type PasteErrors, type PasteRequestSchema, type PasteResponse, type PasteResponses, type PauseAgentData, type PauseAgentError, type PauseAgentErrors, type PauseAgentResponse, type PauseAgentResponses, type PauseRecordingData, type PauseRecordingError, type PauseRecordingErrors, type PauseRecordingResponse, type PauseRecordingResponses, type PendingInterventionItem, type PendingInterventionsResponse, type PerformWebTaskAsyncResponseData, type PerformWebTaskData, type PerformWebTaskError, type PerformWebTaskErrors, type PerformWebTaskRequestSchema, type PerformWebTaskResponse, type PerformWebTaskResponseSchema, type PerformWebTaskResponses, type PerformWebTaskStatusFailedResponseData, type PerformWebTaskStatusResponseSchema, type PerformWebTaskStatusRunningResponseData, type PerformWebTaskStatusSuccessResponseData, type PerformWebTaskSyncResponseData, PermissionDeniedError, type ProfileListResponse, type ProfileRequestSchema, type ProfileResponse, type ProfileResponseSchema, Profiles, type ProxyConfig, type PublishTaskVersionData, type PublishTaskVersionError, type PublishTaskVersionErrors, type PublishTaskVersionResponse, type PublishTaskVersionResponses, type PublishVersionRequest, RateLimitError, type RecordingItem, type RecordingListResponse, Recordings, type RespondToHumanInterventionData, type RespondToHumanInterventionError, type RespondToHumanInterventionErrors, type RespondToHumanInterventionResponse, type RespondToHumanInterventionResponses, type ResumeAgentData, type ResumeAgentError, type ResumeAgentErrors, type ResumeAgentResponse, type ResumeAgentResponses, type ResumeRecordingData, type ResumeRecordingError, type ResumeRecordingErrors, type ResumeRecordingResponse, type ResumeRecordingResponses, type RetryBatchSessionData, type RetryBatchSessionError, type RetryBatchSessionErrors, type RetryBatchSessionResponse, type RetryBatchSessionResponses, type RotateWebhookSecretData, type RotateWebhookSecretErrors, type RotateWebhookSecretResponse, type RotateWebhookSecretResponses, type RunAdhocTaskData, type RunAdhocTaskError, type RunAdhocTaskErrors, type RunAdhocTaskResponse, type RunAdhocTaskResponses, type RunTaskByNameData, type RunTaskByNameError, type RunTaskByNameErrors, type RunTaskByNameRequest, type RunTaskByNameResponse, type RunTaskByNameResponses, type RunTaskData, type RunTaskError, type RunTaskErrors, type RunTaskRequest, type RunTaskResponse, type RunTaskResponse2, type RunTaskResponses, type RunTaskV2Request, type SaveTaskDraftData, type SaveTaskDraftError, type SaveTaskDraftErrors, type SaveTaskDraftResponse, type SaveTaskDraftResponses, type ScreenshotRequestSchema, type ScreenshotWebpageData, type ScreenshotWebpageError, type ScreenshotWebpageErrors, type ScreenshotWebpageResponse, type ScreenshotWebpageResponses, type ScrollData, type ScrollErrors, type ScrollRequestSchema, type ScrollResponse, type ScrollResponses, type SendWebhookTestEventData, type SendWebhookTestEventErrors, type SendWebhookTestEventResponse, type SendWebhookTestEventResponses, type ServiceAccountCredentials, type SessionConfig, type SessionCreateRequestSchema, type SessionCreateResponseSchema, type SessionHistoryDataPoint, type SessionHistoryPageItem, type SessionHistoryPageResponse, type SessionHistoryPagination, type SessionHistoryResponse, type SessionHistorySummary, type SessionListResponse, type SessionStatus, Sessions, type SetClipboardData, type SetClipboardErrors, type SetClipboardResponse, type SetClipboardResponses, type SignalEventData, type SignalEventError, type SignalEventErrors, type SignalEventRequestSchema, type SignalEventResponse, type SignalEventResponses, type SuccessResponse, type Task, type TaskExecutionResult, type TaskExecutionResultResponse, type TaskExecutionResultsListResponse, type TaskGenerationStatusV2Response, type TaskListResponse, type TaskMetadata, type TaskMetadataResponse, type TaskOptions, type TaskParameterV2, type TaskResponse, type TaskRunStatusV2Response, type TaskVersion, type TaskVersionResponse, type TaskVersionsListResponse, Tasks, TasksLegacy, type ToFileInput, Tools, type TypeTextRequestSchema, UnprocessableEntityError, type UpdateApplicationRequest, type UpdateApplicationResponse, type UpdateAuthFlowData, type UpdateAuthFlowError, type UpdateAuthFlowErrors, type UpdateAuthFlowRequest, type UpdateAuthFlowResponse, type UpdateAuthFlowResponse2, type UpdateAuthFlowResponses, type UpdateBatchSessionData, type UpdateBatchSessionError, type UpdateBatchSessionErrors, type UpdateBatchSessionResponse, type UpdateBatchSessionResponses, type UpdateIdentityData, type UpdateIdentityError, type UpdateIdentityErrors, type UpdateIdentityRequest, type UpdateIdentityResponse, type UpdateIdentityResponse2, type UpdateIdentityResponses, type UpdateTaskData, type UpdateTaskError, type UpdateTaskErrors, type UpdateTaskMetadataRequest, type UpdateTaskResponse, type UpdateTaskResponses, type UpdateWebhookData, type UpdateWebhookErrors, type UpdateWebhookResponse, type UpdateWebhookResponses, type UploadAgentFilesData, type UploadAgentFilesError, type UploadAgentFilesErrors, type UploadAgentFilesResponse, type UploadAgentFilesResponses, type UploadExtensionData, type UploadExtensionError, type UploadExtensionErrors, type UploadExtensionResponse, type UploadExtensionResponses, type UploadFileData, type UploadFileError, type UploadFileErrors, type UploadFileResponse, type UploadFileResponses, type UsernamePasswordCredential, VERSION, type WaitForEventData, type WaitForEventError, type WaitForEventErrors, type WaitForEventRequestSchema, type WaitForEventResponse, type WaitForEventResponses, type WebUnlockerRequestSchema, type WebhookCreateRequest, type WebhookDeleteResponse, type WebhookEventDeliveryRow, type WebhookEventType, type WebhookEventsListResponse, type WebhookListResponse, type WebhookPublic, type WebhookTestRequest, type WebhookTestResponse, type WebhookUpdateRequest, type WebhookWithSecret, Webhooks, agentBrowserTask, agentTask, client, connectBrowser, createAnchorbrowserClient, createBrowser, createClient, createClientConfig, createConfig, getAgentWsUrl, getApiKey, getBaseUrl, getCdpUrl, installErrorInterceptor, toFile };

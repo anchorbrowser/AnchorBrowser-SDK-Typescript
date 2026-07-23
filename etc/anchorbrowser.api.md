@@ -45,6 +45,10 @@ export type AgentTaskResult = {
 };
 
 // @public
+export class AnchorbrowserError extends Error {
+}
+
+// @public
 export type AnchorProxy = {
     active: boolean;
     type?: 'anchor_proxy';
@@ -55,6 +59,35 @@ export type AnchorProxy = {
 
 // @public
 export type AnchorProxyCountryCode = 'af' | 'al' | 'dz' | 'ad' | 'ao' | 'as' | 'ag' | 'ar' | 'am' | 'aw' | 'au' | 'at' | 'az' | 'bs' | 'bh' | 'bb' | 'by' | 'be' | 'bz' | 'bj' | 'bm' | 'bo' | 'ba' | 'br' | 'bg' | 'bf' | 'cm' | 'ca' | 'cv' | 'td' | 'cl' | 'co' | 'cg' | 'cr' | 'ci' | 'hr' | 'cu' | 'cy' | 'cz' | 'dk' | 'dm' | 'do' | 'ec' | 'eg' | 'sv' | 'ee' | 'et' | 'fo' | 'fi' | 'fr' | 'gf' | 'pf' | 'ga' | 'gm' | 'ge' | 'de' | 'gh' | 'gi' | 'gr' | 'gd' | 'gp' | 'gt' | 'gg' | 'gn' | 'gw' | 'gy' | 'ht' | 'hn' | 'hu' | 'is' | 'in' | 'ir' | 'iq' | 'ie' | 'il' | 'it' | 'jm' | 'jp' | 'jo' | 'kz' | 'kw' | 'kg' | 'lv' | 'lb' | 'ly' | 'li' | 'lt' | 'lu' | 'mk' | 'ml' | 'mt' | 'mq' | 'mr' | 'mx' | 'md' | 'mc' | 'me' | 'ma' | 'nl' | 'nz' | 'ni' | 'ng' | 'no' | 'pk' | 'pa' | 'py' | 'pe' | 'ph' | 'pl' | 'pt' | 'pr' | 'qa' | 'ro' | 'lc' | 'sm' | 'sa' | 'sn' | 'rs' | 'sc' | 'sl' | 'sk' | 'si' | 'so' | 'za' | 'kr' | 'es' | 'sr' | 'se' | 'ch' | 'sy' | 'st' | 'tw' | 'tj' | 'tg' | 'tt' | 'tn' | 'tr' | 'tc' | 'ua' | 'ae' | 'us' | 'uy' | 'uz' | 've' | 'ye';
+
+// @public (undocumented)
+export class APIConnectionError extends AnchorbrowserError {
+    constructor(input?: {
+        message?: string;
+        cause?: unknown;
+    });
+}
+
+// @public (undocumented)
+export class APIConnectionTimeoutError extends APIConnectionError {
+    constructor(input?: {
+        message?: string;
+    });
+}
+
+// @public (undocumented)
+export class APIError extends AnchorbrowserError {
+    constructor(status: number, error: unknown, message: string | undefined, headers: Headers | undefined);
+    readonly error: unknown;
+    static generate(status: number | undefined, errorBody: unknown, message: string | undefined, headers: Headers | undefined): AnchorbrowserError;
+    readonly headers?: Headers;
+    readonly status: number;
+}
+
+// @public (undocumented)
+export class APIUserAbortError extends AnchorbrowserError {
+    constructor(message?: string);
+}
 
 // @public (undocumented)
 export type ApplicationIdentityItem = {
@@ -114,6 +147,10 @@ export type AsyncSessionStatusResponseSchema = {
     };
 };
 
+// @public (undocumented)
+export class AuthenticationError extends APIError {
+}
+
 // @public
 export type AuthenticatorCredential = {
     type: 'authenticator';
@@ -132,6 +169,10 @@ export type AuthFlowItem = {
     created_at?: string;
     updated_at?: string;
 };
+
+// @public (undocumented)
+export class BadRequestError extends APIError {
+}
 
 // @public (undocumented)
 export type BatchSessionDeleteResponseSchema = {
@@ -433,6 +474,10 @@ export interface Config<T extends ClientConfigOptions = ClientConfigOptions> ext
     throwOnError?: T['throwOnError'];
 }
 
+// @public (undocumented)
+export class ConflictError extends APIError {
+}
+
 // @public
 export function connectBrowser(sessionId: string, client?: Client): Promise<Browser>;
 
@@ -470,6 +515,9 @@ export type CopyResponses = {
 export type CopyResponseSchema = {
     text?: string;
 };
+
+// @public (undocumented)
+export function createAnchorbrowserClient(config?: Config<ClientConfigOptions>): Client;
 
 // @public (undocumented)
 export type CreateApplicationData = {
@@ -1640,6 +1688,58 @@ export type FetchWebpageResponses = {
 };
 
 // @public (undocumented)
+export type GenerateTaskData = {
+    body: GenerateTaskV2Request;
+    path?: never;
+    query?: never;
+    url: '/v2/tasks/generate';
+};
+
+// @public (undocumented)
+export type GenerateTaskError = GenerateTaskErrors[keyof GenerateTaskErrors];
+
+// @public (undocumented)
+export type GenerateTaskErrors = {
+    400: ErrorResponse;
+    500: ErrorResponse;
+};
+
+// @public (undocumented)
+export type GenerateTaskResponse = GenerateTaskResponses[keyof GenerateTaskResponses];
+
+// @public (undocumented)
+export type GenerateTaskResponses = {
+    200: GenerateTaskV2Response;
+};
+
+// @public (undocumented)
+export type GenerateTaskV2Request = {
+    taskName: string;
+    taskPrompt: string;
+    async?: boolean;
+    description?: string;
+    application_id?: string;
+    identity_id?: string;
+    input_schema?: Array<TaskParameterV2>;
+    output_schema?: Array<TaskParameterV2>;
+    output_file_only?: boolean;
+    human_intervention?: boolean;
+    browser_session_id?: string;
+    task_browser_default_configuration?: {
+        [key: string]: unknown;
+    };
+};
+
+// @public (undocumented)
+export type GenerateTaskV2Response = {
+    id: string;
+    status: 'generating';
+    taskId?: string;
+    taskVersionId?: string;
+    projectId?: string;
+};
+
+// @public (undocumented)
 export const getAgentWsUrl: (apiBaseURL: string, sessionId: string) => string;
 
 // @public (undocumented)
@@ -2270,6 +2370,33 @@ export type GetTaskExecutionResponses = {
 };
 
 // @public (undocumented)
+export type GetTaskGenerationStatusData = {
+    body?: never;
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/v2/tasks/{taskId}/generation-status';
+};
+
+// @public (undocumented)
+export type GetTaskGenerationStatusError = GetTaskGenerationStatusErrors[keyof GetTaskGenerationStatusErrors];
+
+// @public (undocumented)
+export type GetTaskGenerationStatusErrors = {
+    404: ErrorResponse;
+    500: ErrorResponse;
+};
+
+// @public (undocumented)
+export type GetTaskGenerationStatusResponse = GetTaskGenerationStatusResponses[keyof GetTaskGenerationStatusResponses];
+
+// @public (undocumented)
+export type GetTaskGenerationStatusResponses = {
+    200: TaskGenerationStatusV2Response;
+};
+
+// @public (undocumented)
 export type GetTaskResponse = GetTaskResponses[keyof GetTaskResponses];
 
 // @public (undocumented)
@@ -2449,6 +2576,9 @@ export type IdentityTokenResponse = {
     tokenHash: string;
 };
 
+// @public
+export function installErrorInterceptor(client: Client): void;
+
 // @public (undocumented)
 export type Integration = OnePasswordIntegration;
 
@@ -2484,6 +2614,10 @@ export class Integrations {
 
 // @public
 export type IntegrationType = '1PASSWORD';
+
+// @public (undocumented)
+export class InternalServerError extends APIError {
+}
 
 // @public (undocumented)
 export type KeyboardShortcutData = {
@@ -3202,6 +3336,10 @@ export type NavigateRequestSchema = {
 };
 
 // @public (undocumented)
+export class NotFoundError extends APIError {
+}
+
+// @public (undocumented)
 export type OnePasswordAllSecretsConfig = {
     load_mode: 'all';
 };
@@ -3431,6 +3569,10 @@ export type PerformWebTaskSyncResponseData = {
 };
 
 // @public (undocumented)
+export class PermissionDeniedError extends APIError {
+}
+
+// @public (undocumented)
 export type ProfileListResponse = {
     data?: {
         count?: number;
@@ -3509,6 +3651,10 @@ export type PublishVersionRequest = {
     description?: string;
     browserConfiguration?: SessionConfig;
 };
+
+// @public (undocumented)
+export class RateLimitError extends APIError {
+}
 
 // @public (undocumented)
 export type RecordingItem = {
@@ -3962,6 +4108,7 @@ export type SessionConfig = {
         read_only?: boolean;
         one_time_url?: boolean;
     };
+    x402?: boolean;
 };
 
 // @public (undocumented)
@@ -4217,6 +4364,14 @@ export type TaskExecutionResultsListResponse = {
 };
 
 // @public (undocumented)
+export type TaskGenerationStatusV2Response = {
+    id: string;
+    status: 'generating' | 'ready' | 'failed' | 'waiting-for-session';
+    project_state?: string;
+    error?: string;
+};
+
+// @public (undocumented)
 export type TaskListResponse = {
     data?: {
         tasks: Array<Task>;
@@ -4273,6 +4428,16 @@ export interface TaskOptions {
     url?: string;
 }
 
+// @public
+export type TaskParameterV2 = {
+    name: string;
+    type: 'string' | 'number' | 'boolean' | 'secret' | 'file';
+    required?: boolean;
+    description?: string;
+    defaultValue?: unknown;
+    options?: Array<string>;
+};
+
 // @public (undocumented)
 export type TaskResponse = {
     data?: Task;
@@ -4291,6 +4456,8 @@ export type TaskRunStatusV2Response = {
 
 // @public (undocumented)
 export class Tasks {
+    static generateTask<ThrowOnError extends boolean = true>(options: Options<GenerateTaskData, ThrowOnError>): RequestResult<GenerateTaskResponses, GenerateTaskErrors, ThrowOnError, 'data'>;
+    static getTaskGenerationStatus<ThrowOnError extends boolean = true>(options: Options<GetTaskGenerationStatusData, ThrowOnError>): RequestResult<GetTaskGenerationStatusResponses, GetTaskGenerationStatusErrors, ThrowOnError, 'data'>;
     static getTaskRunStatus<ThrowOnError extends boolean = true>(options: Options<GetTaskRunStatusData, ThrowOnError>): RequestResult<GetTaskRunStatusResponses, GetTaskRunStatusErrors, ThrowOnError, 'data'>;
     static runTask<ThrowOnError extends boolean = true>(options: Options<RunTaskData, ThrowOnError>): RequestResult<RunTaskResponses, RunTaskErrors, ThrowOnError, 'data'>;
 }
@@ -4348,6 +4515,14 @@ export type TaskVersionsListResponse = {
     };
 };
 
+// Warning: (ae-forgotten-export) The symbol "ToFileOptions" needs to be exported by the entry point index.d.ts
+//
+// @public
+export function toFile(value: ToFileInput | Promise<ToFileInput>, name?: string | null, options?: ToFileOptions): Promise<File>;
+
+// @public
+export type ToFileInput = Blob | File | ArrayBuffer | ArrayBufferView | Iterable<Uint8Array> | AsyncIterable<Uint8Array> | ReadableStream<Uint8Array>;
+
 // @public (undocumented)
 export class Tools {
     static createPagePdf<ThrowOnError extends boolean = true>(options: Options<CreatePagePdfData, ThrowOnError>): RequestResult<CreatePagePdfResponses, CreatePagePdfErrors, ThrowOnError, 'data'>;
@@ -4363,6 +4538,10 @@ export type TypeTextRequestSchema = {
     text: string;
     delay?: number;
 };
+
+// @public (undocumented)
+export class UnprocessableEntityError extends APIError {
+}
 
 // @public (undocumented)
 export type UpdateApplicationRequest = {
@@ -4820,7 +4999,7 @@ export type WebUnlockerRequestSchema = {
 //
 // dist/index.d.ts:319:5 - (ae-forgotten-export) The symbol "Middleware" needs to be exported by the entry point index.d.ts
 // dist/index.d.ts:319:5 - (ae-forgotten-export) The symbol "ResolvedRequestOptions" needs to be exported by the entry point index.d.ts
-// dist/index.d.ts:6904:5 - (ae-forgotten-export) The symbol "ClientMeta" needs to be exported by the entry point index.d.ts
+// dist/index.d.ts:7082:5 - (ae-forgotten-export) The symbol "ClientMeta" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

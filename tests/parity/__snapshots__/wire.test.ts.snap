@@ -1749,6 +1749,53 @@ Example data
 }
 `;
 
+exports[`wire parity Tasks.generateTask: Tasks.generateTask 1`] = `
+{
+  "body": {
+    "taskName": "string",
+    "taskPrompt": "string",
+  },
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "content-type",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-anchor-sdk",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+    "content-type": "application/json",
+  },
+  "method": "POST",
+  "path": "/v2/tasks/generate",
+  "query": {},
+}
+`;
+
+exports[`wire parity Tasks.getTaskGenerationStatus: Tasks.getTaskGenerationStatus 1`] = `
+{
+  "body": null,
+  "headerNames": [
+    "accept",
+    "accept-language",
+    "anchor-api-key",
+    "sec-fetch-mode",
+    "user-agent",
+    "x-anchor-sdk",
+  ],
+  "headers": {
+    "accept": "*/*",
+    "anchor-api-key": "test-api-key",
+  },
+  "method": "GET",
+  "path": "/v2/tasks/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e/generation-status",
+  "query": {},
+}
+`;
+
 exports[`wire parity Tasks.getTaskRunStatus: Tasks.getTaskRunStatus 1`] = `
 {
   "body": null,
@@ -2500,4 +2547,4 @@ exports[`wire parity Webhooks.updateWebhook: Webhooks.updateWebhook 1`] = `
 }
 `;
 
-exports[`wire parity covers every operation exactly once: operation count 1`] = `109`;
+exports[`wire parity covers every operation exactly once: operation count 1`] = `111`;

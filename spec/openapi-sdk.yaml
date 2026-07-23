@@ -375,6 +375,11 @@ components:
               description: Generate a single-use live view URL. After the first viewer
                 connects, the link becomes invalid. Requires a headful browser.
                 Defaults to `false`.
+        x402:
+          type: boolean
+          default: false
+          description: Allow this browser session to automatically pay x402-protected
+            resources using Amazon Bedrock AgentCore Payments.
     BrowserConfig:
       type: object
       description: Browser-specific configurations.
@@ -2538,6 +2543,145 @@ components:
       required:
         - run_id
         - status
+    TaskParameterV2:
+      type: object
+      description: A single input or output parameter for a generated task.
+      properties:
+        name:
+          type: string
+          description: The field name/key
+        type:
+          type: string
+          enum:
+            - string
+            - number
+            - boolean
+            - secret
+            - file
+          description: Data type of the parameter
+        required:
+          type: boolean
+          default: true
+          description: Whether the parameter is required
+        description:
+          type: string
+          nullable: true
+          description: Description of the parameter
+        defaultValue:
+          nullable: true
+          description: Default value of the parameter, used when not provided
+        options:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Allowed values for the parameter, if constrained
+      required:
+        - name
+        - type
+    GenerateTaskV2Request:
+      type: object
+      properties:
+        taskName:
+          type: string
+          description: Name of the task
+        taskPrompt:
+          type: string
+          description: Natural-language description of what the task should do, used for
+            AI generation. Make it as detailed as possible with all the logic
+            and steps needed to complete the task.
+        async:
+          type: boolean
+          default: true
+          description: Whether to generate the task asynchronously
+        description:
+          type: string
+          description: Description of the task
+        application_id:
+          type: string
+          format: uuid
+          description: Optional application (connection) ID to associate with the task
+        identity_id:
+          type: string
+          description: Optional identity ID to use during task generation
+        input_schema:
+          type: array
+          default: []
+          items:
+            $ref: '#/components/schemas/TaskParameterV2'
+          description: Input parameters the task accepts
+        output_schema:
+          type: array
+          default: []
+          items:
+            $ref: '#/components/schemas/TaskParameterV2'
+          description: Output fields the task produces
+        output_file_only:
+          type: boolean
+          default: false
+          description: Whether task runs should return only the bundled session downloads
+            file
+        human_intervention:
+          type: boolean
+          default: false
+          description: Allow human intervention during task execution
+        browser_session_id:
+          type: string
+          description: Existing finished browser session id to generate the workflow from
+        task_browser_default_configuration:
+          type: object
+          additionalProperties: true
+          description: Optional default browser/session configuration when running this task
+      required:
+        - taskName
+        - taskPrompt
+    GenerateTaskV2Response:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the created task (use with generation-status and run
+            endpoints)
+        status:
+          type: string
+          enum:
+            - generating
+          description: Whether the task is still generating, ready to run, or failed
+        taskId:
+          type: string
+          description: The ID of the task being generated
+        taskVersionId:
+          type: string
+          description: The ID of the task version being generated
+        projectId:
+          type: string
+          description: The ID of the underlying generation project
+      required:
+        - id
+        - status
+    TaskGenerationStatusV2Response:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier of the generation request
+        status:
+          type: string
+          enum:
+            - generating
+            - ready
+            - failed
+            - waiting-for-session
+          description: Current task generation status
+        project_state:
+          type: string
+          description: Internal state of the generation project
+        error:
+          type: string
+          description: Error message when generation failed
+      required:
+        - id
+        - status
     TaskListResponse:
       type: object
       properties:
@@ -4660,6 +4804,97 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       operationId: getTaskRunStatus
+  /v2/tasks/generate:
+    post:
+      summary: Generate a Task
+      description: >
+        Starts asynchronous generation of a new task from a natural-language
+        prompt.
+
+        Poll `GET /v2/tasks/{taskId}/generation-status` until the status is
+        `ready`.
+      security:
+        - api_key_header: []
+      tags:
+        - Tasks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateTaskV2Request'
+            examples:
+              generateTask:
+                summary: Generate a task from a prompt
+                value:
+                  taskName: file-downloader
+                  taskPrompt: Create a task that downloads a specific file from a given URL.
+                  input_schema:
+                    - name: url
+                      type: string
+                      required: true
+                      description: URL of the file to download
+                  output_schema:
+                    - name: success
+                      type: boolean
+                      description: Whether the download succeeded
+      responses:
+        '200':
+          description: Task generation started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateTaskV2Response'
+        '400':
+          description: Invalid task generation request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error generating task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: generateTask
+  /v2/tasks/{taskId}/generation-status:
+    get:
+      summary: Get Task Generation Status
+      description: >
+        Returns the generation status of a task created via `POST
+        /v2/tasks/generate`.
+      security:
+        - api_key_header: []
+      tags:
+        - Tasks
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: The ID of the task
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current generation status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskGenerationStatusV2Response'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to get task generation status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: getTaskGenerationStatus
   /v1/tools/execute-code:
     post:
       summary: Execute Code Snippet

@@ -108,6 +108,9 @@ import type {
   FetchWebpageData,
   FetchWebpageErrors,
   FetchWebpageResponses,
+  GenerateTaskData,
+  GenerateTaskErrors,
+  GenerateTaskResponses,
   GetAllSessionsStatusData,
   GetAllSessionsStatusErrors,
   GetAllSessionsStatusResponses,
@@ -167,6 +170,9 @@ import type {
   GetTaskExecutionData,
   GetTaskExecutionErrors,
   GetTaskExecutionResponses,
+  GetTaskGenerationStatusData,
+  GetTaskGenerationStatusErrors,
+  GetTaskGenerationStatusResponses,
   GetTaskResponses,
   GetTaskRunStatusData,
   GetTaskRunStatusErrors,
@@ -1099,6 +1105,50 @@ export class Tasks {
       responseStyle: 'data',
       security: [{ name: 'anchor-api-key', type: 'apiKey' }],
       url: '/v2/tasks/runs/{runId}/status',
+      ...options,
+    });
+  }
+
+  /**
+   * Generate a Task
+   *
+   * Starts asynchronous generation of a new task from a natural-language prompt.
+   * Poll `GET /v2/tasks/{taskId}/generation-status` until the status is `ready`.
+   *
+   */
+  public static generateTask<ThrowOnError extends boolean = true>(
+    options: Options<GenerateTaskData, ThrowOnError>,
+  ): RequestResult<GenerateTaskResponses, GenerateTaskErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).post<GenerateTaskResponses, GenerateTaskErrors, ThrowOnError, 'data'>({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v2/tasks/generate',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+  }
+
+  /**
+   * Get Task Generation Status
+   *
+   * Returns the generation status of a task created via `POST /v2/tasks/generate`.
+   *
+   */
+  public static getTaskGenerationStatus<ThrowOnError extends boolean = true>(
+    options: Options<GetTaskGenerationStatusData, ThrowOnError>,
+  ): RequestResult<GetTaskGenerationStatusResponses, GetTaskGenerationStatusErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).get<
+      GetTaskGenerationStatusResponses,
+      GetTaskGenerationStatusErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v2/tasks/{taskId}/generation-status',
       ...options,
     });
   }

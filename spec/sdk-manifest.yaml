@@ -88,6 +88,8 @@ naming:
   'delete /v1/batch-sessions/{batch_id}': { class: BatchSessions, method: deleteBatchSession }
   'post /v1/batch-sessions/{batch_id}/retry': { class: BatchSessions, method: retryBatchSession }
   # Tasks
+  'post /v2/tasks/generate': { class: Tasks, method: generateTask }
+  'get /v2/tasks/{taskId}/generation-status': { class: Tasks, method: getTaskGenerationStatus }
   'post /v2/tasks/{taskId}/run': { class: Tasks, method: runTask }
   'get /v2/tasks/runs/{runId}/status': { class: Tasks, method: getTaskRunStatus }
   # TasksLegacy
@@ -143,3 +145,11 @@ naming:
   'post /v1/webhooks/{id}/rotate-secret': { class: Webhooks, method: rotateWebhookSecret }
   'post /v1/webhooks/{id}/test': { class: Webhooks, method: sendWebhookTestEvent }
   'get /v1/webhooks/{id}/events': { class: Webhooks, method: listWebhookEvents }
+
+v1_removed:
+  - path: 'post /v1/tools/fetch-webpage'
+    reason: >-
+      Not part of the public OpenAPI spec
+  - path: 'get /v1/identities/{identity_id}/credentials'
+    reason: >-
+      Not part of the public OpenAPI spec

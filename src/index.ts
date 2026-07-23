@@ -18,13 +18,23 @@
 export * from './generated';
 
 // The shared, configurable HTTP client (auth, baseUrl, interceptors, ...)
-export { client } from './generated/client.gen';
+import { client } from './generated/client.gen';
+export { client };
 export type { CreateClientConfig } from './generated/client.gen';
-export { createClientConfig } from './hey-api';
+export { createClientConfig, createAnchorbrowserClient } from './hey-api';
 export { VERSION } from './version';
 export { createClient, createConfig } from './generated/client';
 export type { Client, Config, ClientOptions as ClientConfigOptions } from './generated/client';
 
+// Typed errors thrown by the client (see also `installErrorInterceptor`, used
+// below to wire them into the shared `client`)
+export * from './lib/errors';
+import { installErrorInterceptor } from './lib/errors';
+installErrorInterceptor(client);
+
 // Hand-written Playwright and AI-agent helpers
 export * from './lib/browser';
 export * from './lib/agent';
+
+// Upload helper for endpoints that take a file (multipart/form-data)
+export * from './lib/uploads';

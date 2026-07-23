@@ -6,6 +6,8 @@ This library provides convenient access to the Anchorbrowser REST API from serve
 
 The REST API documentation can be found on [docs.anchorbrowser.io](https://docs.anchorbrowser.io/api-reference). The SDK is generated directly from the public OpenAPI specification — every documented endpoint is available as a typed method.
 
+> **Upgrading from v0.X.X?** See [MIGRATION.md](MIGRATION.md) for every breaking change and its v1 equivalent.
+
 ## Installation
 
 ```sh
@@ -84,14 +86,32 @@ const result = await agentTask('Find the current weather in Tokyo', {
 console.log(result.data.result);
 ```
 
-The shared `client` also supports interceptors and per-request fetch options
+### Error handling
+
+Failures throw a typed error — check `instanceof` to branch on the failure kind, or read `.status`/`.error` for the raw response:
+
+```ts
+import { Sessions, NotFoundError, APIError } from 'anchorbrowser';
+
+try {
+  await Sessions.getSession({ path: { session_id: 'does-not-exist' } });
+} catch (err) {
+  if (err instanceof NotFoundError) {
+    console.log('no such session');
+  } else if (err instanceof APIError) {
+    console.log(err.status, err.message, err.error); // err.error is the raw response body
+  } else {
+    throw err; // network/connection error (APIConnectionError, APIConnectionTimeoutError, ...)
+  }
+}
+```
 
 ### File uploads
 
-Pass a `File` or `Blob` (built into Node 20+):
+Pass a `File` (built into Node 20+), or use `toFile()` for a Buffer/Blob/stream/async-iterable — it also works on Node 18, where `File` isn't a global:
 
 ```ts
-import { Sessions } from 'anchorbrowser';
+import { Sessions, toFile } from 'anchorbrowser';
 
 const session = await Sessions.createSession({
   body: { session: { recording: { active: true } } },
@@ -99,7 +119,7 @@ const session = await Sessions.createSession({
 
 await Sessions.uploadFile({
   path: { sessionId: session.data.id },
-  body: { file: new File(['data'], 'data.txt') },
+  body: { file: await toFile(Buffer.from('data'), 'data.txt') },
 });
 ```
 

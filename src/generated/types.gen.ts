@@ -335,6 +335,10 @@ export type SessionConfig = {
      */
     one_time_url?: boolean;
   };
+  /**
+   * Allow this browser session to automatically pay x402-protected resources using Amazon Bedrock AgentCore Payments.
+   */
+  x402?: boolean;
 };
 
 /**
@@ -2258,6 +2262,131 @@ export type TaskRunStatusV2Response = {
   session_id?: string;
 };
 
+/**
+ * A single input or output parameter for a generated task.
+ */
+export type TaskParameterV2 = {
+  /**
+   * The field name/key
+   */
+  name: string;
+  /**
+   * Data type of the parameter
+   */
+  type: 'string' | 'number' | 'boolean' | 'secret' | 'file';
+  /**
+   * Whether the parameter is required
+   */
+  required?: boolean;
+  /**
+   * Description of the parameter
+   */
+  description?: string;
+  /**
+   * Default value of the parameter, used when not provided
+   */
+  defaultValue?: unknown;
+  /**
+   * Allowed values for the parameter, if constrained
+   */
+  options?: Array<string>;
+};
+
+export type GenerateTaskV2Request = {
+  /**
+   * Name of the task
+   */
+  taskName: string;
+  /**
+   * Natural-language description of what the task should do, used for AI generation. Make it as detailed as possible with all the logic and steps needed to complete the task.
+   */
+  taskPrompt: string;
+  /**
+   * Whether to generate the task asynchronously
+   */
+  async?: boolean;
+  /**
+   * Description of the task
+   */
+  description?: string;
+  /**
+   * Optional application (connection) ID to associate with the task
+   */
+  application_id?: string;
+  /**
+   * Optional identity ID to use during task generation
+   */
+  identity_id?: string;
+  /**
+   * Input parameters the task accepts
+   */
+  input_schema?: Array<TaskParameterV2>;
+  /**
+   * Output fields the task produces
+   */
+  output_schema?: Array<TaskParameterV2>;
+  /**
+   * Whether task runs should return only the bundled session downloads file
+   */
+  output_file_only?: boolean;
+  /**
+   * Allow human intervention during task execution
+   */
+  human_intervention?: boolean;
+  /**
+   * Existing finished browser session id to generate the workflow from
+   */
+  browser_session_id?: string;
+  /**
+   * Optional default browser/session configuration when running this task
+   */
+  task_browser_default_configuration?: {
+    [key: string]: unknown;
+  };
+};
+
+export type GenerateTaskV2Response = {
+  /**
+   * The ID of the created task (use with generation-status and run endpoints)
+   */
+  id: string;
+  /**
+   * Whether the task is still generating, ready to run, or failed
+   */
+  status: 'generating';
+  /**
+   * The ID of the task being generated
+   */
+  taskId?: string;
+  /**
+   * The ID of the task version being generated
+   */
+  taskVersionId?: string;
+  /**
+   * The ID of the underlying generation project
+   */
+  projectId?: string;
+};
+
+export type TaskGenerationStatusV2Response = {
+  /**
+   * Identifier of the generation request
+   */
+  id: string;
+  /**
+   * Current task generation status
+   */
+  status: 'generating' | 'ready' | 'failed' | 'waiting-for-session';
+  /**
+   * Internal state of the generation project
+   */
+  project_state?: string;
+  /**
+   * Error message when generation failed
+   */
+  error?: string;
+};
+
 export type TaskListResponse = {
   data?: {
     tasks: Array<Task>;
@@ -3924,6 +4053,70 @@ export type GetTaskRunStatusResponses = {
 };
 
 export type GetTaskRunStatusResponse = GetTaskRunStatusResponses[keyof GetTaskRunStatusResponses];
+
+export type GenerateTaskData = {
+  body: GenerateTaskV2Request;
+  path?: never;
+  query?: never;
+  url: '/v2/tasks/generate';
+};
+
+export type GenerateTaskErrors = {
+  /**
+   * Invalid task generation request
+   */
+  400: ErrorResponse;
+  /**
+   * Error generating task
+   */
+  500: ErrorResponse;
+};
+
+export type GenerateTaskError = GenerateTaskErrors[keyof GenerateTaskErrors];
+
+export type GenerateTaskResponses = {
+  /**
+   * Task generation started
+   */
+  200: GenerateTaskV2Response;
+};
+
+export type GenerateTaskResponse = GenerateTaskResponses[keyof GenerateTaskResponses];
+
+export type GetTaskGenerationStatusData = {
+  body?: never;
+  path: {
+    /**
+     * The ID of the task
+     */
+    taskId: string;
+  };
+  query?: never;
+  url: '/v2/tasks/{taskId}/generation-status';
+};
+
+export type GetTaskGenerationStatusErrors = {
+  /**
+   * Task not found
+   */
+  404: ErrorResponse;
+  /**
+   * Failed to get task generation status
+   */
+  500: ErrorResponse;
+};
+
+export type GetTaskGenerationStatusError = GetTaskGenerationStatusErrors[keyof GetTaskGenerationStatusErrors];
+
+export type GetTaskGenerationStatusResponses = {
+  /**
+   * Current generation status
+   */
+  200: TaskGenerationStatusV2Response;
+};
+
+export type GetTaskGenerationStatusResponse =
+  GetTaskGenerationStatusResponses[keyof GetTaskGenerationStatusResponses];
 
 export type ExecuteCodeData = {
   body: ExecuteCodeRequestSchema;
