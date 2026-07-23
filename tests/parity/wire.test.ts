@@ -73,7 +73,10 @@ function normalize(req: CapturedRequest) {
   let body: unknown = req.body;
   if (typeof body === 'string') {
     if (boundary) {
-      body = body.split(boundary).join('<boundary>').replace(/\r\n/g, '\n');
+      // Whether a trailing CRLF follows the closing boundary delimiter is not
+      // meaningful (RFC 2046) and varies across Node's bundled undici
+      // versions, so it's trimmed rather than snapshotted.
+      body = body.split(boundary).join('<boundary>').replace(/\r\n/g, '\n').trimEnd();
     } else if (contentType?.includes('application/json')) {
       body = JSON.parse(body);
     }
