@@ -1,0 +1,155 @@
+# sdk-manifest.yaml — SDK naming map (v2, full-generation architecture).
+#
+# Maps every operation in the public OpenAPI spec (docs/openapi.yaml) to its
+# SDK class and method name (the operationId). scripts/utils/prepare-spec.cjs
+# injects these into the spec copy the generator consumes, so the public docs
+# spec never needs SDK-specific annotations.
+#
+# New operations that have no entry here get a deterministic auto-derived
+# name (class from the operation tag, method from HTTP verb + path) — add an
+# entry to override. Canonical copy: anchorbrowser monorepo docs/sdk-manifest.yaml.
+
+version: 2
+
+naming:
+  # Tools
+  'post /v1/tools/perform-web-task': { class: Tools, method: performWebTask }
+  'get /v1/tools/perform-web-task/{workflowId}/status': { class: Tools, method: getPerformWebTaskStatus }
+  'post /v1/tools/execute-code': { class: Tools, method: executeCode }
+  'post /v1/tools/fetch/webpage': { class: Tools, method: fetchWebpage }
+  'post /v1/tools/screenshot': { class: Tools, method: screenshotWebpage }
+  'post /v1/tools/page-pdf': { class: Tools, method: createPagePdf }
+  # Sessions
+  'get /v1/sessions': { class: Sessions, method: listSessions }
+  'post /v1/sessions': { class: Sessions, method: createSession }
+  'post /v1/sessions/async': { class: Sessions, method: createSessionAsync }
+  'get /v1/sessions/async/{request_id}/status': { class: Sessions, method: getAsyncSessionStatus }
+  'delete /v1/sessions/all': { class: Sessions, method: deleteAllSessions }
+  'get /v1/sessions/all/status': { class: Sessions, method: getAllSessionsStatus }
+  'get /v1/sessions/history': { class: Sessions, method: getSessionsHistory }
+  'get /v1/sessions/{session_id}': { class: Sessions, method: getSession }
+  'delete /v1/sessions/{session_id}': { class: Sessions, method: deleteSession }
+  'get /v1/sessions/{session_id}/pages': { class: Sessions, method: getSessionPages }
+  'post /v1/sessions/{sessionId}/uploads': { class: Sessions, method: uploadFile }
+  'get /v1/sessions/{session_id}/downloads': { class: Sessions, method: getSessionDownloads }
+  'get /v1/sessions/{sessionId}/screenshot': { class: Sessions, method: getSessionScreenshot }
+  'post /v1/sessions/{sessionId}/mouse/click': { class: Sessions, method: mouseClick }
+  'post /v1/sessions/{sessionId}/mouse/doubleClick': { class: Sessions, method: mouseDoubleClick }
+  'post /v1/sessions/{sessionId}/mouse/down': { class: Sessions, method: mouseDown }
+  'post /v1/sessions/{sessionId}/mouse/up': { class: Sessions, method: mouseUp }
+  'post /v1/sessions/{sessionId}/mouse/move': { class: Sessions, method: mouseMove }
+  'post /v1/sessions/{sessionId}/drag-and-drop': { class: Sessions, method: dragAndDrop }
+  'post /v1/sessions/{sessionId}/scroll': { class: Sessions, method: scroll }
+  'post /v1/sessions/{sessionId}/keyboard/type': { class: Sessions, method: keyboardType }
+  'post /v1/sessions/{sessionId}/keyboard/shortcut': { class: Sessions, method: keyboardShortcut }
+  'get /v1/sessions/{sessionId}/clipboard': { class: Sessions, method: getClipboard }
+  'post /v1/sessions/{sessionId}/clipboard': { class: Sessions, method: setClipboard }
+  'post /v1/sessions/{sessionId}/copy': { class: Sessions, method: copy }
+  'post /v1/sessions/{sessionId}/paste': { class: Sessions, method: paste }
+  'post /v1/sessions/{sessionId}/goto': { class: Sessions, method: goto }
+  # Recordings
+  'post /v1/sessions/{session_id}/recordings/pause': { class: Recordings, method: pauseRecording }
+  'post /v1/sessions/{session_id}/recordings/resume': { class: Recordings, method: resumeRecording }
+  'get /v1/sessions/{session_id}/recordings': { class: Recordings, method: listRecordings }
+  'get /v1/sessions/{session_id}/recordings/primary/fetch':
+    { class: Recordings, method: fetchPrimaryRecording }
+  'delete /v1/sessions/{session_id}/recordings/{recording_id}': { class: Recordings, method: deleteRecording }
+  # Agent
+  'post /v1/sessions/{sessionId}/agent/files': { class: Agent, method: uploadAgentFiles }
+  'get /v1/sessions/{sessionId}/agent/files': { class: Agent, method: listAgentFiles }
+  'post /v1/sessions/{session_id}/agent/pause': { class: Agent, method: pauseAgent }
+  'post /v1/sessions/{session_id}/agent/resume': { class: Agent, method: resumeAgent }
+  'get /v1/sessions/pending-interventions': { class: Agent, method: listPendingInterventions }
+  'get /v1/sessions/{session_id}/agent/requested-human-intervention':
+    { class: Agent, method: getRequestedHumanIntervention }
+  'post /v1/sessions/{session_id}/agent/respond-to-human-intervention':
+    { class: Agent, method: respondToHumanIntervention }
+  # Extensions
+  'post /v1/extensions': { class: Extensions, method: uploadExtension }
+  'get /v1/extensions': { class: Extensions, method: listExtensions }
+  'get /v1/extensions/{id}': { class: Extensions, method: getExtension }
+  'delete /v1/extensions/{id}': { class: Extensions, method: deleteExtension }
+  # Certificates
+  'post /v1/certificates': { class: Certificates, method: createCertificate }
+  'get /v1/certificates': { class: Certificates, method: listCertificates }
+  'delete /v1/certificates/{name}': { class: Certificates, method: deleteCertificate }
+  # Integrations
+  'post /v1/integrations': { class: Integrations, method: createIntegration }
+  'get /v1/integrations': { class: Integrations, method: listIntegrations }
+  'delete /v1/integrations/{integrationId}': { class: Integrations, method: deleteIntegration }
+  # Events
+  'post /v1/events/{event_name}/wait': { class: Events, method: waitForEvent }
+  'post /v1/events/{event_name}': { class: Events, method: signalEvent }
+  # BatchSessions
+  'get /v1/batch-sessions': { class: BatchSessions, method: listBatchSessions }
+  'post /v1/batch-sessions': { class: BatchSessions, method: createBatchSession }
+  'get /v1/batch-sessions/{batch_id}': { class: BatchSessions, method: getBatchSession }
+  'patch /v1/batch-sessions/{batch_id}': { class: BatchSessions, method: updateBatchSession }
+  'delete /v1/batch-sessions/{batch_id}': { class: BatchSessions, method: deleteBatchSession }
+  'post /v1/batch-sessions/{batch_id}/retry': { class: BatchSessions, method: retryBatchSession }
+  # Tasks
+  'post /v2/tasks/generate': { class: Tasks, method: generateTask }
+  'get /v2/tasks/{taskId}/generation-status': { class: Tasks, method: getTaskGenerationStatus }
+  'post /v2/tasks/{taskId}/run': { class: Tasks, method: runTask }
+  'get /v2/tasks/runs/{runId}/status': { class: Tasks, method: getTaskRunStatus }
+  # TasksLegacy
+  'post /v1/task': { class: TasksLegacy, method: createTask }
+  'get /v1/task': { class: TasksLegacy, method: listTasks }
+  'post /v1/task/run': { class: TasksLegacy, method: runAdhocTask }
+  'post /v1/task/run/{taskName}': { class: TasksLegacy, method: runTaskByName }
+  'get /v1/task/{taskId}': { class: TasksLegacy, method: getTask }
+  'put /v1/task/{taskId}': { class: TasksLegacy, method: updateTask }
+  'delete /v1/task/{taskId}': { class: TasksLegacy, method: deleteTask }
+  'get /v1/task/{taskId}/versions': { class: TasksLegacy, method: listTaskVersions }
+  'get /v1/task/{taskId}/latest': { class: TasksLegacy, method: getLatestTaskVersion }
+  'get /v1/task/{taskId}/draft': { class: TasksLegacy, method: getTaskDraft }
+  'post /v1/task/{taskId}/draft': { class: TasksLegacy, method: saveTaskDraft }
+  'post /v1/task/{taskId}/deploy': { class: TasksLegacy, method: deployTask }
+  'get /v1/task/{taskId}/executions': { class: TasksLegacy, method: listTaskExecutions }
+  'get /v1/task/{taskId}/executions/{executionId}': { class: TasksLegacy, method: getTaskExecution }
+  'get /v1/task/{taskId}/{taskVersion}': { class: TasksLegacy, method: getTaskVersion }
+  'post /v1/task/{taskId}/{taskVersion}': { class: TasksLegacy, method: publishTaskVersion }
+  'delete /v1/task/{taskId}/{taskVersion}': { class: TasksLegacy, method: deleteTaskVersion }
+  # Billing
+  'get /v1/billing': { class: Billing, method: getBilling }
+  # Profiles
+  'post /v1/profiles': { class: Profiles, method: createProfile }
+  'get /v1/profiles': { class: Profiles, method: listProfiles }
+  'get /v1/profiles/{name}': { class: Profiles, method: getProfile }
+  'delete /v1/profiles/{name}': { class: Profiles, method: deleteProfile }
+  # Identities
+  'post /v1/identities': { class: Identities, method: createIdentity }
+  'get /v1/identities/{identityId}': { class: Identities, method: getIdentity }
+  'put /v1/identities/{identityId}': { class: Identities, method: updateIdentity }
+  'delete /v1/identities/{identityId}': { class: Identities, method: deleteIdentity }
+  # Applications
+  'post /v1/applications': { class: Applications, method: createApplication }
+  'get /v1/applications': { class: Applications, method: listApplications }
+  'get /v1/applications/{applicationId}': { class: Applications, method: getApplication }
+  'delete /v1/applications/{applicationId}': { class: Applications, method: deleteApplication }
+  'get /v1/applications/{applicationId}/identities':
+    { class: Applications, method: listApplicationIdentities }
+  'get /v1/applications/{applicationId}/auth-flows': { class: Applications, method: listAuthFlows }
+  'post /v1/applications/{applicationId}/auth-flows': { class: Applications, method: createAuthFlow }
+  'patch /v1/applications/{applicationId}/auth-flows/{authFlowId}':
+    { class: Applications, method: updateAuthFlow }
+  'delete /v1/applications/{applicationId}/auth-flows/{authFlowId}':
+    { class: Applications, method: deleteAuthFlow }
+  'post /v1/applications/{applicationId}/tokens': { class: Applications, method: createIdentityToken }
+  # Webhooks
+  'post /v1/webhooks': { class: Webhooks, method: createWebhook }
+  'get /v1/webhooks': { class: Webhooks, method: listWebhooks }
+  'get /v1/webhooks/{id}': { class: Webhooks, method: getWebhook }
+  'patch /v1/webhooks/{id}': { class: Webhooks, method: updateWebhook }
+  'delete /v1/webhooks/{id}': { class: Webhooks, method: deleteWebhook }
+  'post /v1/webhooks/{id}/rotate-secret': { class: Webhooks, method: rotateWebhookSecret }
+  'post /v1/webhooks/{id}/test': { class: Webhooks, method: sendWebhookTestEvent }
+  'get /v1/webhooks/{id}/events': { class: Webhooks, method: listWebhookEvents }
+
+v1_removed:
+  - path: 'post /v1/tools/fetch-webpage'
+    reason: >-
+      Not part of the public OpenAPI spec
+  - path: 'get /v1/identities/{identity_id}/credentials'
+    reason: >-
+      Not part of the public OpenAPI spec

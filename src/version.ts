@@ -1,1 +1,2 @@
-export const VERSION = '1.0.0-dev.4'; // x-release-please-version
+// Synced from package.json by scripts/utils/sync-version.cjs (runs in scripts/build).
+export const VERSION = '1.0.0';

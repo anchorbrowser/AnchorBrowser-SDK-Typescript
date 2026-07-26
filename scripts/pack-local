@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Build the package exactly as it would be published and produce a local
+# tarball at the repo root: anchorbrowser-<version>.tgz
+#
+# Install it in any project to test the SDK before a release:
+#   npm install /path/to/anchorbrowser-<version>.tgz
+
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+./scripts/build
+
+TARBALL="$(npm pack | tail -1)"
+
+echo
+echo "==> Local tarball ready: $(pwd)/$TARBALL"
+echo "    npm install $(pwd)/$TARBALL"

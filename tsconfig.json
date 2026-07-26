@@ -3,7 +3,7 @@
   "exclude": [],
   "compilerOptions": {
     "target": "es2020",
-    "lib": ["es2020"],
+    "lib": ["es2020", "es2022.error", "dom", "dom.iterable"],
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -26,7 +26,7 @@
     "noImplicitThis": true,
     "noImplicitReturns": true,
     "alwaysStrict": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,

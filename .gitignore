@@ -10,3 +10,5 @@ dist-deno
 .idea/
 .eslintcache
 oidc
+tmp/
+.DS_Store

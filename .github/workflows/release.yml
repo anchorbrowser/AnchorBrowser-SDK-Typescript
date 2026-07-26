@@ -1,0 +1,115 @@
+# Cut a new release of the anchorbrowser npm package.
+#
+# Run manually from the Actions tab with the new semver version as input.
+# The workflow verifies the full quality gate (lint, generated-types sync,
+# build, public API surface baseline, tests incl. wire-parity), bumps the
+# version, updates the changelog, tags, creates a GitHub release, and
+# publishes to npm via OIDC trusted publishing.
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version (e.g. 1.0.0 or 1.0.0-rc.1). Pre-release versions publish under their npm dist-tag (rc/beta/...) when a stable version already exists.'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  release:
+    name: release ${{ inputs.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Validate version
+        run: |
+          VERSION="${{ inputs.version }}"
+          if ! echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::'$VERSION' is not a valid semver version"
+            exit 1
+          fi
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "::error::tag v$VERSION already exists"
+            exit 1
+          fi
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+
+      - name: Bootstrap
+        run: ./scripts/bootstrap
+
+      - name: Quality gate — lint
+        run: ./scripts/lint
+
+      - name: Quality gate — generated types in sync with spec
+        run: yarn generate:check
+
+      - name: Quality gate — build
+        run: ./scripts/build
+
+      - name: Quality gate — public API surface matches baseline
+        run: yarn api:check
+
+      - name: Quality gate — tests (incl. wire-parity and spec coverage)
+        run: ./scripts/test
+
+      - name: Bump version
+        run: |
+          VERSION="${{ inputs.version }}"
+          npm version "$VERSION" --no-git-tag-version
+
+      - name: Update changelog
+        run: |
+          VERSION="${{ inputs.version }}"
+          DATE="$(date -u +%Y-%m-%d)"
+          LAST_TAG="$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)"
+          RANGE="${LAST_TAG:+$LAST_TAG..}HEAD"
+          {
+            echo "# Changelog"
+            echo
+            echo "## $VERSION ($DATE)"
+            echo
+            git log --no-merges --pretty='format:* %s (%h)' $RANGE
+            echo
+            echo
+            tail -n +2 CHANGELOG.md 2>/dev/null || true
+          } > CHANGELOG.new.md
+          mv CHANGELOG.new.md CHANGELOG.md
+
+      - name: Commit, tag and push
+        run: |
+          VERSION="${{ inputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json CHANGELOG.md
+          git commit -m "release: $VERSION"
+          git tag "v$VERSION"
+          git push origin HEAD "v$VERSION"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ inputs.version }}"
+          PRERELEASE_FLAG=""
+          if echo "$VERSION" | grep -q '-'; then PRERELEASE_FLAG="--prerelease"; fi
+          gh release create "v$VERSION" --title "v$VERSION" --generate-notes $PRERELEASE_FLAG
+
+      # npm OIDC trusted publishing is bound to publish-npm.yml, so publishing
+      # happens there. Releases created with GITHUB_TOKEN do not trigger other
+      # workflows, so dispatch it explicitly. It builds from the release commit
+      # just pushed to main; bin/publish-npm picks the npm dist-tag
+      # automatically (latest for stable, the pre-release identifier otherwise).
+      - name: Publish to NPM
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run publish-npm.yml --ref main
