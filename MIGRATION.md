@@ -1,6 +1,6 @@
-# Migrating from v1 to v2
+# Migrating from v0.x.x to v1
 
-Version 2 regenerates the SDK directly from the public OpenAPI spec
+Version 1 regenerates the SDK directly from the public OpenAPI spec
 (`docs/openapi.yaml`) instead of a Stainless build. The public
 API surface changed shape — every integration needs the updates below. This
 guide covers every breaking change; nothing else changed silently.
@@ -33,7 +33,7 @@ errors, User-Agent) as the shared `client`:
 
 ## Method calls
 
-Every v1 `client.<resource>.<method>(...)` call becomes a static method on a
+Every v0.x.x `client.<resource>.<method>(...)` call becomes a static method on a
 resource class, taking one options object with `path`/`query`/`body` keys
 matching the operation:
 
@@ -73,7 +73,7 @@ itself — `session.data.id` still works exactly as before).
 
 ### Tasks split into two classes
 
-The v2 (non-deprecated) task endpoints and the legacy v1 task-CRUD endpoints
+The v1 (non-deprecated) task endpoints and the legacy v0.x.x task-CRUD endpoints
 are now on separate classes — both are still fully available:
 
 ```diff
@@ -88,7 +88,7 @@ are now on separate classes — both are still fully available:
 
 ## Error handling — unchanged
 
-Typed errors are back to full parity with v1 — every class (`APIError`,
+Typed errors are back to full parity with v0.x.x — every class (`APIError`,
 `NotFoundError`, `AuthenticationError`, `PermissionDeniedError`,
 `ConflictError`, `RateLimitError`, `BadRequestError`,
 `UnprocessableEntityError`, `InternalServerError`, `APIConnectionError`,
@@ -146,7 +146,7 @@ Only the import changes — the options and return shapes are the same:
 ## New in v2
 
 The SDK is now generated directly from the public spec, so it also gained
-operations the v1 SDK never had, including `Webhooks`, `BatchSessions`,
+operations the previous SDK never had, including `Webhooks`, `BatchSessions`,
 `Certificates`, `Integrations`, async sessions
 (`Sessions.createSessionAsync`), and human-intervention endpoints (`Agent`).
 See the [SDK Reference](https://docs.anchorbrowser.io/sdk-reference/overview)
