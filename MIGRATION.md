@@ -143,7 +143,7 @@ Only the import changes — the options and return shapes are the same:
 + const { sessionId, taskResultPromise, playwrightBrowser } = await agentBrowserTask(prompt, opts);
 ```
 
-## New in v2
+## New in v1
 
 The SDK is now generated directly from the public spec, so it also gained
 operations the previous SDK never had, including `Webhooks`, `BatchSessions`,
