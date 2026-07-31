@@ -551,6 +551,17 @@ export type SessionCreateRequestSchema = {
      */
     id?: string;
   }>;
+  /**
+   * When `true` (default), skip profile validation for active identities and reuse the saved
+   * browser profile. Set to `false` to validate the profile and re-authenticate if it is no
+   * longer signed in. Pending identities still authenticate on first use.
+   *
+   */
+  identity_skip_validation?: boolean;
+  /**
+   * Run identity authentication in the background and return the session immediately.
+   */
+  identity_async_auth?: boolean;
 };
 
 export type SessionCreateResponseSchema = {
@@ -2235,6 +2246,37 @@ export type RunTaskV2Request = {
    * Whether to clean up sessions after execution (default: true)
    */
   cleanup_sessions?: boolean;
+  /**
+   * When `true` (default), skip profile validation for active identities and reuse the saved
+   * browser profile. Set to `false` to validate the profile and re-authenticate if it is no
+   * longer signed in. Pending identities still authenticate on first use.
+   *
+   */
+  identity_skip_validation?: boolean;
+  /**
+   * Wait for the task to complete before returning. Defaults to `false`.
+   */
+  sync?: boolean;
+};
+
+export type ReauthenticateIdentityRequest = {
+  /**
+   * When `true` (default), wait for authentication to finish and persist the refreshed
+   * profile before returning. When `false`, start authentication asynchronously.
+   *
+   */
+  sync?: boolean;
+};
+
+export type ReauthenticateIdentityResponse = {
+  /**
+   * The identity that was reauthenticated
+   */
+  identityId: string;
+  /**
+   * Whether authentication is still running in the background
+   */
+  async: boolean;
 };
 
 export type TaskRunStatusV2Response = {
@@ -4806,6 +4848,53 @@ export type UpdateIdentityResponses = {
 };
 
 export type UpdateIdentityResponse2 = UpdateIdentityResponses[keyof UpdateIdentityResponses];
+
+export type ReauthenticateIdentityData = {
+  body?: ReauthenticateIdentityRequest;
+  path: {
+    /**
+     * The ID of the identity to reauthenticate
+     */
+    identityId: string;
+  };
+  query?: never;
+  url: '/v1/identities/{identityId}/reauthenticate';
+};
+
+export type ReauthenticateIdentityErrors = {
+  /**
+   * Missing API key for team
+   */
+  401: ErrorResponse;
+  /**
+   * Identity not found
+   */
+  404: ErrorResponse;
+  /**
+   * Identity has no credentials to authenticate with
+   */
+  412: ErrorResponse;
+  /**
+   * Identity authentication failed
+   */
+  422: ErrorResponse;
+  /**
+   * Failed to reauthenticate identity
+   */
+  500: ErrorResponse;
+};
+
+export type ReauthenticateIdentityError = ReauthenticateIdentityErrors[keyof ReauthenticateIdentityErrors];
+
+export type ReauthenticateIdentityResponses = {
+  /**
+   * Identity reauthentication started or completed
+   */
+  200: ReauthenticateIdentityResponse;
+};
+
+export type ReauthenticateIdentityResponse2 =
+  ReauthenticateIdentityResponses[keyof ReauthenticateIdentityResponses];
 
 export type ListProfilesData = {
   body?: never;

@@ -565,6 +565,17 @@ components:
                 type: string
                 description: The identity ID to use for the browser session.
           example: [{ 'id': '123e4567-e89b-12d3-a456-426614174000' }]
+        identity_skip_validation:
+          type: boolean
+          default: true
+          description: |
+            When `true` (default), skip profile validation for active identities and reuse the saved
+            browser profile. Set to `false` to validate the profile and re-authenticate if it is no
+            longer signed in. Pending identities still authenticate on first use.
+        identity_async_auth:
+          type: boolean
+          default: false
+          description: Run identity authentication in the background and return the session immediately.
 
     SessionCreateResponseSchema:
       type: object
@@ -2466,7 +2477,39 @@ components:
           type: boolean
           description: 'Whether to clean up sessions after execution (default: true)'
           default: true
+        identity_skip_validation:
+          type: boolean
+          default: true
+          description: |
+            When `true` (default), skip profile validation for active identities and reuse the saved
+            browser profile. Set to `false` to validate the profile and re-authenticate if it is no
+            longer signed in. Pending identities still authenticate on first use.
+        sync:
+          type: boolean
+          default: false
+          description: Wait for the task to complete before returning. Defaults to `false`.
       required: [input_params]
+
+    ReauthenticateIdentityRequest:
+      type: object
+      properties:
+        sync:
+          type: boolean
+          default: true
+          description: |
+            When `true` (default), wait for authentication to finish and persist the refreshed
+            profile before returning. When `false`, start authentication asynchronously.
+
+    ReauthenticateIdentityResponse:
+      type: object
+      required: [identityId, async]
+      properties:
+        identityId:
+          type: string
+          description: The identity that was reauthenticated
+        async:
+          type: boolean
+          description: Whether authentication is still running in the background
 
     TaskRunStatusV2Response:
       type: object
@@ -5649,6 +5692,78 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Failed to delete identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/identities/{identityId}/reauthenticate:
+    post:
+      summary: Reauthenticate Identity
+      description: |
+        Re-authenticates an identity on demand: validates the saved browser profile and runs login if
+        it is no longer signed in, then persists the refreshed profile and tears the temporary session
+        down. Equivalent to a session with `identity_skip_validation: false` that ends after auth.
+      security:
+        - api_key_header: []
+      tags:
+        - Identities
+      parameters:
+        - name: identityId
+          in: path
+          required: true
+          description: The ID of the identity to reauthenticate
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReauthenticateIdentityRequest'
+            examples:
+              syncReauthenticate:
+                summary: Wait for authentication to finish (default)
+                value:
+                  sync: true
+              asyncReauthenticate:
+                summary: Start authentication in the background
+                value:
+                  sync: false
+      responses:
+        '200':
+          description: Identity reauthentication started or completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReauthenticateIdentityResponse'
+        '401':
+          description: Missing API key for team
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Identity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '412':
+          description: Identity has no credentials to authenticate with
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Identity authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to reauthenticate identity
           content:
             application/json:
               schema:

@@ -122,6 +122,8 @@ naming:
   'get /v1/identities/{identityId}': { class: Identities, method: getIdentity }
   'put /v1/identities/{identityId}': { class: Identities, method: updateIdentity }
   'delete /v1/identities/{identityId}': { class: Identities, method: deleteIdentity }
+  'post /v1/identities/{identityId}/reauthenticate':
+    { class: Identities, method: reauthenticateIdentity }
   # Applications
   'post /v1/applications': { class: Applications, method: createApplication }
   'get /v1/applications': { class: Applications, method: listApplications }

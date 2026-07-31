@@ -273,6 +273,9 @@ import type {
   PublishTaskVersionData,
   PublishTaskVersionErrors,
   PublishTaskVersionResponses,
+  ReauthenticateIdentityData,
+  ReauthenticateIdentityErrors,
+  ReauthenticateIdentityResponses,
   RespondToHumanInterventionData,
   RespondToHumanInterventionErrors,
   RespondToHumanInterventionResponses,
@@ -1479,6 +1482,34 @@ export class Identities {
       responseStyle: 'data',
       security: [{ name: 'anchor-api-key', type: 'apiKey' }],
       url: '/v1/identities/{identityId}',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+  }
+
+  /**
+   * Reauthenticate Identity
+   *
+   * Re-authenticates an identity on demand: validates the saved browser profile and runs login if
+   * it is no longer signed in, then persists the refreshed profile and tears the temporary session
+   * down. Equivalent to a session with `identity_skip_validation: false` that ends after auth.
+   *
+   */
+  public static reauthenticateIdentity<ThrowOnError extends boolean = true>(
+    options: Options<ReauthenticateIdentityData, ThrowOnError>,
+  ): RequestResult<ReauthenticateIdentityResponses, ReauthenticateIdentityErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).post<
+      ReauthenticateIdentityResponses,
+      ReauthenticateIdentityErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v1/identities/{identityId}/reauthenticate',
       ...options,
       headers: {
         'Content-Type': 'application/json',
