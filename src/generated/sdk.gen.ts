@@ -13,6 +13,9 @@ import type {
   CopyData,
   CopyErrors,
   CopyResponses,
+  CreateAgentAccessProjectData,
+  CreateAgentAccessProjectErrors,
+  CreateAgentAccessProjectResponses,
   CreateApplicationData,
   CreateApplicationErrors,
   CreateApplicationResponses,
@@ -84,6 +87,9 @@ import type {
   DeleteSessionData,
   DeleteSessionErrors,
   DeleteSessionResponses,
+  DeleteSessionTagsData,
+  DeleteSessionTagsErrors,
+  DeleteSessionTagsResponses,
   DeleteTaskData,
   DeleteTaskErrors,
   DeleteTaskResponses,
@@ -108,9 +114,21 @@ import type {
   FetchWebpageData,
   FetchWebpageErrors,
   FetchWebpageResponses,
+  FinalizeDynamicAuthFlowData,
+  FinalizeDynamicAuthFlowErrors,
+  FinalizeDynamicAuthFlowResponses,
   GenerateTaskData,
   GenerateTaskErrors,
   GenerateTaskResponses,
+  GetAgentAccessAppendixData,
+  GetAgentAccessAppendixErrors,
+  GetAgentAccessAppendixResponses,
+  GetAgentAccessChallengeData,
+  GetAgentAccessChallengeErrors,
+  GetAgentAccessChallengeResponses,
+  GetAgentAccessGuideData,
+  GetAgentAccessGuideErrors,
+  GetAgentAccessGuideResponses,
   GetAllSessionsStatusData,
   GetAllSessionsStatusErrors,
   GetAllSessionsStatusResponses,
@@ -129,6 +147,9 @@ import type {
   GetClipboardData,
   GetClipboardErrors,
   GetClipboardResponses,
+  GetDynamicAuthFlowStateData,
+  GetDynamicAuthFlowStateErrors,
+  GetDynamicAuthFlowStateResponses,
   GetExtensionData,
   GetExtensionErrors,
   GetExtensionResponses,
@@ -162,6 +183,9 @@ import type {
   GetSessionsHistoryData,
   GetSessionsHistoryErrors,
   GetSessionsHistoryResponses,
+  GetSessionTagsData,
+  GetSessionTagsErrors,
+  GetSessionTagsResponses,
   GetTaskData,
   GetTaskDraftData,
   GetTaskDraftErrors,
@@ -273,6 +297,15 @@ import type {
   PublishTaskVersionData,
   PublishTaskVersionErrors,
   PublishTaskVersionResponses,
+  PutSessionTagsData,
+  PutSessionTagsErrors,
+  PutSessionTagsResponses,
+  ReauthenticateIdentityData,
+  ReauthenticateIdentityErrors,
+  ReauthenticateIdentityResponses,
+  ResolveDynamicAuthFlowData,
+  ResolveDynamicAuthFlowErrors,
+  ResolveDynamicAuthFlowResponses,
   RespondToHumanInterventionData,
   RespondToHumanInterventionErrors,
   RespondToHumanInterventionResponses,
@@ -315,6 +348,9 @@ import type {
   SignalEventData,
   SignalEventErrors,
   SignalEventResponses,
+  StartDynamicAuthFlowData,
+  StartDynamicAuthFlowErrors,
+  StartDynamicAuthFlowResponses,
   UpdateAuthFlowData,
   UpdateAuthFlowErrors,
   UpdateAuthFlowResponses,
@@ -361,6 +397,103 @@ export type Options<
    */
   meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
+
+export class AgentAccess {
+  /**
+   * Agent Access guide
+   *
+   * Unauthenticated onboarding guide. This GET does **not** issue an API key.
+   * Follow the `next` field: GET `/v1/agent-access/challenge`, solve, then POST `/v1/agent-access`
+   * with `{ token, answer }`. Optional `identity_token` (OIDC JWT) grants more credits.
+   * Docs: https://docs.anchorbrowser.io/quickstart/agent-access
+   *
+   */
+  public static getAgentAccessGuide<ThrowOnError extends boolean = true>(
+    options?: Options<GetAgentAccessGuideData, ThrowOnError>,
+  ): RequestResult<GetAgentAccessGuideResponses, GetAgentAccessGuideErrors, ThrowOnError, 'data'> {
+    return (options?.client ?? client).get<
+      GetAgentAccessGuideResponses,
+      GetAgentAccessGuideErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      url: '/v1/agent-access',
+      ...options,
+    });
+  }
+
+  /**
+   * Create Agent Access project
+   *
+   * Issue an Agent Access API key. Submit the challenge `token` and computed integer `answer`
+   * from GET /v1/agent-access/challenge. GET on this path returns a guide, not a key.
+   * Optional `identity_token` as an OIDC JWT grants more credits. `identity_provider` is optional
+   * when the JWT `iss` is Google (`https://accounts.google.com`), GitHub Actions
+   * (`https://token.actions.githubusercontent.com`), or Vercel (`https://vercel.com`).
+   * Returns `api_key` for header `anchor-api-key`.
+   * Docs: https://docs.anchorbrowser.io/quickstart/agent-access
+   *
+   */
+  public static createAgentAccessProject<ThrowOnError extends boolean = true>(
+    options: Options<CreateAgentAccessProjectData, ThrowOnError>,
+  ): RequestResult<CreateAgentAccessProjectResponses, CreateAgentAccessProjectErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).post<
+      CreateAgentAccessProjectResponses,
+      CreateAgentAccessProjectErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      url: '/v1/agent-access',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+  }
+
+  /**
+   * Get Agent Access challenge
+   *
+   * Get a puzzle and token. Follow next and challenge.prompt, then POST /v1/agent-access with token and answer.
+   */
+  public static getAgentAccessChallenge<ThrowOnError extends boolean = true>(
+    options?: Options<GetAgentAccessChallengeData, ThrowOnError>,
+  ): RequestResult<GetAgentAccessChallengeResponses, GetAgentAccessChallengeErrors, ThrowOnError, 'data'> {
+    return (options?.client ?? client).get<
+      GetAgentAccessChallengeResponses,
+      GetAgentAccessChallengeErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      url: '/v1/agent-access/challenge',
+      ...options,
+    });
+  }
+
+  /**
+   * Agent Access challenge data
+   *
+   * Supporting data for an active Agent Access challenge. Path comes from the challenge response.
+   */
+  public static getAgentAccessAppendix<ThrowOnError extends boolean = true>(
+    options: Options<GetAgentAccessAppendixData, ThrowOnError>,
+  ): RequestResult<GetAgentAccessAppendixResponses, GetAgentAccessAppendixErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).get<
+      GetAgentAccessAppendixResponses,
+      GetAgentAccessAppendixErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      url: '/v1/agent-access/appendix/{appendixRef}',
+      ...options,
+    });
+  }
+}
 
 export class Tools {
   /**
@@ -692,6 +825,75 @@ export class Sessions {
       security: [{ name: 'anchor-api-key', type: 'apiKey' }],
       url: '/v1/sessions/{session_id}',
       ...options,
+    });
+  }
+
+  /**
+   * Delete Session Tags
+   *
+   * Clears all tags from a browser session.
+   */
+  public static deleteSessionTags<ThrowOnError extends boolean = true>(
+    options: Options<DeleteSessionTagsData, ThrowOnError>,
+  ): RequestResult<DeleteSessionTagsResponses, DeleteSessionTagsErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).delete<
+      DeleteSessionTagsResponses,
+      DeleteSessionTagsErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v1/sessions/{session_id}/tags',
+      ...options,
+    });
+  }
+
+  /**
+   * Get Session Tags
+   *
+   * Retrieves the tags associated with a specific browser session.
+   */
+  public static getSessionTags<ThrowOnError extends boolean = true>(
+    options: Options<GetSessionTagsData, ThrowOnError>,
+  ): RequestResult<GetSessionTagsResponses, GetSessionTagsErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).get<
+      GetSessionTagsResponses,
+      GetSessionTagsErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v1/sessions/{session_id}/tags',
+      ...options,
+    });
+  }
+
+  /**
+   * Put Session Tags
+   *
+   * Create or replace tags on a browser session. This overwrites any existing tags
+   * with the provided list. See [Session Tags](/advanced/session-tags).
+   *
+   */
+  public static putSessionTags<ThrowOnError extends boolean = true>(
+    options: Options<PutSessionTagsData, ThrowOnError>,
+  ): RequestResult<PutSessionTagsResponses, PutSessionTagsErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).put<
+      PutSessionTagsResponses,
+      PutSessionTagsErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v1/sessions/{session_id}/tags',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
     });
   }
 
@@ -1479,6 +1681,175 @@ export class Identities {
       responseStyle: 'data',
       security: [{ name: 'anchor-api-key', type: 'apiKey' }],
       url: '/v1/identities/{identityId}',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+  }
+
+  /**
+   * Reauthenticate Identity
+   *
+   * Re-authenticates an identity on demand: validates the saved browser profile and runs login if
+   * it is no longer signed in, then persists the refreshed profile and tears the temporary session
+   * down. Equivalent to a session with `identity_skip_validation: false` that ends after auth.
+   *
+   */
+  public static reauthenticateIdentity<ThrowOnError extends boolean = true>(
+    options: Options<ReauthenticateIdentityData, ThrowOnError>,
+  ): RequestResult<ReauthenticateIdentityResponses, ReauthenticateIdentityErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).post<
+      ReauthenticateIdentityResponses,
+      ReauthenticateIdentityErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v1/identities/{identityId}/reauthenticate',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+  }
+
+  /**
+   * Start Dynamic Auth Flow
+   *
+   * Starts (or restarts) a dynamic auth flow in an existing browser session.
+   * `session_id` is required in the path. Advances until the next presentation
+   * (`decision`, `form`, `detection_failed`, `authenticated`, or `failed`).
+   *
+   * If the response is `detection_failed` with `retryable: true`, or the request
+   * times out, keep polling `GET /v1/identities/dynamic/state/{session_id}` —
+   * some login steps take longer than a single start/resolve call. If
+   * `detection_failed` and `retryable` is false, open `live_view_url` to finish
+   * signing in. Do not treat a timeout as a hard stop until `view.type` is
+   * `failed` or `detection_failed` and `retryable` is false.
+   *
+   */
+  public static startDynamicAuthFlow<ThrowOnError extends boolean = true>(
+    options: Options<StartDynamicAuthFlowData, ThrowOnError>,
+  ): RequestResult<StartDynamicAuthFlowResponses, StartDynamicAuthFlowErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).post<
+      StartDynamicAuthFlowResponses,
+      StartDynamicAuthFlowErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v1/identities/dynamic/start/{session_id}',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+  }
+
+  /**
+   * Get Dynamic Auth Flow State
+   *
+   * Read-only snapshot of an in-progress dynamic auth flow. Does not acquire the
+   * flow lock or mutate state.
+   *
+   * Poll this endpoint when:
+   * - start/resolve returned `type: detection_failed` with `retryable: true`
+   * (the next login step is still being determined and may take longer than
+   * the request timeout)
+   * - start/resolve timed out or returned 409 while a transition is in flight
+   * - you need the current presentation without submitting an answer
+   *
+   * `view` is that presentation — the same object start/resolve return. Treat it
+   * as the live step when `phase` is `settled`. While `phase` is `navigating`,
+   * `view` may already describe the next step; `target` is only a progress
+   * label for the in-flight transition.
+   *
+   * Keep polling until `view.type` is `decision`, `form`, `authenticated`, a
+   * non-retryable `detection_failed`, or a non-retryable `failed`. Then call
+   * `/resolve` only for `decision`/`form`, `/finalize` for `authenticated`, or
+   * open `live_view_url` for `detection_failed`.
+   *
+   */
+  public static getDynamicAuthFlowState<ThrowOnError extends boolean = true>(
+    options: Options<GetDynamicAuthFlowStateData, ThrowOnError>,
+  ): RequestResult<GetDynamicAuthFlowStateResponses, GetDynamicAuthFlowStateErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).get<
+      GetDynamicAuthFlowStateResponses,
+      GetDynamicAuthFlowStateErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v1/identities/dynamic/state/{session_id}',
+      ...options,
+    });
+  }
+
+  /**
+   * Resolve Dynamic Auth Flow Step
+   *
+   * Advances the flow by answering the current step. The body depends on the
+   * last presentation's `type` — do not mix the two shapes:
+   *
+   * - **`decision`**: send only `choice` (a `step_id` from `options`).
+   * Do not send `option_index` or `values`.
+   * - **`form`**: send `option_index` (index into `options`) and `values`
+   * (field name → string). Do not send `choice`.
+   *
+   * Do not call `/resolve` for `detection_failed`, `authenticated`, or `failed`.
+   * For retryable `detection_failed`, a timeout, or a 409 (another transition
+   * still in flight), poll `GET .../state/{session_id}` until a
+   * `decision`/`form`/`authenticated` view appears, then continue. If
+   * `detection_failed` is not retryable, open `live_view_url` to finish signing in.
+   *
+   */
+  public static resolveDynamicAuthFlow<ThrowOnError extends boolean = true>(
+    options: Options<ResolveDynamicAuthFlowData, ThrowOnError>,
+  ): RequestResult<ResolveDynamicAuthFlowResponses, ResolveDynamicAuthFlowErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).post<
+      ResolveDynamicAuthFlowResponses,
+      ResolveDynamicAuthFlowErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v1/identities/dynamic/resolve/{session_id}',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+  }
+
+  /**
+   * Finalize Dynamic Auth Flow
+   *
+   * Persists the identity, browser profile, and captured credentials after the
+   * flow reaches `authenticated`. The response reports whether the saved login
+   * can be replayed unattended (`automatable`).
+   *
+   */
+  public static finalizeDynamicAuthFlow<ThrowOnError extends boolean = true>(
+    options: Options<FinalizeDynamicAuthFlowData, ThrowOnError>,
+  ): RequestResult<FinalizeDynamicAuthFlowResponses, FinalizeDynamicAuthFlowErrors, ThrowOnError, 'data'> {
+    return (options.client ?? client).post<
+      FinalizeDynamicAuthFlowResponses,
+      FinalizeDynamicAuthFlowErrors,
+      ThrowOnError,
+      'data'
+    >({
+      responseStyle: 'data',
+      security: [{ name: 'anchor-api-key', type: 'apiKey' }],
+      url: '/v1/identities/dynamic/finalize/{session_id}',
       ...options,
       headers: {
         'Content-Type': 'application/json',
@@ -2686,7 +3057,7 @@ export class Billing {
   /**
    * Get Billing Info
    *
-   * Retrieves credit balance, current-period credit usage, tier, and billing limits for the authenticated project.
+   * Retrieves credit balance, current-period credit usage, tier, and billing limits for the authenticated project. Pass `from_date`, `to_date`, or `granularity` to additionally receive a `usage` time series of credits used per period, matching `GET /v1/sessions/history?metrics=credits_used`.
    */
   public static getBilling<ThrowOnError extends boolean = true>(
     options?: Options<GetBillingData, ThrowOnError>,

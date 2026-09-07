@@ -2,7 +2,48 @@ openapi: 3.1.0
 info:
   title: AnchorBrowser API
   version: 1.0.0
-  description: APIs to manage all browser-related actions and configuration.
+  description: |
+    Anchor Browser ([anchorbrowser.io](https://anchorbrowser.io)) provides cloud browsers built
+    for AI agents and automation. Use this API to launch and control browser sessions, run
+    natural-language web tasks, authenticate into third-party web apps with managed identities,
+    and capture recordings — reliably and at scale, without operating browser infrastructure
+    yourself.
+
+    ## Core resources
+    - **Sessions** (`/v1/sessions`): launch configurable cloud browsers — residential proxies,
+      stealth browsing, captcha solving, profiles, extensions, recording — and connect over CDP
+      with Playwright, Puppeteer, or any CDP client.
+    - **AI tools** (`/v1/tools/perform-web-task`): state a goal in natural language and the
+      built-in agent completes it inside the browser. Related tools fetch webpages, take
+      screenshots, render PDFs, and execute code in a session.
+    - **Tasks** (`/v1/task`): create, version, deploy, and monitor repeatable browser
+      automations built to run reliably in production.
+    - **Applications and identities** (`/v1/applications`, `/v1/identities`): managed
+      authentication into third-party web apps — including multi-step logins and TOTP-based
+      2FA — so agents can act on behalf of users.
+    - **Profiles** (`/v1/profiles`): persist cookies and login state across sessions.
+    - **OS-level control** (`/v1/sessions/{sessionId}/mouse`, `/keyboard`, `/clipboard`):
+      raw input for flows that resist DOM automation.
+    - Plus batch sessions for running browser fleets in parallel, session recordings, webhooks,
+      events, extensions, client certificates, and billing usage.
+
+    ## Authentication
+    Pass an API key in the `anchor-api-key` header on every request. Create keys at
+    [app.anchorbrowser.io](https://app.anchorbrowser.io) under API Access. AI agents that have
+    no key yet can obtain one autonomously through the unauthenticated
+    [agent-access flow](https://docs.anchorbrowser.io/quickstart/agent-access)
+    (`POST /v1/agent-access`).
+
+    ## For AI agents and LLMs
+    - Docs: [docs.anchorbrowser.io](https://docs.anchorbrowser.io), with a machine-readable
+      index at [/llms.txt](https://docs.anchorbrowser.io/llms.txt) and the full corpus at
+      [/llms-full.txt](https://docs.anchorbrowser.io/llms-full.txt).
+    - MCP server for hosted browser control: `https://api.anchorbrowser.io/mcp`.
+    - Official SDKs: `anchorbrowser` on [npm](https://www.npmjs.com/package/anchorbrowser) and
+      [PyPI](https://pypi.org/project/anchorbrowser/).
+
+    `DELETE` operations terminate sessions or permanently remove resources (profiles,
+    identities, extensions); `GET` operations are safe and read-only.
 servers:
   - url: https://api.anchorbrowser.io
     description: API server
@@ -12,7 +53,11 @@ components:
       type: apiKey
       in: header
       name: anchor-api-key
-      description: API key passed in the header
+      description: |
+        API key for your Anchor Browser account, sent as the `anchor-api-key` header on every
+        request. Create one at [app.anchorbrowser.io](https://app.anchorbrowser.io) (API Access),
+        or obtain one programmatically via the unauthenticated agent-access flow
+        (`POST /v1/agent-access`).
   schemas:
     # ==============================
     # SHARED RESPONSE SCHEMAS
@@ -374,6 +419,43 @@ components:
           default: false
           description: Allow this browser session to automatically pay x402-protected resources using Amazon Bedrock AgentCore Payments.
 
+    putSessionTags:
+      type: object
+      description: Update/Create Browser Session tags, will overwrite existing tags
+      required:
+        - tags
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags to set on the session. Replaces any existing tags.
+          example: ['production', 'scraping', 'customer-123']
+
+    SessionTagsResponse:
+      type: object
+      required:
+        - tags
+      properties:
+        tags:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Tags currently associated with the session, or null if none are set.
+
+    SessionTagsMutationResponse:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+          description: Whether the tags operation succeeded.
+        message:
+          type: string
+          description: Human-readable result message.
+
     BrowserConfig:
       type: object
       description: Browser-specific configurations.
@@ -565,6 +647,17 @@ components:
                 type: string
                 description: The identity ID to use for the browser session.
           example: [{ 'id': '123e4567-e89b-12d3-a456-426614174000' }]
+        identity_skip_validation:
+          type: boolean
+          default: true
+          description: |
+            When `true` (default), skip profile validation for active identities and reuse the saved
+            browser profile. Set to `false` to validate the profile and re-authenticate if it is no
+            longer signed in. Pending identities still authenticate on first use.
+        identity_async_auth:
+          type: boolean
+          default: false
+          description: Run identity authentication in the background and return the session immediately.
 
     SessionCreateResponseSchema:
       type: object
@@ -918,6 +1011,53 @@ components:
             - included_credits
             - billing_period
             - tier
+        usage:
+          type: object
+          description: >-
+            Credits-usage time series. Present only when at least one of the `from_date`, `to_date`,
+            or `granularity` query parameters is provided. Sums per-session credits bucketed by
+            session creation time (UTC); recent buckets can still grow while sessions settle.
+            Unlocker credits are tracked per calendar month and are not included in this series, so
+            the bucket total can be lower than `credits_used`. The series matches
+            `GET /v1/sessions/history?metrics=credits_used`.
+          properties:
+            from_date:
+              type: string
+              format: date-time
+              description: Resolved start of the aggregation window.
+            to_date:
+              type: string
+              format: date-time
+              description: Resolved end of the aggregation window.
+            granularity:
+              type: string
+              enum: [hour, day, week, month]
+              description: Bucket size used for aggregation.
+            total_credits_used:
+              type: number
+              description: Sum of credits used across the window.
+            data:
+              type: array
+              description: Buckets ordered newest first. Periods with no sessions are omitted.
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date-time
+                    description: Start of the bucket (ISO 8601, UTC).
+                  credits_used:
+                    type: number
+                    description: Credits used in this bucket.
+                required:
+                  - date
+                  - credits_used
+          required:
+            - from_date
+            - to_date
+            - granularity
+            - total_credits_used
+            - data
 
     # ==============================
     # RECORDING SCHEMAS
@@ -1120,6 +1260,11 @@ components:
         max_steps:
           type: integer
           description: Maximum number of steps the agent can take to complete the task. Defaults to 200.
+        llm_timeout:
+          type: integer
+          minimum: 10
+          maximum: 600
+          description: Timeout in seconds for each LLM call made by the agent (browser-use agent only). Raise it when tasks with deep context (long histories, large pages) hit LLM call timeouts. When omitted, the agent uses its model-based defaults.
         secret_values:
           type: object
           additionalProperties:
@@ -1185,6 +1330,9 @@ components:
         result:
           type: object
           description: The outcome or answer produced by the autonomous task.
+        sessionId:
+          type: string
+          description: Browser session the task ran on. Omitted when the job has no session.
       required:
         - status
         - result
@@ -1198,6 +1346,9 @@ components:
           enum:
             - RUNNING
           description: The workflow is currently running.
+        sessionId:
+          type: string
+          description: Browser session the task ran on. Present as soon as the job exists when a session was created or reused. Omitted when the job has no session.
       required:
         - status
 
@@ -1213,6 +1364,9 @@ components:
         error:
           type: string
           description: Error message describing why the workflow failed.
+        sessionId:
+          type: string
+          description: Browser session the task ran on. Omitted when the job has no session.
       required:
         - status
         - error
@@ -1460,11 +1614,6 @@ components:
         timeout:
           type: number
           description: If a selector was passed, timeout in ms for waiting for the DOM element to be selected. Defaults to 5000 (5 seconds).
-          x-stainless-naming:
-            python:
-              method_argument: selector_timeout_ms
-            typescript:
-              method_argument: selectorTimeoutMs
         index:
           type: number
           description: If a selector was passed and multiple elements match the selector, the index of the element in the list (0-based). Defaults to 0.
@@ -2466,7 +2615,428 @@ components:
           type: boolean
           description: 'Whether to clean up sessions after execution (default: true)'
           default: true
+        identity_skip_validation:
+          type: boolean
+          default: true
+          description: |
+            When `true` (default), skip profile validation for active identities and reuse the saved
+            browser profile. Set to `false` to validate the profile and re-authenticate if it is no
+            longer signed in. Pending identities still authenticate on first use.
+        sync:
+          type: boolean
+          default: false
+          description: Wait for the task to complete before returning. Defaults to `false`.
       required: [input_params]
+
+    ReauthenticateIdentityRequest:
+      type: object
+      properties:
+        sync:
+          type: boolean
+          default: true
+          description: |
+            When `true` (default), wait for authentication to finish and persist the refreshed
+            profile before returning. When `false`, start authentication asynchronously.
+
+    ReauthenticateIdentityResponse:
+      type: object
+      required: [identityId, async]
+      properties:
+        identityId:
+          type: string
+          description: The identity that was reauthenticated
+        async:
+          type: boolean
+          description: Whether authentication is still running in the background
+
+    AuthFlowV2StartRequest:
+      type: object
+      required: [url, host]
+      properties:
+        url:
+          type: string
+          format: uri
+          description: Landing URL to open in the session (login page).
+          example: 'https://example.com/login'
+        host:
+          type: string
+          description: Hostname of `url`. Must match the URL hostname after normalization.
+          example: 'example.com'
+
+    AuthFlowV2DecisionResolve:
+      title: decision
+      type: object
+      required: [choice]
+      description: Send this when the last presentation was a decision step.
+      properties:
+        choice:
+          type: string
+          description: One of `options[].step_id` from the decision view.
+          example: 'root/login/google'
+
+    AuthFlowV2FormResolve:
+      title: form
+      type: object
+      required: [option_index, values]
+      description: Send this when the last presentation was a form step.
+      properties:
+        option_index:
+          type: integer
+          minimum: 0
+          description: Index into that form's `options` list.
+          example: 0
+        values:
+          type: object
+          additionalProperties:
+            type: string
+          description: Map of input name → value for the selected option (`options[option_index].inputs` lists the names).
+          example:
+            username: 'user@example.com'
+            password: 'secret'
+
+    AuthFlowV2ResolveRequest:
+      oneOf:
+        - $ref: '#/components/schemas/AuthFlowV2FormResolve'
+        - $ref: '#/components/schemas/AuthFlowV2DecisionResolve'
+      description: |
+        Body depends on the last `view.type`. Use the `decision` shape or the `form`
+        shape — not both.
+
+    AuthFlowV2FinalizeRequest:
+      type: object
+      properties:
+        identity_name:
+          type: string
+          description: Optional name for the created identity.
+        profile_name:
+          type: string
+          description: Optional browser profile name. Defaults to `profile-<session_id>`.
+
+    AuthFlowV2DecisionOption:
+      type: object
+      required: [step_id, label, automatable]
+      description: |
+        One option on a `decision` step. The option's `step_id` is the value to
+        send as `choice` on `/resolve`; the decision view's `step_id` identifies
+        the step that is asking you to choose.
+      properties:
+        step_id:
+          type: string
+          description: Opaque identifier for this option; pass it back as `choice`.
+        label:
+          type: string
+          description: Human-readable name of the login path (e.g. "Continue with Google").
+        automatable:
+          type: boolean
+          description: True if this path is known to be replayable unattended, without a human.
+
+    AuthFlowV2FormOption:
+      type: object
+      required: [type, automatable]
+      description: |
+        One way to complete a `form` step. Pick it with `option_index` on `/resolve`.
+        `automatable` is true when this option can be replayed unattended (typically
+        `credentials`, `totp_secret`, `gmail_one_click_integration`). Captcha, passkey,
+        consent, and magic_link are typically false.
+
+        `gmail_one_click_integration`: open `extra_data.create_integration_url` in a
+        browser once; it returns a value to send as `values.gmail_tokens` on `/resolve`.
+        The token is bound to the Gmail account, not to this flow — reuse it on any
+        later email MFA form for that account, across applications, without
+        authorizing again.
+      properties:
+        type:
+          type: string
+          enum:
+            - credentials
+            - mfa_totp
+            - mfa_sms
+            - mfa_email
+            - sso
+            - captcha
+            - consent
+            - magic_link
+            - passkey
+            - generic
+            - totp_secret
+            - gmail_one_click_integration
+        automatable:
+          type: boolean
+          description: True if this option can be replayed unattended without a human.
+        inputs:
+          type: array
+          items:
+            type: object
+            required: [name, type]
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+              label:
+                type: string
+              placeholder:
+                type: string
+              value:
+                type: string
+        extra_data:
+          type: object
+          additionalProperties: true
+          description: Type-specific extras. Present only when the option has any.
+          properties:
+            create_integration_url:
+              type: string
+              format: uri
+              description: On `gmail_one_click_integration`. Browser URL to connect Gmail; see the option description for the token it returns.
+            number:
+              type: string
+              description: On `consent`. Device confirmation number from the live page, when shown.
+        message:
+          type: string
+        provider:
+          type: string
+        phoneHint:
+          type: string
+
+    AuthFlowV2ViewBase:
+      type: object
+      required: [session_id, host, current_step_label, step_id, cdp_url, live_view_url]
+      properties:
+        session_id:
+          type: string
+        host:
+          type: string
+          description: Hostname the flow was started for.
+        current_step_label:
+          type: string
+          description: Human-readable label of the current login step.
+        step_id:
+          type: string
+          description: Identifier of the current login step.
+        cdp_url:
+          type: string
+          description: CDP websocket URL of the session driving the login.
+        live_view_url:
+          type: string
+          description: URL to watch or take over the session in a browser.
+        discovery_error:
+          type: string
+          description: Set when automatic step detection hit an error. A partial flow may still be presented.
+
+    AuthFlowV2DecisionView:
+      title: decision
+      allOf:
+        - $ref: '#/components/schemas/AuthFlowV2ViewBase'
+        - type: object
+          required: [type, options]
+          properties:
+            type:
+              type: string
+              enum: [decision]
+            options:
+              type: array
+              description: |
+                Each item is `{ step_id, label, automatable }`.
+                POST `/resolve` with `{ "choice": "<step_id>" }`.
+              items:
+                $ref: '#/components/schemas/AuthFlowV2DecisionOption'
+
+    AuthFlowV2FormView:
+      title: form
+      allOf:
+        - $ref: '#/components/schemas/AuthFlowV2ViewBase'
+        - type: object
+          required: [type, options]
+          properties:
+            type:
+              type: string
+              enum: [form]
+            options:
+              type: array
+              description: |
+                Each item includes `type` and `automatable`.
+                POST `/resolve` with `{ "option_index": n, "values": { ... } }`.
+              items:
+                $ref: '#/components/schemas/AuthFlowV2FormOption'
+            credentials_rejected:
+              type: boolean
+              description: The last submission was rejected (e.g. wrong password) and the same form is re-presented.
+            credentials_passed:
+              type: boolean
+              description: The previous step just cleared. Transient.
+
+    AuthFlowV2DetectionFailedView:
+      title: detection_failed
+      allOf:
+        - $ref: '#/components/schemas/AuthFlowV2ViewBase'
+        - type: object
+          required: [type, node_status, retryable, message]
+          properties:
+            type:
+              type: string
+              enum: [detection_failed]
+            node_status:
+              type: string
+              enum: [detected, failed, explored]
+              description: How far the current step has been analyzed.
+            last_error:
+              type: string
+              description: The most recent navigation error, if any.
+            retryable:
+              type: boolean
+              description: True means keep polling `/state`; false means stop and use `live_view_url`.
+            message:
+              type: string
+              description: |
+                Why detection stopped. Open `live_view_url` to finish signing in in the browser.
+                Do not resolve. If `retryable` is true, you may also poll GET `/state`.
+
+    AuthFlowV2AuthenticatedView:
+      title: authenticated
+      allOf:
+        - $ref: '#/components/schemas/AuthFlowV2ViewBase'
+        - type: object
+          required: [type]
+          properties:
+            type:
+              type: string
+              enum: [authenticated]
+            message:
+              type: string
+              description: Human-readable status. POST `/finalize` to persist the identity.
+
+    AuthFlowV2FailedView:
+      title: failed
+      allOf:
+        - $ref: '#/components/schemas/AuthFlowV2ViewBase'
+        - type: object
+          required: [type, error, retryable]
+          properties:
+            type:
+              type: string
+              enum: [failed]
+            error:
+              type: string
+              description: What went wrong.
+            retryable:
+              type: boolean
+              description: True means keep polling `/state`; false means stop.
+
+    AuthFlowV2View:
+      description: |
+        Presentation returned by start/resolve. GET `/state` nests the same object as
+        `view` when there is something to show. Discriminated on `type`. Call `/resolve`
+        only for `decision` or `form`.
+      oneOf:
+        - $ref: '#/components/schemas/AuthFlowV2DecisionView'
+        - $ref: '#/components/schemas/AuthFlowV2FormView'
+        - $ref: '#/components/schemas/AuthFlowV2DetectionFailedView'
+        - $ref: '#/components/schemas/AuthFlowV2AuthenticatedView'
+        - $ref: '#/components/schemas/AuthFlowV2FailedView'
+      discriminator:
+        propertyName: type
+        mapping:
+          decision: '#/components/schemas/AuthFlowV2DecisionView'
+          form: '#/components/schemas/AuthFlowV2FormView'
+          detection_failed: '#/components/schemas/AuthFlowV2DetectionFailedView'
+          authenticated: '#/components/schemas/AuthFlowV2AuthenticatedView'
+          failed: '#/components/schemas/AuthFlowV2FailedView'
+
+    AuthFlowV2State:
+      type: object
+      description: |
+        Poll this after retryable `detection_failed`, a request timeout, or 409.
+
+        `view` is the same presentation start/resolve return (`type` discriminant).
+        When `phase` is `settled`, it is the current step. When `phase` is `navigating`,
+        it may already describe the next step so you can render (or answer) before the
+        browser finishes moving; it is omitted until there is something to show.
+
+        Call `/resolve` only when `view.type` is `decision` or `form`.
+      required:
+        - session_id
+        - graph_id
+        - current_step_id
+        - discovery_status
+        - phase
+        - updated_at
+        - nav
+      properties:
+        session_id:
+          type: string
+        graph_id:
+          type: integer
+          description: Internal identifier for this auth flow.
+        current_step_id:
+          type: string
+          description: |
+            Identifier of the step the flow last committed. While `phase` is `navigating`,
+            `view` may already describe a later step.
+        discovery_status:
+          type: string
+          enum: [in_progress, complete, failed]
+          description: Whether automatic detection of the login steps is still running.
+        discovery_error:
+          type: string
+        phase:
+          type: string
+          enum: [navigating, settled]
+          description: |
+            `navigating` — a browser transition is in flight; `view` may already be the next step.
+            `settled` — idle at a step; `view` is that step.
+        updated_at:
+          type: number
+          description: Unix epoch milliseconds of the last state change.
+        target:
+          type: object
+          description: |
+            Step the browser is moving toward. Present only while `phase` is `navigating`.
+            Use for progress copy (for example "Preparing {label}…"). Not a second
+            presentation — `view` is what to show.
+          properties:
+            step_id:
+              type: string
+            label:
+              type: string
+        nav:
+          type: object
+          required: [status]
+          description: Outcome of the latest navigation operation.
+          properties:
+            status:
+              type: string
+              enum: [pending, succeeded, failed, none]
+            error:
+              type: string
+            credentials_rejected:
+              type: boolean
+        view:
+          allOf:
+            - $ref: '#/components/schemas/AuthFlowV2View'
+          description: |
+            What to render or answer. Same shape as start/resolve, derived read-only.
+
+            - `phase: settled` — the current step.
+            - `phase: navigating` — the upcoming step, when known; omitted until then.
+
+    AuthFlowV2FinalizeResult:
+      type: object
+      required: [identityId, profileName, automatable, nonAutomatableReasons]
+      properties:
+        identityId:
+          type: string
+        profileName:
+          type: string
+        automatable:
+          type: boolean
+          description: |
+            Identity-level replay flag. False if any passed form option was not automatable.
+            Distinct from `options[].automatable` on `decision`/`form` views, which is per choice.
+        nonAutomatableReasons:
+          type: array
+          description: Why the login cannot be replayed unattended. Empty when `automatable` is true.
+          items:
+            type: string
 
     TaskRunStatusV2Response:
       type: object
@@ -3405,6 +3975,7 @@ components:
         - task.failed
         - task.cancelled
         - task.healed
+        - session.ready
         - session.completed
         - session.failed
         - session.recording.ready
@@ -3585,20 +4156,18 @@ components:
           type: string
           enum:
             - pending
-            - in_flight
             - succeeded
             - failed
             - dead
           description: |
-            * `pending` — accepted, no attempt yet.
-            * `in_flight` — currently being POSTed.
+            * `pending` — accepted; delivery in progress or awaiting retry.
             * `succeeded` — receiver returned 2xx.
             * `failed` — receiver returned non-retryable 4xx.
             * `dead` — exhausted all retry attempts.
         attempt:
           type: integer
           minimum: 0
-          description: Attempt number for the most recent try (1 = first attempt, ≤ 6 with default policy).
+          description: Attempt number for the most recent completed try (0 = no attempt finished yet, 1 = first attempt, ≤ 6 with default policy).
         response_status:
           type: integer
           nullable: true
@@ -3614,6 +4183,12 @@ components:
           type: string
           format: date-time
           nullable: true
+        payload:
+          type: object
+          additionalProperties: true
+          description: >
+            The sanitized event `data` exactly as delivered to your endpoint.
+            Only present when the request sets `include_payload=true`.
 
     WebhookEventsListResponse:
       type: object
@@ -3651,7 +4226,418 @@ components:
           type: boolean
           example: true
 
+    AgentAccessNextStep:
+      type: object
+      required:
+        - method
+        - path
+        - description
+      properties:
+        method:
+          type: string
+          enum: [GET, POST]
+          description: HTTP method for the next call in the Agent Access onboarding flow.
+        path:
+          type: string
+          description: Path on https://api.anchorbrowser.io for the next call. Prepend the method to execute it.
+        description:
+          type: string
+          description: Plain-language instruction for what to do on the next call and what you receive afterward.
+
+    AgentAccessInstructions:
+      type: object
+      required:
+        - submit
+        - appendix
+        - api_key_header
+        - optional_identity
+        - anonymous_credits
+        - identity_credits
+      properties:
+        submit:
+          type: string
+          description: After solving the puzzle, call this endpoint with { token, answer }. token is from this response; answer is the final integer as a string.
+        appendix:
+          type: string
+          description: Optional path hint from the challenge response.
+        api_key_header:
+          type: string
+          description: After POST succeeds, send the returned api_key using this request header on authenticated API calls.
+        optional_identity:
+          type: string
+          description: Optional identity_token on the same POST for more credits and an agent_identity_token for later calls.
+        anonymous_credits:
+          type: number
+          description: Credits granted when POST omits identity_token or the token has no verified email.
+        identity_credits:
+          type: number
+          description: Credits granted when POST includes identity_token with a verified email.
+
+    AgentAccessError:
+      type: object
+      required:
+        - error
+        - next
+        - docs
+      properties:
+        error:
+          type: string
+          description: Why the request failed.
+        next:
+          $ref: '#/components/schemas/AgentAccessNextStep'
+        docs:
+          type: string
+          description: Human-readable guide URL for Agent Access.
+          example: https://docs.anchorbrowser.io/quickstart/agent-access
+
 paths:
+  /v1/agent-access:
+    get:
+      summary: Agent Access guide
+      description: |
+        Unauthenticated onboarding guide. This GET does **not** issue an API key.
+        Follow the `next` field: GET `/v1/agent-access/challenge`, solve, then POST `/v1/agent-access`
+        with `{ token, answer }`. Optional `identity_token` (OIDC JWT) grants more credits.
+        Docs: https://docs.anchorbrowser.io/quickstart/agent-access
+      tags:
+        - Agent Access
+      security: []
+      responses:
+        '200':
+          description: Ordered flow. Follow `next`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - purpose
+                  - docs
+                  - credits
+                  - ttl_seconds
+                  - limits
+                  - flow
+                  - identity
+                  - next
+                properties:
+                  purpose:
+                    type: string
+                    description: What Agent Access is for.
+                  docs:
+                    type: string
+                    description: Human-readable guide URL.
+                  credits:
+                    type: object
+                    required: [anonymous, with_identity]
+                    properties:
+                      anonymous:
+                        type: number
+                        description: Credits when onboarding without verified-email identity.
+                      with_identity:
+                        type: number
+                        description: Credits when POST includes identity_token with verified email.
+                  ttl_seconds:
+                    type: number
+                    description: Challenge token TTL in seconds.
+                  limits:
+                    type: object
+                    required: [session_max_duration_minutes]
+                    properties:
+                      session_max_duration_minutes:
+                        type: number
+                        description: Maximum session duration in minutes for keys issued through Agent Access.
+                  flow:
+                    type: array
+                    description: All onboarding steps in order. For the immediate action, prefer next.
+                    items:
+                      type: object
+                      required: [step, method, path, why]
+                      properties:
+                        step:
+                          type: number
+                          description: Order in the onboarding sequence.
+                        method:
+                          type: string
+                          enum: [GET, POST]
+                          description: HTTP method for this step.
+                        path:
+                          type: string
+                          description: Path for this step.
+                        why:
+                          type: string
+                          description: Why this step exists.
+                  next:
+                    $ref: '#/components/schemas/AgentAccessNextStep'
+                  identity:
+                    type: object
+                    required: [optional, extra_credits, submit, oidc]
+                    properties:
+                      optional:
+                        type: boolean
+                        description: Whether identity_token is optional on POST.
+                      extra_credits:
+                        type: number
+                        description: Credits granted with verified-email identity_token.
+                      submit:
+                        type: string
+                        description: How to pass identity_token on POST.
+                      oidc:
+                        type: array
+                        description: Supported OIDC identity providers.
+                        items:
+                          type: object
+                          required: [provider, issuer, how]
+                          properties:
+                            provider:
+                              type: string
+                              description: Provider alias (google, github, vercel).
+                            issuer:
+                              type: string
+                              description: Expected JWT iss claim.
+                            how:
+                              type: string
+                              description: How to obtain a token from this provider.
+        '429':
+          description: Too many requests from this source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentAccessError'
+    post:
+      summary: Create Agent Access project
+      description: |
+        Issue an Agent Access API key. Submit the challenge `token` and computed integer `answer`
+        from GET /v1/agent-access/challenge. GET on this path returns a guide, not a key.
+        Optional `identity_token` as an OIDC JWT grants more credits. `identity_provider` is optional
+        when the JWT `iss` is Google (`https://accounts.google.com`), GitHub Actions
+        (`https://token.actions.githubusercontent.com`), or Vercel (`https://vercel.com`).
+        Returns `api_key` for header `anchor-api-key`.
+        Docs: https://docs.anchorbrowser.io/quickstart/agent-access
+      tags:
+        - Agent Access
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+                - answer
+              properties:
+                token:
+                  type: string
+                  minLength: 1
+                  description: Token returned by GET /v1/agent-access/challenge. Not the puzzle answer.
+                answer:
+                  type: string
+                  minLength: 1
+                  description: Final integer from the challenge prompt, as a string.
+                identity_provider:
+                  type: string
+                  description: 'Optional when identity_token is an OIDC JWT whose iss matches a known provider (google, github, or vercel). Required for opaque OAuth access tokens (google or github).'
+                identity_token:
+                  type: string
+                  description: 'OIDC JWT preferred (iss auto-detected). GitHub Actions — GET $ACTIONS_ID_TOKEN_REQUEST_URL with Authorization bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN. Google — ID token JWT. Vercel — Sign in with Vercel user ID token (iss https://vercel.com). Opaque OAuth access tokens also work with identity_provider set.'
+                identity_audience:
+                  type: string
+                  description: Optional. Pin the JWT aud claim. Omit unless you requested a specific aud.
+      responses:
+        '200':
+          description: API key issued. Follow `next` to make an authenticated call.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - api_key
+                  - project_id
+                  - credits_granted
+                  - auth
+                  - next
+                  - docs
+                  - limits
+                properties:
+                  api_key:
+                    type: string
+                    description: API key for authenticated requests. Send as header anchor-api-key.
+                  project_id:
+                    type: string
+                    description: Anchor project id created or reused for this onboarding.
+                  credits_granted:
+                    type: number
+                    description: Credits added by this POST. 0 when the Agent Access project already existed for this owner.
+                  agent_identity_token:
+                    type: string
+                    description: When present, send as header anchor-identity-token on later API calls when auth.identity_token_required is true.
+                  auth:
+                    type: object
+                    required:
+                      - api_key_header
+                      - identity_token_required
+                    properties:
+                      api_key_header:
+                        type: string
+                        description: Header name for api_key (anchor-api-key).
+                      identity_token_header:
+                        type: string
+                        description: Header name for agent_identity_token when identity_token_required is true.
+                      identity_token_required:
+                        type: boolean
+                        description: When true, authenticated API calls must include anchor-identity-token in addition to anchor-api-key.
+                  upgrade:
+                    type: object
+                    required: [message]
+                    properties:
+                      message:
+                        type: string
+                        description: How to repeat onboarding with identity_token to receive more credits.
+                  next:
+                    $ref: '#/components/schemas/AgentAccessNextStep'
+                  docs:
+                    type: string
+                    description: Human-readable guide URL for Agent Access.
+                  limits:
+                    type: object
+                    required: [session_max_duration_minutes]
+                    properties:
+                      session_max_duration_minutes:
+                        type: number
+                        description: Maximum session duration in minutes for keys issued through Agent Access.
+        '400':
+          description: Missing token/answer, expired token, or incomplete identity fields. Follow `next`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentAccessError'
+        '401':
+          description: Incorrect answer or invalid identity token. Follow `next`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentAccessError'
+        '429':
+          description: Too many onboarding attempts from this source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentAccessError'
+        '500':
+          description: Failed to create project.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentAccessError'
+  /v1/agent-access/challenge:
+    get:
+      summary: Get Agent Access challenge
+      description: Get a puzzle and token. Follow next and challenge.prompt, then POST /v1/agent-access with token and answer.
+      tags:
+        - Agent Access
+      security: []
+      responses:
+        '200':
+          description: Challenge payload.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - challenge
+                  - token
+                  - instructions
+                properties:
+                  challenge:
+                    type: object
+                    required: [id, type, icon, title, description, prompt, timeLimit]
+                    properties:
+                      id:
+                        type: string
+                        description: Challenge instance id.
+                      type:
+                        type: string
+                        description: Challenge type (semantic_logic).
+                      icon:
+                        type: string
+                        description: Display icon for UIs.
+                      title:
+                        type: string
+                        description: Short challenge title.
+                      description:
+                        type: string
+                        description: Short challenge summary.
+                      prompt:
+                        type: string
+                        description: Multi-step puzzle text. Follow the instructions to compute the final integer answer.
+                      timeLimit:
+                        type: number
+                        description: Suggested solve time in seconds.
+                  token:
+                    type: string
+                    description: Opaque challenge token. Pass to POST /v1/agent-access as token. This is not the puzzle answer.
+                  appendix_ref:
+                    type: string
+                  appendix_url:
+                    type: string
+                  instructions:
+                    $ref: '#/components/schemas/AgentAccessInstructions'
+                  next:
+                    $ref: '#/components/schemas/AgentAccessNextStep'
+        '429':
+          description: Too many challenge requests from this source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Challenge generation failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/agent-access/appendix/{appendixRef}:
+    get:
+      summary: Agent Access challenge data
+      description: Supporting data for an active Agent Access challenge. Path comes from the challenge response.
+      tags:
+        - Agent Access
+      security: []
+      parameters:
+        - name: appendixRef
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Appendix payload.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - appendix_ref
+                  - inventory
+                properties:
+                  appendix_ref:
+                    type: string
+                  inventory:
+                    type: string
+                    description: Text payload for the active challenge. Parse with challenge.prompt to compute the final integer answer.
+                  next:
+                    $ref: '#/components/schemas/AgentAccessNextStep'
+        '404':
+          description: Appendix expired or unknown.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too many requests from this source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /v1/tools/perform-web-task:
     post:
       summary: Perform Web Task
@@ -3741,6 +4727,7 @@ paths:
                   value:
                     data:
                       status: 'COMPLETED'
+                      sessionId: '550e8400-e29b-41d4-a716-446655440000'
                       result:
                         nodes_cpu_usage:
                           - node: 'pool-e1ro5g0nq-559g5'
@@ -3754,11 +4741,13 @@ paths:
                   value:
                     data:
                       status: 'RUNNING'
+                      sessionId: '550e8400-e29b-41d4-a716-446655440000'
                 failed:
                   summary: Failed workflow
                   value:
                     data:
                       status: 'FAILED'
+                      sessionId: '550e8400-e29b-41d4-a716-446655440000'
                       error: 'Maximum number of steps exceeded'
         '400':
           description: Invalid request.
@@ -3868,12 +4857,6 @@ paths:
           name: task_initiated
           required: false
           description: Filter by whether the session was task-initiated.
-          schema:
-            type: boolean
-        - in: query
-          name: playground
-          required: false
-          description: Filter by whether the session is a playground session.
           schema:
             type: boolean
         - in: query
@@ -4174,12 +5157,6 @@ paths:
           schema:
             type: boolean
         - in: query
-          name: playground
-          required: false
-          description: Filter by whether the session is a playground session.
-          schema:
-            type: boolean
-        - in: query
           name: proxy
           required: false
           description: Filter by whether proxy was active for the session.
@@ -4351,9 +5328,6 @@ paths:
                       configuration:
                         type: object
                         description: The configuration settings for the session.
-                      playground:
-                        type: boolean
-                        description: Whether this is a playground session.
                       proxy_bytes:
                         type: integer
                         description: The number of bytes transferred through the proxy.
@@ -4364,7 +5338,9 @@ paths:
                         type: integer
                         description: Number of AI agent steps executed in the session.
                       tags:
-                        type: object
+                        type: array
+                        items:
+                          type: string
                         description: Tags associated with the session.
                       created_at:
                         type: string
@@ -4411,6 +5387,151 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/sessions/{session_id}/tags:
+    get:
+      summary: Get Session Tags
+      description: Retrieves the tags associated with a specific browser session.
+      tags:
+        - Browser Sessions
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          description: The ID of the session to retrieve tags for.
+          schema:
+            type: string
+      security:
+        - api_key_header: []
+      responses:
+        '200':
+          description: Session tags retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionTagsResponse'
+        '400':
+          description: Session ID is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid API Key or unauthorized access.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to fetch session tags.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Put Session Tags
+      description: |
+        Create or replace tags on a browser session. This overwrites any existing tags
+        with the provided list. See [Session Tags](/advanced/session-tags).
+      tags:
+        - Browser Sessions
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          description: The ID of the session to update tags for.
+          schema:
+            type: string
+      security:
+        - api_key_header: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/putSessionTags'
+      responses:
+        '200':
+          description: Session tags updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionTagsMutationResponse'
+        '400':
+          description: Invalid request or missing session ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid API Key or unauthorized access.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to update session tags.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete Session Tags
+      description: Clears all tags from a browser session.
+      tags:
+        - Browser Sessions
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          description: The ID of the session to clear tags for.
+          schema:
+            type: string
+      security:
+        - api_key_header: []
+      responses:
+        '200':
+          description: Session tags deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionTagsMutationResponse'
+        '400':
+          description: Session ID is required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid API Key or unauthorized access.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to delete session tags.
           content:
             application/json:
               schema:
@@ -5649,6 +6770,425 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Failed to delete identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/identities/{identityId}/reauthenticate:
+    post:
+      summary: Reauthenticate Identity
+      description: |
+        Re-authenticates an identity on demand: validates the saved browser profile and runs login if
+        it is no longer signed in, then persists the refreshed profile and tears the temporary session
+        down. Equivalent to a session with `identity_skip_validation: false` that ends after auth.
+      security:
+        - api_key_header: []
+      tags:
+        - Identities
+      parameters:
+        - name: identityId
+          in: path
+          required: true
+          description: The ID of the identity to reauthenticate
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReauthenticateIdentityRequest'
+            examples:
+              syncReauthenticate:
+                summary: Wait for authentication to finish (default)
+                value:
+                  sync: true
+              asyncReauthenticate:
+                summary: Start authentication in the background
+                value:
+                  sync: false
+      responses:
+        '200':
+          description: Identity reauthentication started or completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReauthenticateIdentityResponse'
+        '401':
+          description: Missing API key for team
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Identity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '412':
+          description: Identity has no credentials to authenticate with
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Identity authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to reauthenticate identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/identities/dynamic/start/{session_id}:
+    post:
+      summary: Start Dynamic Auth Flow
+      description: |
+        Starts (or restarts) a dynamic auth flow in an existing browser session.
+        `session_id` is required in the path. Advances until the next presentation
+        (`decision`, `form`, `detection_failed`, `authenticated`, or `failed`).
+
+        If the response is `detection_failed` with `retryable: true`, or the request
+        times out, keep polling `GET /v1/identities/dynamic/state/{session_id}` —
+        some login steps take longer than a single start/resolve call. If
+        `detection_failed` and `retryable` is false, open `live_view_url` to finish
+        signing in. Do not treat a timeout as a hard stop until `view.type` is
+        `failed` or `detection_failed` and `retryable` is false.
+      security:
+        - api_key_header: []
+      tags:
+        - Identities
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          description: Active browser session that will drive the login.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthFlowV2StartRequest'
+            examples:
+              startLogin:
+                summary: Start at a login URL
+                value:
+                  url: 'https://example.com/login'
+                  host: 'example.com'
+      responses:
+        '200':
+          description: First presentation of the auth flow
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthFlowV2View'
+              examples:
+                decision:
+                  summary: Decision — choose one of several sign-in methods
+                  value:
+                    type: decision
+                    session_id: abc-123
+                    host: example.com
+                    current_step_label: Sign in
+                    step_id: root/login
+                    options:
+                      - step_id: root/login/password
+                        label: Email and password
+                        automatable: true
+                      - step_id: root/login/google
+                        label: Continue with Google
+                        automatable: false
+                      - step_id: root/login/sso
+                        label: Continue with SSO
+                        automatable: false
+                form:
+                  summary: Form — choose an option, then submit its values
+                  value:
+                    type: form
+                    session_id: abc-123
+                    host: example.com
+                    current_step_label: Sign in
+                    step_id: root/credentials
+                    options:
+                      - type: credentials
+                        automatable: true
+                        inputs:
+                          - name: username
+                            type: text
+                            label: Email
+                          - name: password
+                            type: password
+                            label: Password
+                      - type: gmail_one_click_integration
+                        automatable: true
+                        inputs:
+                          - name: gmail_tokens
+                            type: text
+                            label: Gmail token
+        '400':
+          description: Invalid request or host does not match url hostname
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session not found or not active
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Auth flow transition already in progress, or navigation/discovery failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to start auth flow
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/identities/dynamic/state/{session_id}:
+    get:
+      summary: Get Dynamic Auth Flow State
+      description: |
+        Read-only snapshot of an in-progress dynamic auth flow. Does not acquire the
+        flow lock or mutate state.
+
+        Poll this endpoint when:
+        - start/resolve returned `type: detection_failed` with `retryable: true`
+          (the next login step is still being determined and may take longer than
+          the request timeout)
+        - start/resolve timed out or returned 409 while a transition is in flight
+        - you need the current presentation without submitting an answer
+
+        `view` is that presentation — the same object start/resolve return. Treat it
+        as the live step when `phase` is `settled`. While `phase` is `navigating`,
+        `view` may already describe the next step; `target` is only a progress
+        label for the in-flight transition.
+
+        Keep polling until `view.type` is `decision`, `form`, `authenticated`, a
+        non-retryable `detection_failed`, or a non-retryable `failed`. Then call
+        `/resolve` only for `decision`/`form`, `/finalize` for `authenticated`, or
+        open `live_view_url` for `detection_failed`.
+      security:
+        - api_key_header: []
+      tags:
+        - Identities
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          description: Session whose auth flow state to read.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current auth flow state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthFlowV2State'
+        '404':
+          description: Auth flow not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to read auth flow state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/identities/dynamic/resolve/{session_id}:
+    post:
+      summary: Resolve Dynamic Auth Flow Step
+      description: |
+        Advances the flow by answering the current step. The body depends on the
+        last presentation's `type` — do not mix the two shapes:
+
+        - **`decision`**: send only `choice` (a `step_id` from `options`).
+          Do not send `option_index` or `values`.
+        - **`form`**: send `option_index` (index into `options`) and `values`
+          (field name → string). Do not send `choice`.
+
+        Do not call `/resolve` for `detection_failed`, `authenticated`, or `failed`.
+        For retryable `detection_failed`, a timeout, or a 409 (another transition
+        still in flight), poll `GET .../state/{session_id}` until a
+        `decision`/`form`/`authenticated` view appears, then continue. If
+        `detection_failed` is not retryable, open `live_view_url` to finish signing in.
+      security:
+        - api_key_header: []
+      tags:
+        - Identities
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          description: Session whose auth flow to advance.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthFlowV2ResolveRequest'
+            examples:
+              form:
+                summary: Submit values for a form option
+                description: |
+                  Use the same shape for every form option. For an email MFA
+                  option, send `gmail_tokens` in `values` instead of username
+                  and password.
+                value:
+                  option_index: 0
+                  values:
+                    username: 'user@example.com'
+                    password: 'secret'
+              decision:
+                summary: Choose one option from a decision response
+                value:
+                  choice: '<step_id from response.options>'
+      responses:
+        '200':
+          description: Next presentation of the auth flow
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthFlowV2View'
+              examples:
+                decision:
+                  summary: Next step asks you to choose a sign-in method
+                  value:
+                    type: decision
+                    session_id: abc-123
+                    host: example.com
+                    current_step_label: Sign in
+                    step_id: root/login
+                    options:
+                      - step_id: root/login/password
+                        label: Email and password
+                        automatable: true
+                      - step_id: root/login/google
+                        label: Continue with Google
+                        automatable: false
+                      - step_id: root/login/sso
+                        label: Continue with SSO
+                        automatable: false
+                form:
+                  summary: Next step asks you to submit form values
+                  value:
+                    type: form
+                    session_id: abc-123
+                    host: example.com
+                    current_step_label: Sign in
+                    step_id: root/credentials
+                    options:
+                      - type: credentials
+                        automatable: true
+                        inputs:
+                          - name: username
+                            type: text
+                            label: Email
+                          - name: password
+                            type: password
+                            label: Password
+                      - type: gmail_one_click_integration
+                        automatable: true
+                        inputs:
+                          - name: gmail_tokens
+                            type: text
+                            label: Gmail token
+        '400':
+          description: Invalid choice, option index, or missing field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session, flow, or step not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Auth flow transition already in progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to resolve auth flow
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/identities/dynamic/finalize/{session_id}:
+    post:
+      summary: Finalize Dynamic Auth Flow
+      description: |
+        Persists the identity, browser profile, and captured credentials after the
+        flow reaches `authenticated`. The response reports whether the saved login
+        can be replayed unattended (`automatable`).
+      security:
+        - api_key_header: []
+      tags:
+        - Identities
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          description: Session whose authenticated flow to persist.
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthFlowV2FinalizeRequest'
+      responses:
+        '200':
+          description: Identity created from the completed flow
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthFlowV2FinalizeResult'
+        '401':
+          description: Missing team context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Auth flow or current step not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Flow must be authenticated before finalizing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to finalize
           content:
             application/json:
               schema:
@@ -8647,11 +10187,40 @@ paths:
   /v1/billing:
     get:
       summary: Get Billing Info
-      description: Retrieves credit balance, current-period credit usage, tier, and billing limits for the authenticated project.
+      description: >-
+        Retrieves credit balance, current-period credit usage, tier, and billing limits for the
+        authenticated project. Pass `from_date`, `to_date`, or `granularity` to additionally receive
+        a `usage` time series of credits used per period, matching
+        `GET /v1/sessions/history?metrics=credits_used`.
       security:
         - api_key_header: []
       tags:
         - Billing
+      parameters:
+        - in: query
+          name: from_date
+          required: false
+          description: >-
+            Start of the usage window (ISO 8601 format, UTC). Passing any of `from_date`, `to_date`,
+            or `granularity` adds a `usage` block to the response. Defaults to 30 days ago.
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: to_date
+          required: false
+          description: End of the usage window (ISO 8601 format, UTC). Defaults to now.
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: granularity
+          required: false
+          description: Time granularity for the usage time series.
+          schema:
+            type: string
+            enum: [hour, day, week, month]
+            default: day
       responses:
         '200':
           description: Billing information retrieved successfully.
@@ -8672,6 +10241,38 @@ paths:
                       gifts_balance: 42.5
                       max_concurrent_browsers: 25
                       cost_limit: 100
+                billingInfoWithUsage:
+                  summary: Example billing info with a usage time series (granularity=day)
+                  value:
+                    data:
+                      credits: 42.5
+                      credits_used: 12.5
+                      included_credits: 50
+                      billing_period: '2026-04'
+                      tier: monthly_starter
+                      gifts_balance: 42.5
+                      max_concurrent_browsers: 25
+                      cost_limit: 100
+                    usage:
+                      from_date: '2026-04-01T00:00:00.000Z'
+                      to_date: '2026-04-03T23:59:59.000Z'
+                      granularity: day
+                      total_credits_used: 12.5
+                      data:
+                        - date: '2026-04-03T00:00:00.000Z'
+                          credits_used: 4.25
+                        - date: '2026-04-02T00:00:00.000Z'
+                          credits_used: 5.5
+                        - date: '2026-04-01T00:00:00.000Z'
+                          credits_used: 2.75
+        '400':
+          description: >-
+            Invalid usage query — malformed date, `from_date` after `to_date`, or a date range
+            spanning too many buckets for the requested granularity.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Invalid API Key
           content:
@@ -9068,7 +10669,6 @@ paths:
             type: string
             enum:
               - pending
-              - in_flight
               - succeeded
               - failed
               - dead
@@ -9092,6 +10692,17 @@ paths:
           schema:
             type: string
             format: date-time
+        - name: include_payload
+          in: query
+          required: false
+          description: >
+            Set to `true` to include each delivery's sanitized event `data`
+            (as delivered to your endpoint) in the `payload` field of every row.
+          schema:
+            type: string
+            enum:
+              - 'true'
+              - 'false'
       responses:
         '200':
           description: Page of delivery rows plus pagination metadata.
