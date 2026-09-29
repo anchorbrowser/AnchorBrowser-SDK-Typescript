@@ -47,6 +47,9 @@ naming:
   'post /v1/sessions/{sessionId}/copy': { class: Sessions, method: copy }
   'post /v1/sessions/{sessionId}/paste': { class: Sessions, method: paste }
   'post /v1/sessions/{sessionId}/goto': { class: Sessions, method: goto }
+  'get /v1/sessions/{session_id}/tags': { class: Sessions, method: getSessionTags }
+  'delete /v1/sessions/{session_id}/tags': { class: Sessions, method: deleteSessionTags }
+  'put /v1/sessions/{session_id}/tags': { class: Sessions, method: putSessionTags }
   # Recordings
   'post /v1/sessions/{session_id}/recordings/pause': { class: Recordings, method: pauseRecording }
   'post /v1/sessions/{session_id}/recordings/resume': { class: Recordings, method: resumeRecording }
@@ -122,6 +125,16 @@ naming:
   'get /v1/identities/{identityId}': { class: Identities, method: getIdentity }
   'put /v1/identities/{identityId}': { class: Identities, method: updateIdentity }
   'delete /v1/identities/{identityId}': { class: Identities, method: deleteIdentity }
+  'post /v1/identities/{identityId}/reauthenticate':
+    { class: Identities, method: reauthenticateIdentity }
+  'post /v1/identities/dynamic/start/{session_id}':
+    { class: Identities, method: startDynamicAuthFlow }
+  'get /v1/identities/dynamic/state/{session_id}':
+    { class: Identities, method: getDynamicAuthFlowState }
+  'post /v1/identities/dynamic/resolve/{session_id}':
+    { class: Identities, method: resolveDynamicAuthFlow }
+  'post /v1/identities/dynamic/finalize/{session_id}':
+    { class: Identities, method: finalizeDynamicAuthFlow }
   # Applications
   'post /v1/applications': { class: Applications, method: createApplication }
   'get /v1/applications': { class: Applications, method: listApplications }
@@ -136,6 +149,11 @@ naming:
   'delete /v1/applications/{applicationId}/auth-flows/{authFlowId}':
     { class: Applications, method: deleteAuthFlow }
   'post /v1/applications/{applicationId}/tokens': { class: Applications, method: createIdentityToken }
+  # Agent Access
+  'get /v1/agent-access': { class: AgentAccess, method: getAgentAccessGuide }
+  'post /v1/agent-access': { class: AgentAccess, method: createAgentAccessProject }
+  'get /v1/agent-access/challenge': { class: AgentAccess, method: getAgentAccessChallenge }
+  'get /v1/agent-access/appendix/{appendixRef}': { class: AgentAccess, method: getAgentAccessAppendix }
   # Webhooks
   'post /v1/webhooks': { class: Webhooks, method: createWebhook }
   'get /v1/webhooks': { class: Webhooks, method: listWebhooks }
