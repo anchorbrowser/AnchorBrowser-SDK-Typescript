@@ -17,13 +17,13 @@ export function getBaseUrl(client: Client = defaultClient): string {
   return (client.getConfig().baseUrl as string) ?? 'https://api.anchorbrowser.io';
 }
 
-/** Resolve the configured API key of a client (auth callback or ANCHORBROWSER_API_KEY). */
+/** Resolve the configured API key of a client (auth callback, ANCHORBROWSER_API_KEY or ANCHOR_API_KEY). */
 export async function getApiKey(client: Client = defaultClient): Promise<string> {
   const auth = client.getConfig().auth;
   const key = typeof auth === 'function' ? await auth({ name: 'anchor-api-key', type: 'apiKey' }) : auth;
   if (!key) {
     throw new Error(
-      'No API key configured — set the ANCHORBROWSER_API_KEY environment variable or call client.setConfig({ auth: () => "..." })',
+      'No API key configured — set the ANCHORBROWSER_API_KEY (or ANCHOR_API_KEY) environment variable or call client.setConfig({ auth: () => "..." })',
     );
   }
   return key as string;

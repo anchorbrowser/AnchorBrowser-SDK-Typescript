@@ -19,7 +19,7 @@ npm install anchorbrowser
 ```ts
 import { client, Sessions } from 'anchorbrowser';
 
-// The API key is read from the ANCHORBROWSER_API_KEY environment variable
+// The API key is read from the ANCHORBROWSER_API_KEY environment variable (ANCHOR_API_KEY also works)
 // by default; set it explicitly like this:
 client.setConfig({ auth: () => 'your-api-key' });
 

@@ -7963,8 +7963,9 @@ declare const client: Client;
  * Default runtime configuration for the generated client.
  *
  * - base URL defaults to production; override with `client.setConfig({ baseUrl })`
- * - the API key is read from ANCHORBROWSER_API_KEY unless set explicitly via
- *   `client.setConfig({ auth: () => '...' })` or the `apiKey` header
+ * - the API key is read from ANCHORBROWSER_API_KEY, or ANCHOR_API_KEY when that
+ *   is unset, unless set explicitly via `client.setConfig({ auth: () => '...' })`
+ *   or the `apiKey` header
  * - errors throw (like the v1 SDK) instead of returning `{ error }` envelopes
  *
  * Note: this only builds the *config* — it can't attach the typed-error
@@ -8049,7 +8050,7 @@ interface BrowserSetup {
 }
 /** Resolve the configured base URL of a client (defaults to the shared client). */
 declare function getBaseUrl(client?: Client): string;
-/** Resolve the configured API key of a client (auth callback or ANCHORBROWSER_API_KEY). */
+/** Resolve the configured API key of a client (auth callback, ANCHORBROWSER_API_KEY or ANCHOR_API_KEY). */
 declare function getApiKey(client?: Client): Promise<string>;
 declare const getCdpUrl: (apiBaseURL: string, sessionId: string, apiKey: string) => string;
 declare const getAgentWsUrl: (apiBaseURL: string, sessionId: string) => string;
