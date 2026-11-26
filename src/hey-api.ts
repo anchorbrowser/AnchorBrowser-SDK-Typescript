@@ -7,8 +7,9 @@ import { VERSION } from './version';
  * Default runtime configuration for the generated client.
  *
  * - base URL defaults to production; override with `client.setConfig({ baseUrl })`
- * - the API key is read from ANCHORBROWSER_API_KEY unless set explicitly via
- *   `client.setConfig({ auth: () => '...' })` or the `apiKey` header
+ * - the API key is read from ANCHORBROWSER_API_KEY, or ANCHOR_API_KEY when that
+ *   is unset, unless set explicitly via `client.setConfig({ auth: () => '...' })`
+ *   or the `apiKey` header
  * - errors throw (like the v1 SDK) instead of returning `{ error }` envelopes
  *
  * Note: this only builds the *config* — it can't attach the typed-error
@@ -18,7 +19,10 @@ import { VERSION } from './version';
  */
 export const createClientConfig: CreateClientConfig = (config) => ({
   baseUrl: 'https://api.anchorbrowser.io',
-  auth: () => (globalThis as any).process?.env?.['ANCHORBROWSER_API_KEY'],
+  auth: () => {
+    const env = (globalThis as any).process?.env;
+    return env?.['ANCHORBROWSER_API_KEY'] ?? env?.['ANCHOR_API_KEY'];
+  },
   throwOnError: true,
   ...config,
   headers: {
