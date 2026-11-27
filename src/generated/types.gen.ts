@@ -342,6 +342,34 @@ export type SessionConfig = {
 };
 
 /**
+ * Update/Create Browser Session tags, will overwrite existing tags
+ */
+export type PutSessionTags = {
+  /**
+   * Tags to set on the session. Replaces any existing tags.
+   */
+  tags: Array<string>;
+};
+
+export type SessionTagsResponse = {
+  /**
+   * Tags currently associated with the session, or null if none are set.
+   */
+  tags: Array<string>;
+};
+
+export type SessionTagsMutationResponse = {
+  /**
+   * Whether the tags operation succeeded.
+   */
+  success: boolean;
+  /**
+   * Human-readable result message.
+   */
+  message?: string;
+};
+
+/**
  * Browser-specific configurations.
  */
 export type BrowserConfig = {
@@ -438,6 +466,19 @@ export type BrowserConfig = {
    * Array of extension IDs to load in the browser session. Extensions must be previously uploaded using the Extensions API.
    */
   extensions?: Array<string>;
+  /**
+   * Mount a persistent volume into the session. Files the browser downloads are written to the volume's `downloads/` folder and remain available after the session ends. Create volumes with the Volumes API.
+   */
+  volume?: {
+    /**
+     * ID of a volume owned by your team (see `POST /v1/volumes`). The volume must be in the `ready` state.
+     */
+    id: string;
+    /**
+     * Mount the volume read-only. Downloads then stay local to the session instead of being written to the volume. Defaults to `false`.
+     */
+    read_only?: boolean;
+  };
   /**
    * Configuration for disabling web security features.
    */
@@ -551,6 +592,17 @@ export type SessionCreateRequestSchema = {
      */
     id?: string;
   }>;
+  /**
+   * When `true` (default), skip profile validation for active identities and reuse the saved
+   * browser profile. Set to `false` to validate the profile and re-authenticate if it is no
+   * longer signed in. Pending identities still authenticate on first use.
+   *
+   */
+  identity_skip_validation?: boolean;
+  /**
+   * Run identity authentication in the background and return the session immediately.
+   */
+  identity_async_auth?: boolean;
 };
 
 export type SessionCreateResponseSchema = {
@@ -874,6 +926,40 @@ export type BillingInfoResponse = {
      */
     cost_limit?: number;
   };
+  /**
+   * Credits-usage time series. Present only when at least one of the `from_date`, `to_date`, or `granularity` query parameters is provided. Sums per-session credits bucketed by session creation time (UTC); recent buckets can still grow while sessions settle. Unlocker credits are tracked per calendar month and are not included in this series, so the bucket total can be lower than `credits_used`. The series matches `GET /v1/sessions/history?metrics=credits_used`.
+   */
+  usage?: {
+    /**
+     * Resolved start of the aggregation window.
+     */
+    from_date: string;
+    /**
+     * Resolved end of the aggregation window.
+     */
+    to_date: string;
+    /**
+     * Bucket size used for aggregation.
+     */
+    granularity: 'hour' | 'day' | 'week' | 'month';
+    /**
+     * Sum of credits used across the window.
+     */
+    total_credits_used: number;
+    /**
+     * Buckets ordered newest first. Periods with no sessions are omitted.
+     */
+    data: Array<{
+      /**
+       * Start of the bucket (ISO 8601, UTC).
+       */
+      date: string;
+      /**
+       * Credits used in this bucket.
+       */
+      credits_used: number;
+    }>;
+  };
 };
 
 export type RecordingItem = {
@@ -995,9 +1081,25 @@ export type FetchWebpageRequestSchema = {
 
 export type WebUnlockerRequestSchema = {
   /**
-   * The fully-qualified URL to fetch (e.g. `https://www.linkedin.com/company/openai`).
+   * The fully-qualified URL to fetch, including the scheme (e.g. `https://www.linkedin.com/company/openai`).
    */
   url: string;
+  /**
+   * Optional retrieval settings.
+   */
+  options?: {
+    /**
+     * When a page is still loading at the deadline, return the content rendered so far instead of failing. Set to `false` to receive a `504` instead of partial content.
+     */
+    return_partial_on_timeout?: boolean;
+  };
+};
+
+export type WebUnlockerErrorResponse = {
+  /**
+   * Human-readable reason the fetch failed.
+   */
+  error: string;
 };
 
 export type ExecuteCodeRequestSchema = {
@@ -1051,6 +1153,10 @@ export type PerformWebTaskRequestSchema = {
    * Maximum number of steps the agent can take to complete the task. Defaults to 200.
    */
   max_steps?: number;
+  /**
+   * Timeout in seconds for each LLM call made by the agent (browser-use agent only). Raise it when tasks with deep context (long histories, large pages) hit LLM call timeouts. When omitted, the agent uses its model-based defaults.
+   */
+  llm_timeout?: number;
   /**
    * Secret values to pass to the agent for secure credential handling. Keys and values are passed as environment variables to the agent.
    */
@@ -1117,6 +1223,10 @@ export type PerformWebTaskStatusSuccessResponseData = {
   result: {
     [key: string]: unknown;
   };
+  /**
+   * Browser session the task ran on. Omitted when the job has no session.
+   */
+  sessionId?: string;
 };
 
 /**
@@ -1127,6 +1237,10 @@ export type PerformWebTaskStatusRunningResponseData = {
    * The workflow is currently running.
    */
   status: 'RUNNING';
+  /**
+   * Browser session the task ran on. Present as soon as the job exists when a session was created or reused. Omitted when the job has no session.
+   */
+  sessionId?: string;
 };
 
 /**
@@ -1141,6 +1255,10 @@ export type PerformWebTaskStatusFailedResponseData = {
    * Error message describing why the workflow failed.
    */
   error: string;
+  /**
+   * Browser session the task ran on. Omitted when the job has no session.
+   */
+  sessionId?: string;
 };
 
 export type PerformWebTaskStatusResponseSchema = {
@@ -1518,6 +1636,133 @@ export type ExtensionListResponse = {
 
 export type ExtensionResponse = {
   data?: ExtensionResponseSchema;
+};
+
+export type VolumeResponseSchema = {
+  /**
+   * Unique identifier for the volume. Use it in `browser.volume.id` when creating a session.
+   */
+  id?: string;
+  /**
+   * Volume name, unique within your team
+   */
+  name?: string;
+  /**
+   * Lifecycle state. Only `ready` volumes can be mounted or written to.
+   */
+  state?: 'creating' | 'ready' | 'deleting' | 'deleted' | 'error';
+  /**
+   * Why the volume entered the `error` state, if it did
+   */
+  error_reason?: string;
+  created_at?: string;
+  updated_at?: string;
+  /**
+   * Last time the volume was mounted into a session
+   */
+  last_used_at?: string;
+  deleted_at?: string;
+};
+
+export type VolumeResponse = {
+  data?: VolumeResponseSchema;
+};
+
+export type VolumeListResponse = {
+  data?: {
+    /**
+     * Number of volumes returned
+     */
+    count?: number;
+    items?: Array<VolumeResponseSchema>;
+  };
+};
+
+export type VolumeFileEntrySchema = {
+  /**
+   * Path relative to the volume root, e.g. `downloads/report.pdf`
+   */
+  path?: string;
+  type?: 'file' | 'directory';
+  /**
+   * Size in bytes (`null` for directories)
+   */
+  size?: number;
+  last_modified?: string;
+  etag?: string;
+};
+
+export type VolumeFileListResponse = {
+  data?: {
+    items?: Array<VolumeFileEntrySchema>;
+    /**
+     * Pass as `cursor` to fetch the next page; `null` when there are no more entries
+     */
+    next_cursor?: string;
+  };
+};
+
+export type VolumePathListResponse = {
+  data?: {
+    /**
+     * Every file path in the volume, relative to its root
+     */
+    items?: Array<string>;
+    next_cursor?: string;
+  };
+};
+
+export type VolumeFileInfoSchema = {
+  path?: string;
+  /**
+   * Size in bytes
+   */
+  size?: number;
+  etag?: string;
+  content_type?: string;
+  last_modified?: string;
+};
+
+export type VolumeFileInfoResponse = {
+  data?: VolumeFileInfoSchema;
+};
+
+export type VolumeUploadUrlResponse = {
+  data?: {
+    /**
+     * Pre-signed URL to `PUT` the file body to
+     */
+    signed_url?: string;
+    method?: 'PUT';
+    /**
+     * Headers that must be sent with the `PUT` exactly as returned; they are part of the signature
+     */
+    headers?: {
+      [key: string]: string;
+    };
+    /**
+     * Seconds until the URL expires
+     */
+    expires_in?: number;
+  };
+};
+
+export type VolumeDownloadUrlResponse = {
+  data?: {
+    /**
+     * Pre-signed URL that serves the file with a `GET`
+     */
+    signed_url?: string;
+    /**
+     * Seconds until the URL expires
+     */
+    expires_in?: number;
+    /**
+     * Size in bytes
+     */
+    size?: number;
+    content_type?: string;
+  };
 };
 
 export type CertificateResponseSchema = {
@@ -2235,6 +2480,403 @@ export type RunTaskV2Request = {
    * Whether to clean up sessions after execution (default: true)
    */
   cleanup_sessions?: boolean;
+  /**
+   * When `true` (default), skip profile validation for active identities and reuse the saved
+   * browser profile. Set to `false` to validate the profile and re-authenticate if it is no
+   * longer signed in. Pending identities still authenticate on first use.
+   *
+   */
+  identity_skip_validation?: boolean;
+  /**
+   * Wait for the task to complete before returning. Defaults to `false`.
+   */
+  sync?: boolean;
+};
+
+export type ReauthenticateIdentityRequest = {
+  /**
+   * When `true` (default), wait for authentication to finish and persist the refreshed
+   * profile before returning. When `false`, start authentication asynchronously.
+   *
+   */
+  sync?: boolean;
+};
+
+export type ReauthenticateIdentityResponse = {
+  /**
+   * The identity that was reauthenticated
+   */
+  identityId: string;
+  /**
+   * Whether authentication is still running in the background
+   */
+  async: boolean;
+  /**
+   * Browser session that ran the reauthentication; its recording shows what happened
+   */
+  sessionId: string;
+  /**
+   * authenticated: the identity is signed in again; pending: an async run is still in progress
+   */
+  auth_status: 'authenticated' | 'pending';
+  /**
+   * How the identity got authenticated: profile = stored profile was still signed in, task = agentic authentication task, mixed = both. Absent while pending.
+   */
+  method?: 'profile' | 'task' | 'mixed';
+};
+
+export type AuthFlowV2StartRequest = {
+  /**
+   * Landing URL to open in the session (login page).
+   */
+  url: string;
+  /**
+   * Hostname of `url`. Must match the URL hostname after normalization.
+   */
+  host: string;
+};
+
+/**
+ * decision
+ *
+ * Send this when the last presentation was a decision step.
+ */
+export type AuthFlowV2DecisionResolve = {
+  /**
+   * One of `options[].step_id` from the decision view.
+   */
+  choice: string;
+};
+
+/**
+ * form
+ *
+ * Send this when the last presentation was a form step.
+ */
+export type AuthFlowV2FormResolve = {
+  /**
+   * Index into that form's `options` list.
+   */
+  option_index: number;
+  /**
+   * Map of input name → value for the selected option (`options[option_index].inputs` lists the names).
+   */
+  values: {
+    [key: string]: string;
+  };
+};
+
+/**
+ * Body depends on the last `view.type`. Use the `decision` shape or the `form`
+ * shape — not both.
+ *
+ */
+export type AuthFlowV2ResolveRequest = AuthFlowV2FormResolve | AuthFlowV2DecisionResolve;
+
+export type AuthFlowV2FinalizeRequest = {
+  /**
+   * Optional name for the created identity.
+   */
+  identity_name?: string;
+  /**
+   * Optional browser profile name. Defaults to `profile-<session_id>`.
+   */
+  profile_name?: string;
+};
+
+/**
+ * One option on a `decision` step. The option's `step_id` is the value to
+ * send as `choice` on `/resolve`; the decision view's `step_id` identifies
+ * the step that is asking you to choose.
+ *
+ */
+export type AuthFlowV2DecisionOption = {
+  /**
+   * Opaque identifier for this option; pass it back as `choice`.
+   */
+  step_id: string;
+  /**
+   * Human-readable name of the login path (e.g. "Continue with Google").
+   */
+  label: string;
+  /**
+   * True if this path is known to be replayable unattended, without a human.
+   */
+  automatable: boolean;
+};
+
+/**
+ * One way to complete a `form` step. Pick it with `option_index` on `/resolve`.
+ * `automatable` is true when this option can be replayed unattended (typically
+ * `credentials`, `totp_secret`, `gmail_one_click_integration`). Captcha, passkey,
+ * consent, and magic_link are typically false.
+ *
+ * `gmail_one_click_integration`: open `extra_data.create_integration_url` in a
+ * browser once; it returns a value to send as `values.gmail_tokens` on `/resolve`.
+ * The token is bound to the Gmail account, not to this flow — reuse it on any
+ * later email MFA form for that account, across applications, without
+ * authorizing again.
+ *
+ */
+export type AuthFlowV2FormOption = {
+  type:
+    | 'credentials'
+    | 'mfa_totp'
+    | 'mfa_sms'
+    | 'mfa_email'
+    | 'sso'
+    | 'captcha'
+    | 'consent'
+    | 'magic_link'
+    | 'passkey'
+    | 'generic'
+    | 'totp_secret'
+    | 'gmail_one_click_integration';
+  /**
+   * True if this option can be replayed unattended without a human.
+   */
+  automatable: boolean;
+  inputs?: Array<{
+    name: string;
+    type: string;
+    label?: string;
+    placeholder?: string;
+    value?: string;
+  }>;
+  /**
+   * Type-specific extras. Present only when the option has any.
+   */
+  extra_data?: {
+    /**
+     * On `gmail_one_click_integration`. Browser URL to connect Gmail; see the option description for the token it returns.
+     */
+    create_integration_url?: string;
+    /**
+     * On `consent`. Device confirmation number from the live page, when shown.
+     */
+    number?: string;
+    [key: string]: unknown;
+  };
+  message?: string;
+  provider?: string;
+  phoneHint?: string;
+};
+
+export type AuthFlowV2ViewBase = {
+  session_id: string;
+  /**
+   * Hostname the flow was started for.
+   */
+  host: string;
+  /**
+   * Human-readable label of the current login step.
+   */
+  current_step_label: string;
+  /**
+   * Identifier of the current login step.
+   */
+  step_id: string;
+  /**
+   * CDP websocket URL of the session driving the login.
+   */
+  cdp_url: string;
+  /**
+   * URL to watch or take over the session in a browser.
+   */
+  live_view_url: string;
+  /**
+   * Set when automatic step detection hit an error. A partial flow may still be presented.
+   */
+  discovery_error?: string;
+};
+
+/**
+ * decision
+ */
+export type AuthFlowV2DecisionView = AuthFlowV2ViewBase & {
+  type: 'decision';
+  /**
+   * Each item is `{ step_id, label, automatable }`.
+   * POST `/resolve` with `{ "choice": "<step_id>" }`.
+   *
+   */
+  options: Array<AuthFlowV2DecisionOption>;
+};
+
+/**
+ * form
+ */
+export type AuthFlowV2FormView = AuthFlowV2ViewBase & {
+  type: 'form';
+  /**
+   * Each item includes `type` and `automatable`.
+   * POST `/resolve` with `{ "option_index": n, "values": { ... } }`.
+   *
+   */
+  options: Array<AuthFlowV2FormOption>;
+  /**
+   * The last submission was rejected (e.g. wrong password) and the same form is re-presented.
+   */
+  credentials_rejected?: boolean;
+  /**
+   * The previous step just cleared. Transient.
+   */
+  credentials_passed?: boolean;
+};
+
+/**
+ * detection_failed
+ */
+export type AuthFlowV2DetectionFailedView = AuthFlowV2ViewBase & {
+  type: 'detection_failed';
+  /**
+   * How far the current step has been analyzed.
+   */
+  node_status: 'detected' | 'failed' | 'explored';
+  /**
+   * The most recent navigation error, if any.
+   */
+  last_error?: string;
+  /**
+   * True means keep polling `/state`; false means stop and use `live_view_url`.
+   */
+  retryable: boolean;
+  /**
+   * Why detection stopped. Open `live_view_url` to finish signing in in the browser.
+   * Do not resolve. If `retryable` is true, you may also poll GET `/state`.
+   *
+   */
+  message: string;
+};
+
+/**
+ * authenticated
+ */
+export type AuthFlowV2AuthenticatedView = AuthFlowV2ViewBase & {
+  type: 'authenticated';
+  /**
+   * Human-readable status. POST `/finalize` to persist the identity.
+   */
+  message?: string;
+};
+
+/**
+ * failed
+ */
+export type AuthFlowV2FailedView = AuthFlowV2ViewBase & {
+  type: 'failed';
+  /**
+   * What went wrong.
+   */
+  error: string;
+  /**
+   * True means keep polling `/state`; false means stop.
+   */
+  retryable: boolean;
+};
+
+/**
+ * Presentation returned by start/resolve. GET `/state` nests the same object as
+ * `view` when there is something to show. Discriminated on `type`. Call `/resolve`
+ * only for `decision` or `form`.
+ *
+ */
+export type AuthFlowV2View =
+  | ({
+      type: 'decision';
+    } & AuthFlowV2DecisionView)
+  | ({
+      type: 'form';
+    } & AuthFlowV2FormView)
+  | ({
+      type: 'detection_failed';
+    } & AuthFlowV2DetectionFailedView)
+  | ({
+      type: 'authenticated';
+    } & AuthFlowV2AuthenticatedView)
+  | ({
+      type: 'failed';
+    } & AuthFlowV2FailedView);
+
+/**
+ * Poll this after retryable `detection_failed`, a request timeout, or 409.
+ *
+ * `view` is the same presentation start/resolve return (`type` discriminant).
+ * When `phase` is `settled`, it is the current step. When `phase` is `navigating`,
+ * it may already describe the next step so you can render (or answer) before the
+ * browser finishes moving; it is omitted until there is something to show.
+ *
+ * Call `/resolve` only when `view.type` is `decision` or `form`.
+ *
+ */
+export type AuthFlowV2State = {
+  session_id: string;
+  /**
+   * Internal identifier for this auth flow.
+   */
+  graph_id: number;
+  /**
+   * Identifier of the step the flow last committed. While `phase` is `navigating`,
+   * `view` may already describe a later step.
+   *
+   */
+  current_step_id: string;
+  /**
+   * Whether automatic detection of the login steps is still running.
+   */
+  discovery_status: 'in_progress' | 'complete' | 'failed';
+  discovery_error?: string;
+  /**
+   * `navigating` — a browser transition is in flight; `view` may already be the next step.
+   * `settled` — idle at a step; `view` is that step.
+   *
+   */
+  phase: 'navigating' | 'settled';
+  /**
+   * Unix epoch milliseconds of the last state change.
+   */
+  updated_at: number;
+  /**
+   * Step the browser is moving toward. Present only while `phase` is `navigating`.
+   * Use for progress copy (for example "Preparing {label}…"). Not a second
+   * presentation — `view` is what to show.
+   *
+   */
+  target?: {
+    step_id?: string;
+    label?: string;
+  };
+  /**
+   * Outcome of the latest navigation operation.
+   */
+  nav: {
+    status: 'pending' | 'succeeded' | 'failed' | 'none';
+    error?: string;
+    credentials_rejected?: boolean;
+  };
+  /**
+   * What to render or answer. Same shape as start/resolve, derived read-only.
+   *
+   * - `phase: settled` — the current step.
+   * - `phase: navigating` — the upcoming step, when known; omitted until then.
+   *
+   */
+  view?: AuthFlowV2View;
+};
+
+export type AuthFlowV2FinalizeResult = {
+  identityId: string;
+  profileName: string;
+  /**
+   * Identity-level replay flag. False if any passed form option was not automatable.
+   * Distinct from `options[].automatable` on `decision`/`form` views, which is per choice.
+   *
+   */
+  automatable: boolean;
+  /**
+   * Why the login cannot be replayed unattended. Empty when `automatable` is true.
+   */
+  nonAutomatableReasons: Array<string>;
 };
 
 export type TaskRunStatusV2Response = {
@@ -3118,6 +3760,7 @@ export type WebhookEventType =
   | 'task.failed'
   | 'task.cancelled'
   | 'task.healed'
+  | 'session.ready'
   | 'session.completed'
   | 'session.failed'
   | 'session.recording.ready'
@@ -3231,16 +3874,15 @@ export type WebhookEventDeliveryRow = {
   external_event_id: string;
   event_type: WebhookEventType;
   /**
-   * * `pending` — accepted, no attempt yet.
-   * * `in_flight` — currently being POSTed.
+   * * `pending` — accepted; delivery in progress or awaiting retry.
    * * `succeeded` — receiver returned 2xx.
    * * `failed` — receiver returned non-retryable 4xx.
    * * `dead` — exhausted all retry attempts.
    *
    */
-  status: 'pending' | 'in_flight' | 'succeeded' | 'failed' | 'dead';
+  status: 'pending' | 'succeeded' | 'failed' | 'dead';
   /**
-   * Attempt number for the most recent try (1 = first attempt, ≤ 6 with default policy).
+   * Attempt number for the most recent completed try (0 = no attempt finished yet, 1 = first attempt, ≤ 6 with default policy).
    */
   attempt: number;
   /**
@@ -3250,6 +3892,13 @@ export type WebhookEventDeliveryRow = {
   error_message?: string;
   scheduled_at?: string;
   completed_at?: string;
+  /**
+   * The sanitized event `data` exactly as delivered to your endpoint. Only present when the request sets `include_payload=true`.
+   *
+   */
+  payload?: {
+    [key: string]: unknown;
+  };
 };
 
 export type WebhookEventsListResponse = {
@@ -3273,6 +3922,383 @@ export type WebhookEventsListResponse = {
 export type WebhookDeleteResponse = {
   ok: boolean;
 };
+
+export type AgentAccessNextStep = {
+  /**
+   * HTTP method for the next call in the Agent Access onboarding flow.
+   */
+  method: 'GET' | 'POST';
+  /**
+   * Path on https://api.anchorbrowser.io for the next call. Prepend the method to execute it.
+   */
+  path: string;
+  /**
+   * Plain-language instruction for what to do on the next call and what you receive afterward.
+   */
+  description: string;
+};
+
+export type AgentAccessInstructions = {
+  /**
+   * After solving the puzzle, call this endpoint with { token, answer }. token is from this response; answer is the final integer as a string.
+   */
+  submit: string;
+  /**
+   * Optional path hint from the challenge response.
+   */
+  appendix: string;
+  /**
+   * After POST succeeds, send the returned api_key using this request header on authenticated API calls.
+   */
+  api_key_header: string;
+  /**
+   * Optional identity_token on the same POST for more credits and an agent_identity_token for later calls.
+   */
+  optional_identity: string;
+  /**
+   * Credits granted when POST omits identity_token or the token has no verified email.
+   */
+  anonymous_credits: number;
+  /**
+   * Credits granted when POST includes identity_token with a verified email.
+   */
+  identity_credits: number;
+};
+
+export type AgentAccessError = {
+  /**
+   * Why the request failed.
+   */
+  error: string;
+  next: AgentAccessNextStep;
+  /**
+   * Human-readable guide URL for Agent Access.
+   */
+  docs: string;
+};
+
+export type GetAgentAccessGuideData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/v1/agent-access';
+};
+
+export type GetAgentAccessGuideErrors = {
+  /**
+   * Too many requests from this source.
+   */
+  429: AgentAccessError;
+};
+
+export type GetAgentAccessGuideError = GetAgentAccessGuideErrors[keyof GetAgentAccessGuideErrors];
+
+export type GetAgentAccessGuideResponses = {
+  /**
+   * Ordered flow. Follow `next`.
+   */
+  200: {
+    /**
+     * What Agent Access is for.
+     */
+    purpose: string;
+    /**
+     * Human-readable guide URL.
+     */
+    docs: string;
+    credits: {
+      /**
+       * Credits when onboarding without verified-email identity.
+       */
+      anonymous: number;
+      /**
+       * Credits when POST includes identity_token with verified email.
+       */
+      with_identity: number;
+    };
+    /**
+     * Challenge token TTL in seconds.
+     */
+    ttl_seconds: number;
+    limits: {
+      /**
+       * Maximum session duration in minutes for keys issued through Agent Access.
+       */
+      session_max_duration_minutes: number;
+    };
+    /**
+     * All onboarding steps in order. For the immediate action, prefer next.
+     */
+    flow: Array<{
+      /**
+       * Order in the onboarding sequence.
+       */
+      step: number;
+      /**
+       * HTTP method for this step.
+       */
+      method: 'GET' | 'POST';
+      /**
+       * Path for this step.
+       */
+      path: string;
+      /**
+       * Why this step exists.
+       */
+      why: string;
+    }>;
+    next: AgentAccessNextStep;
+    identity: {
+      /**
+       * Whether identity_token is optional on POST.
+       */
+      optional: boolean;
+      /**
+       * Credits granted with verified-email identity_token.
+       */
+      extra_credits: number;
+      /**
+       * How to pass identity_token on POST.
+       */
+      submit: string;
+      /**
+       * Supported OIDC identity providers.
+       */
+      oidc: Array<{
+        /**
+         * Provider alias (google, github, vercel).
+         */
+        provider: string;
+        /**
+         * Expected JWT iss claim.
+         */
+        issuer: string;
+        /**
+         * How to obtain a token from this provider.
+         */
+        how: string;
+      }>;
+    };
+  };
+};
+
+export type GetAgentAccessGuideResponse = GetAgentAccessGuideResponses[keyof GetAgentAccessGuideResponses];
+
+export type CreateAgentAccessProjectData = {
+  body: {
+    /**
+     * Token returned by GET /v1/agent-access/challenge. Not the puzzle answer.
+     */
+    token: string;
+    /**
+     * Final integer from the challenge prompt, as a string.
+     */
+    answer: string;
+    /**
+     * Optional when identity_token is an OIDC JWT whose iss matches a known provider (google, github, or vercel). Required for opaque OAuth access tokens (google or github).
+     */
+    identity_provider?: string;
+    /**
+     * OIDC JWT preferred (iss auto-detected). GitHub Actions — GET $ACTIONS_ID_TOKEN_REQUEST_URL with Authorization bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN. Google — ID token JWT. Vercel — Sign in with Vercel user ID token (iss https://vercel.com). Opaque OAuth access tokens also work with identity_provider set.
+     */
+    identity_token?: string;
+    /**
+     * Optional. Pin the JWT aud claim. Omit unless you requested a specific aud.
+     */
+    identity_audience?: string;
+  };
+  path?: never;
+  query?: never;
+  url: '/v1/agent-access';
+};
+
+export type CreateAgentAccessProjectErrors = {
+  /**
+   * Missing token/answer, expired token, or incomplete identity fields. Follow `next`.
+   */
+  400: AgentAccessError;
+  /**
+   * Incorrect answer or invalid identity token. Follow `next`.
+   */
+  401: AgentAccessError;
+  /**
+   * Too many onboarding attempts from this source.
+   */
+  429: AgentAccessError;
+  /**
+   * Failed to create project.
+   */
+  500: AgentAccessError;
+};
+
+export type CreateAgentAccessProjectError =
+  CreateAgentAccessProjectErrors[keyof CreateAgentAccessProjectErrors];
+
+export type CreateAgentAccessProjectResponses = {
+  /**
+   * API key issued. Follow `next` to make an authenticated call.
+   */
+  200: {
+    /**
+     * API key for authenticated requests. Send as header anchor-api-key.
+     */
+    api_key: string;
+    /**
+     * Anchor project id created or reused for this onboarding.
+     */
+    project_id: string;
+    /**
+     * Credits added by this POST. 0 when the Agent Access project already existed for this owner.
+     */
+    credits_granted: number;
+    /**
+     * When present, send as header anchor-identity-token on later API calls when auth.identity_token_required is true.
+     */
+    agent_identity_token?: string;
+    auth: {
+      /**
+       * Header name for api_key (anchor-api-key).
+       */
+      api_key_header: string;
+      /**
+       * Header name for agent_identity_token when identity_token_required is true.
+       */
+      identity_token_header?: string;
+      /**
+       * When true, authenticated API calls must include anchor-identity-token in addition to anchor-api-key.
+       */
+      identity_token_required: boolean;
+    };
+    upgrade?: {
+      /**
+       * How to repeat onboarding with identity_token to receive more credits.
+       */
+      message: string;
+    };
+    next: AgentAccessNextStep;
+    /**
+     * Human-readable guide URL for Agent Access.
+     */
+    docs: string;
+    limits: {
+      /**
+       * Maximum session duration in minutes for keys issued through Agent Access.
+       */
+      session_max_duration_minutes: number;
+    };
+  };
+};
+
+export type CreateAgentAccessProjectResponse =
+  CreateAgentAccessProjectResponses[keyof CreateAgentAccessProjectResponses];
+
+export type GetAgentAccessChallengeData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/v1/agent-access/challenge';
+};
+
+export type GetAgentAccessChallengeErrors = {
+  /**
+   * Too many challenge requests from this source.
+   */
+  429: ErrorResponse;
+  /**
+   * Challenge generation failed.
+   */
+  500: ErrorResponse;
+};
+
+export type GetAgentAccessChallengeError = GetAgentAccessChallengeErrors[keyof GetAgentAccessChallengeErrors];
+
+export type GetAgentAccessChallengeResponses = {
+  /**
+   * Challenge payload.
+   */
+  200: {
+    challenge: {
+      /**
+       * Challenge instance id.
+       */
+      id: string;
+      /**
+       * Challenge type (semantic_logic).
+       */
+      type: string;
+      /**
+       * Display icon for UIs.
+       */
+      icon: string;
+      /**
+       * Short challenge title.
+       */
+      title: string;
+      /**
+       * Short challenge summary.
+       */
+      description: string;
+      /**
+       * Multi-step puzzle text. Follow the instructions to compute the final integer answer.
+       */
+      prompt: string;
+      /**
+       * Suggested solve time in seconds.
+       */
+      timeLimit: number;
+    };
+    /**
+     * Opaque challenge token. Pass to POST /v1/agent-access as token. This is not the puzzle answer.
+     */
+    token: string;
+    appendix_ref?: string;
+    appendix_url?: string;
+    instructions: AgentAccessInstructions;
+    next?: AgentAccessNextStep;
+  };
+};
+
+export type GetAgentAccessChallengeResponse =
+  GetAgentAccessChallengeResponses[keyof GetAgentAccessChallengeResponses];
+
+export type GetAgentAccessAppendixData = {
+  body?: never;
+  path: {
+    appendixRef: string;
+  };
+  query?: never;
+  url: '/v1/agent-access/appendix/{appendixRef}';
+};
+
+export type GetAgentAccessAppendixErrors = {
+  /**
+   * Appendix expired or unknown.
+   */
+  404: ErrorResponse;
+  /**
+   * Too many requests from this source.
+   */
+  429: ErrorResponse;
+};
+
+export type GetAgentAccessAppendixError = GetAgentAccessAppendixErrors[keyof GetAgentAccessAppendixErrors];
+
+export type GetAgentAccessAppendixResponses = {
+  /**
+   * Appendix payload.
+   */
+  200: {
+    appendix_ref: string;
+    /**
+     * Text payload for the active challenge. Parse with challenge.prompt to compute the final integer answer.
+     */
+    inventory: string;
+    next?: AgentAccessNextStep;
+  };
+};
+
+export type GetAgentAccessAppendixResponse =
+  GetAgentAccessAppendixResponses[keyof GetAgentAccessAppendixResponses];
 
 export type PerformWebTaskData = {
   body: PerformWebTaskRequestSchema;
@@ -3399,10 +4425,6 @@ export type ListSessionsData = {
      * Filter by whether the session was task-initiated.
      */
     task_initiated?: boolean;
-    /**
-     * Filter by whether the session is a playground session.
-     */
-    playground?: boolean;
     /**
      * Filter by whether proxy was active for the session.
      */
@@ -3594,10 +4616,6 @@ export type GetAllSessionsStatusData = {
      * Filter by whether the session was initiated by a task.
      */
     task_initiated?: boolean;
-    /**
-     * Filter by whether the session is a playground session.
-     */
-    playground?: boolean;
     /**
      * Filter by whether proxy was active for the session.
      */
@@ -3795,10 +4813,6 @@ export type GetSessionResponses = {
         [key: string]: unknown;
       };
       /**
-       * Whether this is a playground session.
-       */
-      playground?: boolean;
-      /**
        * The number of bytes transferred through the proxy.
        */
       proxy_bytes?: number;
@@ -3815,9 +4829,7 @@ export type GetSessionResponses = {
       /**
        * Tags associated with the session.
        */
-      tags?: {
-        [key: string]: unknown;
-      };
+      tags?: Array<string>;
       /**
        * The timestamp when the session was created.
        */
@@ -3827,6 +4839,132 @@ export type GetSessionResponses = {
 };
 
 export type GetSessionResponse = GetSessionResponses[keyof GetSessionResponses];
+
+export type DeleteSessionTagsData = {
+  body?: never;
+  path: {
+    /**
+     * The ID of the session to clear tags for.
+     */
+    session_id: string;
+  };
+  query?: never;
+  url: '/v1/sessions/{session_id}/tags';
+};
+
+export type DeleteSessionTagsErrors = {
+  /**
+   * Session ID is required.
+   */
+  400: ErrorResponse;
+  /**
+   * Invalid API Key or unauthorized access.
+   */
+  401: ErrorResponse;
+  /**
+   * Session not found.
+   */
+  404: ErrorResponse;
+  /**
+   * Failed to delete session tags.
+   */
+  500: ErrorResponse;
+};
+
+export type DeleteSessionTagsError = DeleteSessionTagsErrors[keyof DeleteSessionTagsErrors];
+
+export type DeleteSessionTagsResponses = {
+  /**
+   * Session tags deleted successfully.
+   */
+  200: SessionTagsMutationResponse;
+};
+
+export type DeleteSessionTagsResponse = DeleteSessionTagsResponses[keyof DeleteSessionTagsResponses];
+
+export type GetSessionTagsData = {
+  body?: never;
+  path: {
+    /**
+     * The ID of the session to retrieve tags for.
+     */
+    session_id: string;
+  };
+  query?: never;
+  url: '/v1/sessions/{session_id}/tags';
+};
+
+export type GetSessionTagsErrors = {
+  /**
+   * Session ID is required.
+   */
+  400: ErrorResponse;
+  /**
+   * Invalid API Key or unauthorized access.
+   */
+  401: ErrorResponse;
+  /**
+   * Session not found.
+   */
+  404: ErrorResponse;
+  /**
+   * Failed to fetch session tags.
+   */
+  500: ErrorResponse;
+};
+
+export type GetSessionTagsError = GetSessionTagsErrors[keyof GetSessionTagsErrors];
+
+export type GetSessionTagsResponses = {
+  /**
+   * Session tags retrieved successfully.
+   */
+  200: SessionTagsResponse;
+};
+
+export type GetSessionTagsResponse = GetSessionTagsResponses[keyof GetSessionTagsResponses];
+
+export type PutSessionTagsData = {
+  body: PutSessionTags;
+  path: {
+    /**
+     * The ID of the session to update tags for.
+     */
+    session_id: string;
+  };
+  query?: never;
+  url: '/v1/sessions/{session_id}/tags';
+};
+
+export type PutSessionTagsErrors = {
+  /**
+   * Invalid request or missing session ID.
+   */
+  400: ErrorResponse;
+  /**
+   * Invalid API Key or unauthorized access.
+   */
+  401: ErrorResponse;
+  /**
+   * Session not found.
+   */
+  404: ErrorResponse;
+  /**
+   * Failed to update session tags.
+   */
+  500: ErrorResponse;
+};
+
+export type PutSessionTagsError = PutSessionTagsErrors[keyof PutSessionTagsErrors];
+
+export type PutSessionTagsResponses = {
+  /**
+   * Session tags updated successfully.
+   */
+  200: SessionTagsMutationResponse;
+};
+
+export type PutSessionTagsResponse = PutSessionTagsResponses[keyof PutSessionTagsResponses];
 
 export type GetSessionPagesData = {
   body?: never;
@@ -4163,11 +5301,19 @@ export type FetchWebpageErrors = {
   /**
    * Invalid request — check the URL and try again.
    */
-  400: ErrorResponse;
+  400: WebUnlockerErrorResponse;
   /**
-   * Could not reach the requested URL.
+   * Insufficient credits balance.
    */
-  422: ErrorResponse;
+  402: WebUnlockerErrorResponse;
+  /**
+   * Project cost limit reached.
+   */
+  403: WebUnlockerErrorResponse;
+  /**
+   * Could not reach the requested URL, the hostname did not resolve, or the challenge could not be solved.
+   */
+  422: WebUnlockerErrorResponse;
   /**
    * Rate limit exceeded.
    */
@@ -4175,23 +5321,25 @@ export type FetchWebpageErrors = {
   /**
    * Failed to fetch the requested page.
    */
-  500: ErrorResponse;
+  500: WebUnlockerErrorResponse;
+  /**
+   * Service temporarily unavailable — retry with backoff.
+   */
+  503: WebUnlockerErrorResponse;
   /**
    * The page took too long to load.
    */
-  504: ErrorResponse;
+  504: WebUnlockerErrorResponse;
 };
 
 export type FetchWebpageError = FetchWebpageErrors[keyof FetchWebpageErrors];
 
 export type FetchWebpageResponses = {
   /**
-   * The rendered HTML content of the webpage.
+   * The upstream JSON body, passed through unchanged when the URL serves JSON.
    */
-  200: string;
+  200: unknown;
 };
-
-export type FetchWebpageResponse = FetchWebpageResponses[keyof FetchWebpageResponses];
 
 export type ScreenshotWebpageData = {
   body: ScreenshotRequestSchema;
@@ -4806,6 +5954,216 @@ export type UpdateIdentityResponses = {
 };
 
 export type UpdateIdentityResponse2 = UpdateIdentityResponses[keyof UpdateIdentityResponses];
+
+export type ReauthenticateIdentityData = {
+  body?: ReauthenticateIdentityRequest;
+  path: {
+    /**
+     * The ID of the identity to reauthenticate
+     */
+    identityId: string;
+  };
+  query?: never;
+  url: '/v1/identities/{identityId}/reauthenticate';
+};
+
+export type ReauthenticateIdentityErrors = {
+  /**
+   * Missing API key for team
+   */
+  401: ErrorResponse;
+  /**
+   * Identity not found
+   */
+  404: ErrorResponse;
+  /**
+   * Identity has no credentials to authenticate with
+   */
+  412: ErrorResponse;
+  /**
+   * Identity authentication failed
+   */
+  422: ErrorResponse;
+  /**
+   * Failed to reauthenticate identity
+   */
+  500: ErrorResponse;
+};
+
+export type ReauthenticateIdentityError = ReauthenticateIdentityErrors[keyof ReauthenticateIdentityErrors];
+
+export type ReauthenticateIdentityResponses = {
+  /**
+   * Identity reauthentication started or completed
+   */
+  200: ReauthenticateIdentityResponse;
+};
+
+export type ReauthenticateIdentityResponse2 =
+  ReauthenticateIdentityResponses[keyof ReauthenticateIdentityResponses];
+
+export type StartDynamicAuthFlowData = {
+  body: AuthFlowV2StartRequest;
+  path: {
+    /**
+     * Active browser session that will drive the login.
+     */
+    session_id: string;
+  };
+  query?: never;
+  url: '/v1/identities/dynamic/start/{session_id}';
+};
+
+export type StartDynamicAuthFlowErrors = {
+  /**
+   * Invalid request or host does not match url hostname
+   */
+  400: ErrorResponse;
+  /**
+   * Session not found or not active
+   */
+  404: ErrorResponse;
+  /**
+   * Auth flow transition already in progress, or navigation/discovery failed
+   */
+  409: ErrorResponse;
+  /**
+   * Failed to start auth flow
+   */
+  500: ErrorResponse;
+};
+
+export type StartDynamicAuthFlowError = StartDynamicAuthFlowErrors[keyof StartDynamicAuthFlowErrors];
+
+export type StartDynamicAuthFlowResponses = {
+  /**
+   * First presentation of the auth flow
+   */
+  200: AuthFlowV2View;
+};
+
+export type StartDynamicAuthFlowResponse = StartDynamicAuthFlowResponses[keyof StartDynamicAuthFlowResponses];
+
+export type GetDynamicAuthFlowStateData = {
+  body?: never;
+  path: {
+    /**
+     * Session whose auth flow state to read.
+     */
+    session_id: string;
+  };
+  query?: never;
+  url: '/v1/identities/dynamic/state/{session_id}';
+};
+
+export type GetDynamicAuthFlowStateErrors = {
+  /**
+   * Auth flow not found
+   */
+  404: ErrorResponse;
+  /**
+   * Failed to read auth flow state
+   */
+  500: ErrorResponse;
+};
+
+export type GetDynamicAuthFlowStateError = GetDynamicAuthFlowStateErrors[keyof GetDynamicAuthFlowStateErrors];
+
+export type GetDynamicAuthFlowStateResponses = {
+  /**
+   * Current auth flow state
+   */
+  200: AuthFlowV2State;
+};
+
+export type GetDynamicAuthFlowStateResponse =
+  GetDynamicAuthFlowStateResponses[keyof GetDynamicAuthFlowStateResponses];
+
+export type ResolveDynamicAuthFlowData = {
+  body: AuthFlowV2ResolveRequest;
+  path: {
+    /**
+     * Session whose auth flow to advance.
+     */
+    session_id: string;
+  };
+  query?: never;
+  url: '/v1/identities/dynamic/resolve/{session_id}';
+};
+
+export type ResolveDynamicAuthFlowErrors = {
+  /**
+   * Invalid choice, option index, or missing field
+   */
+  400: ErrorResponse;
+  /**
+   * Session, flow, or step not found
+   */
+  404: ErrorResponse;
+  /**
+   * Auth flow transition already in progress
+   */
+  409: ErrorResponse;
+  /**
+   * Failed to resolve auth flow
+   */
+  500: ErrorResponse;
+};
+
+export type ResolveDynamicAuthFlowError = ResolveDynamicAuthFlowErrors[keyof ResolveDynamicAuthFlowErrors];
+
+export type ResolveDynamicAuthFlowResponses = {
+  /**
+   * Next presentation of the auth flow
+   */
+  200: AuthFlowV2View;
+};
+
+export type ResolveDynamicAuthFlowResponse =
+  ResolveDynamicAuthFlowResponses[keyof ResolveDynamicAuthFlowResponses];
+
+export type FinalizeDynamicAuthFlowData = {
+  body?: AuthFlowV2FinalizeRequest;
+  path: {
+    /**
+     * Session whose authenticated flow to persist.
+     */
+    session_id: string;
+  };
+  query?: never;
+  url: '/v1/identities/dynamic/finalize/{session_id}';
+};
+
+export type FinalizeDynamicAuthFlowErrors = {
+  /**
+   * Missing team context
+   */
+  401: ErrorResponse;
+  /**
+   * Auth flow or current step not found
+   */
+  404: ErrorResponse;
+  /**
+   * Flow must be authenticated before finalizing
+   */
+  409: ErrorResponse;
+  /**
+   * Failed to finalize
+   */
+  500: ErrorResponse;
+};
+
+export type FinalizeDynamicAuthFlowError = FinalizeDynamicAuthFlowErrors[keyof FinalizeDynamicAuthFlowErrors];
+
+export type FinalizeDynamicAuthFlowResponses = {
+  /**
+   * Identity created from the completed flow
+   */
+  200: AuthFlowV2FinalizeResult;
+};
+
+export type FinalizeDynamicAuthFlowResponse =
+  FinalizeDynamicAuthFlowResponses[keyof FinalizeDynamicAuthFlowResponses];
 
 export type ListProfilesData = {
   body?: never;
@@ -7312,11 +8670,28 @@ export type PublishTaskVersionResponse = PublishTaskVersionResponses[keyof Publi
 export type GetBillingData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    /**
+     * Start of the usage window (ISO 8601 format, UTC). Passing any of `from_date`, `to_date`, or `granularity` adds a `usage` block to the response. Defaults to 30 days ago.
+     */
+    from_date?: string;
+    /**
+     * End of the usage window (ISO 8601 format, UTC). Defaults to now.
+     */
+    to_date?: string;
+    /**
+     * Time granularity for the usage time series.
+     */
+    granularity?: 'hour' | 'day' | 'week' | 'month';
+  };
   url: '/v1/billing';
 };
 
 export type GetBillingErrors = {
+  /**
+   * Invalid usage query — malformed date, `from_date` after `to_date`, or a date range spanning too many buckets for the requested granularity.
+   */
+  400: ErrorResponse;
   /**
    * Invalid API Key
    */
@@ -7583,7 +8958,7 @@ export type ListWebhookEventsData = {
     /**
      * Filter by delivery status.
      */
-    status?: 'pending' | 'in_flight' | 'succeeded' | 'failed' | 'dead';
+    status?: 'pending' | 'succeeded' | 'failed' | 'dead';
     /**
      * Filter by event type.
      */
@@ -7596,6 +8971,11 @@ export type ListWebhookEventsData = {
      * Only include deliveries scheduled at or before this ISO 8601 timestamp.
      */
     until?: string;
+    /**
+     * Set to `true` to include each delivery's sanitized event `data` (as delivered to your endpoint) in the `payload` field of every row.
+     *
+     */
+    include_payload?: 'true' | 'false';
   };
   url: '/v1/webhooks/{id}/events';
 };
@@ -7619,3 +8999,484 @@ export type ListWebhookEventsResponses = {
 };
 
 export type ListWebhookEventsResponse = ListWebhookEventsResponses[keyof ListWebhookEventsResponses];
+
+export type GetV1VolumesData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Include deleted volumes. Defaults to `false`.
+     */
+    include_deleted?: 'true' | 'false';
+    /**
+     * Only return volumes in this state
+     */
+    state?: 'creating' | 'ready' | 'deleting' | 'deleted' | 'error';
+  };
+  url: '/v1/volumes';
+};
+
+export type GetV1VolumesResponses = {
+  /**
+   * Volumes retrieved successfully
+   */
+  200: VolumeListResponse;
+};
+
+export type GetV1VolumesResponse = GetV1VolumesResponses[keyof GetV1VolumesResponses];
+
+export type PostV1VolumesData = {
+  body: {
+    /**
+     * Volume name, unique within your team. Letters, numbers, `_` and `-`, up to 64 characters.
+     */
+    name: string;
+  };
+  path?: never;
+  query?: never;
+  url: '/v1/volumes';
+};
+
+export type PostV1VolumesErrors = {
+  /**
+   * Invalid name
+   */
+  400: ErrorResponse;
+  /**
+   * Volumes are not enabled for this team
+   */
+  403: ErrorResponse;
+  /**
+   * A volume with this name already exists, or the team reached its volume limit
+   */
+  409: ErrorResponse;
+};
+
+export type PostV1VolumesError = PostV1VolumesErrors[keyof PostV1VolumesErrors];
+
+export type PostV1VolumesResponses = {
+  /**
+   * Volume created
+   */
+  200: VolumeResponse;
+};
+
+export type PostV1VolumesResponse = PostV1VolumesResponses[keyof PostV1VolumesResponses];
+
+export type GetV1VolumesByNameByNameData = {
+  body?: never;
+  path: {
+    name: string;
+  };
+  query?: never;
+  url: '/v1/volumes/by-name/{name}';
+};
+
+export type GetV1VolumesByNameByNameErrors = {
+  /**
+   * Volume not found
+   */
+  404: ErrorResponse;
+};
+
+export type GetV1VolumesByNameByNameError =
+  GetV1VolumesByNameByNameErrors[keyof GetV1VolumesByNameByNameErrors];
+
+export type GetV1VolumesByNameByNameResponses = {
+  /**
+   * Volume details
+   */
+  200: VolumeResponse;
+};
+
+export type GetV1VolumesByNameByNameResponse =
+  GetV1VolumesByNameByNameResponses[keyof GetV1VolumesByNameByNameResponses];
+
+export type DeleteV1VolumesByVolumeIdData = {
+  body?: never;
+  path: {
+    volume_id: string;
+  };
+  query?: never;
+  url: '/v1/volumes/{volume_id}';
+};
+
+export type DeleteV1VolumesByVolumeIdErrors = {
+  /**
+   * Volume not found
+   */
+  404: ErrorResponse;
+  /**
+   * The volume is mounted by a running session
+   */
+  409: ErrorResponse;
+};
+
+export type DeleteV1VolumesByVolumeIdError =
+  DeleteV1VolumesByVolumeIdErrors[keyof DeleteV1VolumesByVolumeIdErrors];
+
+export type DeleteV1VolumesByVolumeIdResponses = {
+  /**
+   * Deletion finished (`deleted`) or still in progress (`deleting`)
+   */
+  200: {
+    data?: {
+      id?: string;
+      status?: 'deleting' | 'deleted';
+    };
+  };
+};
+
+export type DeleteV1VolumesByVolumeIdResponse =
+  DeleteV1VolumesByVolumeIdResponses[keyof DeleteV1VolumesByVolumeIdResponses];
+
+export type GetV1VolumesByVolumeIdData = {
+  body?: never;
+  path: {
+    volume_id: string;
+  };
+  query?: never;
+  url: '/v1/volumes/{volume_id}';
+};
+
+export type GetV1VolumesByVolumeIdErrors = {
+  /**
+   * Volume not found
+   */
+  404: ErrorResponse;
+};
+
+export type GetV1VolumesByVolumeIdError = GetV1VolumesByVolumeIdErrors[keyof GetV1VolumesByVolumeIdErrors];
+
+export type GetV1VolumesByVolumeIdResponses = {
+  /**
+   * Volume details
+   */
+  200: VolumeResponse;
+};
+
+export type GetV1VolumesByVolumeIdResponse =
+  GetV1VolumesByVolumeIdResponses[keyof GetV1VolumesByVolumeIdResponses];
+
+export type DeleteV1VolumesByVolumeIdFilesData = {
+  body?: never;
+  path: {
+    volume_id: string;
+  };
+  query?: {
+    /**
+     * File to delete, relative to the volume root
+     */
+    path?: string;
+    /**
+     * Folder to delete recursively; requires `recursive=true`
+     */
+    prefix?: string;
+    recursive?: 'true' | 'false';
+  };
+  url: '/v1/volumes/{volume_id}/files';
+};
+
+export type DeleteV1VolumesByVolumeIdFilesErrors = {
+  /**
+   * Volume or file not found
+   */
+  404: ErrorResponse;
+};
+
+export type DeleteV1VolumesByVolumeIdFilesError =
+  DeleteV1VolumesByVolumeIdFilesErrors[keyof DeleteV1VolumesByVolumeIdFilesErrors];
+
+export type DeleteV1VolumesByVolumeIdFilesResponses = {
+  /**
+   * Files deleted
+   */
+  200: {
+    data?: {
+      status?: 'success';
+      deleted_count?: number;
+    };
+  };
+};
+
+export type DeleteV1VolumesByVolumeIdFilesResponse =
+  DeleteV1VolumesByVolumeIdFilesResponses[keyof DeleteV1VolumesByVolumeIdFilesResponses];
+
+export type GetV1VolumesByVolumeIdFilesData = {
+  body?: never;
+  path: {
+    volume_id: string;
+  };
+  query?: {
+    /**
+     * Folder to list, relative to the volume root. Omit for the root.
+     */
+    path?: string;
+    /**
+     * List every file under `path` instead of one level
+     */
+    recursive?: 'true' | 'false';
+    /**
+     * `next_cursor` from the previous page
+     */
+    cursor?: string;
+    /**
+     * Page size, 1 to 1000
+     */
+    limit?: string;
+  };
+  url: '/v1/volumes/{volume_id}/files';
+};
+
+export type GetV1VolumesByVolumeIdFilesErrors = {
+  /**
+   * Volume not found
+   */
+  404: ErrorResponse;
+  /**
+   * The volume is not `ready`
+   */
+  412: ErrorResponse;
+};
+
+export type GetV1VolumesByVolumeIdFilesError =
+  GetV1VolumesByVolumeIdFilesErrors[keyof GetV1VolumesByVolumeIdFilesErrors];
+
+export type GetV1VolumesByVolumeIdFilesResponses = {
+  /**
+   * Folder listing
+   */
+  200: VolumeFileListResponse;
+};
+
+export type GetV1VolumesByVolumeIdFilesResponse =
+  GetV1VolumesByVolumeIdFilesResponses[keyof GetV1VolumesByVolumeIdFilesResponses];
+
+export type PostV1VolumesByVolumeIdFilesData = {
+  body: {
+    /**
+     * The file to upload
+     */
+    file: Blob | File;
+    /**
+     * Destination path relative to the volume root, e.g. `downloads/report.pdf`. Defaults to the uploaded file's name at the root.
+     */
+    path?: string;
+    /**
+     * Replace an existing file at `path`. Defaults to `false`.
+     */
+    overwrite?: 'true' | 'false';
+  };
+  path: {
+    volume_id: string;
+  };
+  query?: never;
+  url: '/v1/volumes/{volume_id}/files';
+};
+
+export type PostV1VolumesByVolumeIdFilesErrors = {
+  /**
+   * Missing file or invalid path
+   */
+  400: ErrorResponse;
+  /**
+   * A file already exists at `path` and `overwrite` is not set
+   */
+  409: ErrorResponse;
+  /**
+   * File too large for a multipart upload; use an upload URL
+   */
+  413: ErrorResponse;
+};
+
+export type PostV1VolumesByVolumeIdFilesError =
+  PostV1VolumesByVolumeIdFilesErrors[keyof PostV1VolumesByVolumeIdFilesErrors];
+
+export type PostV1VolumesByVolumeIdFilesResponses = {
+  /**
+   * File uploaded
+   */
+  200: VolumeFileInfoResponse;
+};
+
+export type PostV1VolumesByVolumeIdFilesResponse =
+  PostV1VolumesByVolumeIdFilesResponses[keyof PostV1VolumesByVolumeIdFilesResponses];
+
+export type PostV1VolumesByVolumeIdFilesUploadUrlData = {
+  body: {
+    /**
+     * Destination path relative to the volume root
+     */
+    path: string;
+    /**
+     * MIME type of the file. Defaults to `application/octet-stream`.
+     */
+    content_type?: string;
+    /**
+     * Size in bytes, if known
+     */
+    size?: number;
+  };
+  path: {
+    volume_id: string;
+  };
+  query?: never;
+  url: '/v1/volumes/{volume_id}/files/upload-url';
+};
+
+export type PostV1VolumesByVolumeIdFilesUploadUrlErrors = {
+  /**
+   * Invalid path or size
+   */
+  400: ErrorResponse;
+};
+
+export type PostV1VolumesByVolumeIdFilesUploadUrlError =
+  PostV1VolumesByVolumeIdFilesUploadUrlErrors[keyof PostV1VolumesByVolumeIdFilesUploadUrlErrors];
+
+export type PostV1VolumesByVolumeIdFilesUploadUrlResponses = {
+  /**
+   * Upload URL created
+   */
+  200: VolumeUploadUrlResponse;
+};
+
+export type PostV1VolumesByVolumeIdFilesUploadUrlResponse =
+  PostV1VolumesByVolumeIdFilesUploadUrlResponses[keyof PostV1VolumesByVolumeIdFilesUploadUrlResponses];
+
+export type GetV1VolumesByVolumeIdFilesStatData = {
+  body?: never;
+  path: {
+    volume_id: string;
+  };
+  query: {
+    /**
+     * File path relative to the volume root
+     */
+    path: string;
+  };
+  url: '/v1/volumes/{volume_id}/files/stat';
+};
+
+export type GetV1VolumesByVolumeIdFilesStatErrors = {
+  /**
+   * Volume or file not found
+   */
+  404: ErrorResponse;
+};
+
+export type GetV1VolumesByVolumeIdFilesStatError =
+  GetV1VolumesByVolumeIdFilesStatErrors[keyof GetV1VolumesByVolumeIdFilesStatErrors];
+
+export type GetV1VolumesByVolumeIdFilesStatResponses = {
+  /**
+   * File metadata
+   */
+  200: VolumeFileInfoResponse;
+};
+
+export type GetV1VolumesByVolumeIdFilesStatResponse =
+  GetV1VolumesByVolumeIdFilesStatResponses[keyof GetV1VolumesByVolumeIdFilesStatResponses];
+
+export type GetV1VolumesByVolumeIdFilesDownloadData = {
+  body?: never;
+  path: {
+    volume_id: string;
+  };
+  query: {
+    /**
+     * File path relative to the volume root
+     */
+    path: string;
+    /**
+     * Respond with a `302` to the file instead of JSON
+     */
+    redirect?: 'true' | 'false';
+  };
+  url: '/v1/volumes/{volume_id}/files/download';
+};
+
+export type GetV1VolumesByVolumeIdFilesDownloadErrors = {
+  /**
+   * Volume or file not found
+   */
+  404: ErrorResponse;
+};
+
+export type GetV1VolumesByVolumeIdFilesDownloadError =
+  GetV1VolumesByVolumeIdFilesDownloadErrors[keyof GetV1VolumesByVolumeIdFilesDownloadErrors];
+
+export type GetV1VolumesByVolumeIdFilesDownloadResponses = {
+  /**
+   * Download URL
+   */
+  200: VolumeDownloadUrlResponse;
+};
+
+export type GetV1VolumesByVolumeIdFilesDownloadResponse =
+  GetV1VolumesByVolumeIdFilesDownloadResponses[keyof GetV1VolumesByVolumeIdFilesDownloadResponses];
+
+export type GetV1VolumesByVolumeIdPathsData = {
+  body?: never;
+  path: {
+    volume_id: string;
+  };
+  query?: {
+    /**
+     * Only paths under this folder
+     */
+    prefix?: string;
+    cursor?: string;
+    /**
+     * Page size, 1 to 1000
+     */
+    limit?: string;
+  };
+  url: '/v1/volumes/{volume_id}/paths';
+};
+
+export type GetV1VolumesByVolumeIdPathsResponses = {
+  /**
+   * File paths
+   */
+  200: VolumePathListResponse;
+};
+
+export type GetV1VolumesByVolumeIdPathsResponse =
+  GetV1VolumesByVolumeIdPathsResponses[keyof GetV1VolumesByVolumeIdPathsResponses];
+
+export type PostV1VolumesByVolumeIdDirectoriesData = {
+  body: {
+    path: string;
+  };
+  path: {
+    volume_id: string;
+  };
+  query?: never;
+  url: '/v1/volumes/{volume_id}/directories';
+};
+
+export type PostV1VolumesByVolumeIdDirectoriesErrors = {
+  /**
+   * A file already exists at this path
+   */
+  409: ErrorResponse;
+};
+
+export type PostV1VolumesByVolumeIdDirectoriesError =
+  PostV1VolumesByVolumeIdDirectoriesErrors[keyof PostV1VolumesByVolumeIdDirectoriesErrors];
+
+export type PostV1VolumesByVolumeIdDirectoriesResponses = {
+  /**
+   * Directory created
+   */
+  200: {
+    data?: {
+      path?: string;
+      type?: 'directory';
+    };
+  };
+};
+
+export type PostV1VolumesByVolumeIdDirectoriesResponse =
+  PostV1VolumesByVolumeIdDirectoriesResponses[keyof PostV1VolumesByVolumeIdDirectoriesResponses];
